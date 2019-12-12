@@ -11,12 +11,15 @@ class App extends React.Component {
         <nav className="App-nav">
           <h1>OB</h1>
           <button>
-            Say Hello <span role="img">👋</span>
+            Say Hello{" "}
+            <span role="img" aria-label="wave">
+              👋
+            </span>
           </button>
         </nav>
         <header className="App-header">
           <Title></Title>
-          <h1>
+          <h1 id="typewriter">
             <RotatingText
               items={[
                 "Web Design",

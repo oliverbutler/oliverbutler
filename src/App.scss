@@ -1,3 +1,7 @@
+$break-small: 320px;
+$break-medium: 600px;
+$break-large: 1200px;
+
 .App {
   text-align: center;
 }
@@ -36,6 +40,23 @@ $theme-dark: #14525a;
   justify-content: center;
   color: white;
   background-color: #282c34;
+}
+
+#logo {
+  width: 90vw;
+  @media screen and (min-width: $break-medium) {
+    width: 70vw;
+  }
+  @media screen and (min-width: $break-large) {
+    width: 50vw;
+  }
+}
+
+#typewriter {
+  font-size: 1.5em;
+  @media screen and (min-width: $break-medium) {
+    font-size: 2em;
+  }
 }
 
 .intro {

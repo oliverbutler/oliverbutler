@@ -25,8 +25,6 @@ export default class Title extends Component {
       <div>
         <svg
           id="logo"
-          width="995"
-          height="114"
           viewBox="0 0 995 114"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
