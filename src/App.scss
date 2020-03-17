@@ -12,6 +12,8 @@ $black: #282c34;
 $light-grey: #f6f8ff;
 
 .App-nav {
+  z-index: 10;
+
   position: absolute;
   width: calc(100vw - 40px);
   display: flex;
@@ -35,6 +37,8 @@ $light-grey: #f6f8ff;
 }
 
 .App-header {
+  z-index: 10;
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -45,6 +49,8 @@ $light-grey: #f6f8ff;
 }
 
 #logo {
+  z-index: 10;
+
   width: 90vw;
   @media screen and (min-width: $break-medium) {
     width: 70vw;
@@ -55,6 +61,8 @@ $light-grey: #f6f8ff;
 }
 
 #typewriter {
+  z-index: 10;
+
   font-size: 1.5em;
   @media screen and (min-width: $break-medium) {
     font-size: 2em;
