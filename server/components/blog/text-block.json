@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_blog_text_blocks",
+  "info": {
+    "name": "text_block",
+    "icon": "align-justify"
+  },
+  "options": {},
+  "attributes": {
+    "rich_text": {
+      "type": "richtext"
+    }
+  }
+}
