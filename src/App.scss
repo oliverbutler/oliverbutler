@@ -1,0 +1,121 @@
+$break-small: 320px;
+$break-medium: 600px;
+$break-large: 1200px;
+
+.App {
+  text-align: center;
+}
+
+$theme: #34cfe4;
+$theme-dark: #14525a;
+$black: #282c34;
+$light-grey: #fbfbff;
+
+.App-nav {
+  z-index: 10;
+
+  position: absolute;
+  width: calc(100vw - 40px);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+  color: $theme;
+  button {
+    height: fit-content;
+    padding: 10px;
+    font-size: 1.5em;
+    border-radius: 20px;
+    background-color: transparent;
+    border: solid 3px $theme;
+    color: $theme;
+    transition: 255ms;
+    &:hover {
+      background-color: $theme-dark;
+    }
+  }
+}
+
+.App-header {
+  z-index: 10;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: #282c34;
+}
+
+#logo {
+  z-index: 10;
+
+  width: 90vw;
+  @media screen and (min-width: $break-medium) {
+    width: 70vw;
+  }
+  @media screen and (min-width: $break-large) {
+    width: 50vw;
+  }
+}
+
+#typewriter {
+  z-index: 10;
+
+  font-size: 1.5em;
+  @media screen and (min-width: $break-medium) {
+    font-size: 2em;
+  }
+}
+
+.content {
+  padding: 100px 25px;
+  @media screen and (min-width: $break-medium) {
+    padding: 100px 100px;
+  }
+}
+
+#skills {
+  display: flex;
+  justify-content: space-around;
+  > div {
+    background-color: $light-grey;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+  }
+}
+
+@keyframes line-anim {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fill {
+  from {
+    fill: transparent;
+  }
+  to {
+    fill: white;
+  }
+}
+
+.react-rotating-text-cursor {
+  font-weight: 100;
+  animation: blinking-cursor 0.8s cubic-bezier(0.68, 0.01, 0.01, 0.99) 0s
+    infinite;
+}
+
+@keyframes blinking-cursor {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
