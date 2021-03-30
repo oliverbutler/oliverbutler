@@ -59,7 +59,7 @@ const Particles = () => {
           ctx.lineTo(user.x, user.y);
           ctx.stroke();
         }
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "gray";
         ctx.beginPath();
         ctx.arc(ball.x, ball.y, 2, 0, 2 * Math.PI);
         ctx.fill();

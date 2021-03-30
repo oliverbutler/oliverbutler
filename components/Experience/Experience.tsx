@@ -24,7 +24,9 @@ const IndividualExperience = ({
             ></img>
           </div>
           <div className="flex flex-col">
-            <span className="font-semibold title-font text-white">{title}</span>
+            <span className="font-semibold title-font text-black dark:text-white">
+              {title}
+            </span>
             <span className="font-semibold title-font text-gray-700">
               {type}
             </span>
@@ -34,7 +36,7 @@ const IndividualExperience = ({
       }
       right={
         <>
-          <h2 className="title-font font-medium text-white title-font mb-2 w-full">
+          <h2 className="title-font font-medium text-black dark:text-white title-font mb-2 w-full">
             {role}
           </h2>
           <p className="leading-relaxed">{text}</p>

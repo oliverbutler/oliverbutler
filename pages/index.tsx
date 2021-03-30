@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 
 import Particles from "components/Particles";
@@ -13,8 +13,23 @@ import Experience from "components/Experience";
 import Education from "components/Education";
 import Footer from "components/Footer";
 
+import { useTheme } from "next-themes";
+
 export default function Home({ github, repos }) {
   const [accent, setAccent] = useState("indigo");
+
+  const { theme, setTheme } = useTheme();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const switchTheme = () => {
+    if (isMounted) {
+      setTheme(theme === "light" ? "dark" : "light");
+    }
+  };
 
   return (
     <div className="App">
@@ -24,21 +39,20 @@ export default function Home({ github, repos }) {
       </Head>
 
       <main className="">
-        <Navbar />
+        <Navbar switchTheme={switchTheme} />
         <Header accent={accent} />
         <GitHub github={github} repos={repos} />
         <Experience />
         <Education />
       </main>
 
-      <Particles />
+      {/* <Particles /> */}
       <Footer />
     </div>
   );
 }
 
 export async function getStaticProps() {
-  console.log("im here!");
   const pat = process.env.GITHUB_TOKEN;
   const data = await axios
     .get("https://api.github.com/user", {

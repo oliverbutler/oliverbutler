@@ -25,23 +25,23 @@ const GitHub = ({ github, repos }) => {
           subtitle="I work on and contribute to open source applications, see my latest
               statistics below. (Yes, you can see this on GitHub, but isn't this more fun?)"
         />
-        <div className="flex">
+        <div className="flex text-black dark:text-white">
           <div className="p-4 sm:w-1/2 lg:w-1/4">
-            <h2 className="title-font font-medium text-3xl text-white">518</h2>
+            <h2 className="title-font font-medium text-3xl ">518</h2>
             <p className="leading-relaxed">Commits</p>
           </div>
           <div className="p-4 sm:w-1/2 lg:w-1/4 ">
-            <h2 className="title-font font-medium text-3xl text-white">1.8</h2>
+            <h2 className="title-font font-medium text-3xl ">1.8</h2>
             <p className="leading-relaxed">Issues Created</p>
           </div>
           <div className="p-4 sm:w-1/2 lg:w-1/4">
-            <h2 className="title-font font-medium text-3xl text-white">
+            <h2 className="title-font font-medium text-3xl ">
               {github ? github.public_repos : 0}
             </h2>
             <p className="leading-relaxed">Public Repos</p>
           </div>
           <div className="p-4 sm:w-1/2 lg:w-1/4 ">
-            <h2 className="title-font font-medium text-3xl text-white">
+            <h2 className="title-font font-medium text-3xl ">
               {github ? github.public_repos + github.total_private_repos : 0}
             </h2>
             <p className="leading-relaxed">Total Repos</p>
@@ -51,17 +51,17 @@ const GitHub = ({ github, repos }) => {
           {repos &&
             repos.map((repo) => (
               <div
-                className="p-4 md:w-1/3 w-full z-10"
+                className={`p-4 md:w-1/3 w-full z-10 `}
                 onClick={() => window.open(repo.html_url)}
               >
-                <div className="flex rounded-lg h-full bg-gray-800 bg-opacity-60 hover:bg-opacity-100 cursor-pointer p-8 flex-col">
+                <div className="flex rounded-lg h-full p-8 flex-col cursor-pointer dark:bg-gray-800 hover:bg-gray-100 bg-opacity-60 dark:bg-opacity-60 dark:hover:bg-opacity-100 border-2 border-gray-200 border-opacity-50 dark:border-opacity-0">
                   <div className="flex items-center mb-3">
                     <img
                       className="relative z-30 inline object-cover w-10 h-10 rounded-full mr-2"
                       src={repo.owner.avatar_url}
                       alt="Profile image"
                     />
-                    <h2 className="text-white text-lg title-font font-medium mr-3">
+                    <h2 className="dark:text-white text-black text-lg title-font font-medium mr-3">
                       {repo.name}
                     </h2>
                   </div>

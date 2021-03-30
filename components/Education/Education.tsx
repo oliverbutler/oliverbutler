@@ -14,7 +14,9 @@ const IndividualEducation = ({ date, img, title, modules }) => {
             src={img}
           ></img>
           <div className="flex flex-col">
-            <span className="font-semibold title-font text-white">{title}</span>
+            <span className="font-semibold title-font text-black dark:text-white">
+              {title}
+            </span>
             <span className="mt-1 text-gray-500 text-sm">{date}</span>
           </div>
         </>
@@ -23,7 +25,7 @@ const IndividualEducation = ({ date, img, title, modules }) => {
         <>
           {modules.map((module) => (
             <div className="mb-4">
-              <h2 className="title-font font-medium text-white title-font mb-2">
+              <h2 className="title-font font-medium text-black dark:text-white title-font mb-2">
                 {module.title}
               </h2>
               <p className="leading-relaxed">{module.text}</p>

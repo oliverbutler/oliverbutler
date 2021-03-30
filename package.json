@@ -13,6 +13,7 @@
     "github-calendar": "^2.2.7",
     "lodash": "^4.17.21",
     "next": "10.1.1",
+    "next-themes": "^0.0.14",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
