@@ -1,9 +1,18 @@
 import Section from "components/Layout/Section";
 import Split from "components/Layout/Split";
+import Badge from "components/Typography/Badge";
 import Heading from "components/Typography/Heading";
 import React from "react";
 
-const IndividualExperience = ({ date, role, title, text, type, img }) => {
+const IndividualExperience = ({
+  date,
+  role,
+  title,
+  text,
+  type,
+  img,
+  stack,
+}) => {
   return (
     <Split
       left={
@@ -29,6 +38,11 @@ const IndividualExperience = ({ date, role, title, text, type, img }) => {
             {role}
           </h2>
           <p className="leading-relaxed">{text}</p>
+          <div className="flex mt-1">
+            {stack.map((tool) => (
+              <Badge colour={tool.colour} text={tool.title} className="mr-2" />
+            ))}
+          </div>
         </>
       }
     />
@@ -39,7 +53,7 @@ const Experience = () => {
   return (
     <Section>
       <Heading
-        title="My Work Experience"
+        title="Career Experience"
         subtitle="I have had several placements throughout the industry, in addition to several freelance full stack projects."
       />
 
@@ -57,6 +71,13 @@ const Experience = () => {
             React, Nodejs, Strapi, and Stripe.
           </p>
         }
+        stack={[
+          { title: "React", colour: "blue" },
+          { title: "TS", colour: "yellow" },
+          { title: "Next.js", colour: "yellow" },
+          { title: "Node.js", colour: "yellow" },
+          { title: "Python", colour: "green" },
+        ]}
       />
       <IndividualExperience
         img="https://yt3.ggpht.com/ytc/AAUvwnhr8kN2eebXR1zAqiF--WVa9ub_ViUYAZTjzX9YTQ=s900-c-k-c0x00ffffff-no-rj"
@@ -74,6 +95,10 @@ const Experience = () => {
             Cyber.
           </p>
         }
+        stack={[
+          { title: "React", colour: "blue" },
+          { title: "Java", colour: "red" },
+        ]}
       />
       <IndividualExperience
         img="https://ak.picdn.net/shutterstock/videos/1012970891/thumb/1.jpg"
@@ -91,6 +116,10 @@ const Experience = () => {
             information.
           </p>
         }
+        stack={[
+          { title: "Vue.js", colour: "yellow" },
+          { title: "Python", colour: "green" },
+        ]}
       />
       <IndividualExperience
         date="February 2019"
@@ -107,6 +136,25 @@ const Experience = () => {
             interested, whilst remaining in constant contact with other groups.
           </p>
         }
+        stack={[]}
+      />
+      <IndividualExperience
+        date="January 2017 - September 2018"
+        img="https://www.brindledistillery.co.uk/wp-content/uploads/2017/07/boothsCardImageLarge.png"
+        title="Booths, Supermarket"
+        type="Part Time Job"
+        role="Deli Assistant"
+        text={
+          <p>
+            I provided assistance to the public whilst working at a local
+            supermarket, on both the Deli and Bakery. I also took pride in my
+            organisational skills and often took it upon myself to ensure the
+            stock room was neat and organized correctly. I also enjoyed helping
+            serve the public and always worked to the best of my ability to help
+            them.
+          </p>
+        }
+        stack={[]}
       />
     </Section>
   );

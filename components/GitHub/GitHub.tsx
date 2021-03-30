@@ -51,7 +51,7 @@ const GitHub = ({ github, repos }) => {
           {repos &&
             repos.map((repo) => (
               <div
-                className="p-4 md:w-1/3 w-full"
+                className="p-4 md:w-1/3 w-full z-10"
                 onClick={() => window.open(repo.html_url)}
               >
                 <div className="flex rounded-lg h-full bg-gray-800 bg-opacity-60 hover:bg-opacity-100 cursor-pointer p-8 flex-col">

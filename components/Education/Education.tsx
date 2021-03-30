@@ -1,5 +1,6 @@
 import Section from "components/Layout/Section";
 import Split from "components/Layout/Split";
+import Badge from "components/Typography/Badge";
 import Heading from "components/Typography/Heading";
 import React from "react";
 
@@ -47,14 +48,34 @@ const Education = () => {
           {
             title: "BSc (Hons) Computer Science",
             text: (
-              <p>
-                Includes algorithm design and analysis, databases, operating
-                systems, and networking. Was the lead developer for a stage 2
-                client development project. <br />
-                Writing a dissertation on utilizing blockchain (Hyperledger
-                Fabric) to manage smart buildings through the use of incentive
-                mechanisms.
-              </p>
+              <>
+                <p>
+                  Includes algorithm design and analysis, databases, operating
+                  systems, and networking. Was the lead developer for a stage 2
+                  client development project. <br />
+                  Writing a dissertation on utilizing blockchain (Hyperledger
+                  Fabric) to manage smart buildings through the use of incentive
+                  mechanisms.
+                </p>
+                <ul className="list list-disc ml-6 mt-2">
+                  <li>Algorithm Design &amp; Analysis</li>
+                  <li>
+                    Programming I and II{" "}
+                    <Badge text="Java" colour="red" className="" />
+                  </li>
+                  <li>
+                    Game Design <Badge text="C#" colour="pink" className="" />
+                  </li>
+                  <li>
+                    Programming for Games{" "}
+                    <Badge text="C++" colour="gray" className="" />
+                  </li>
+                  <li>
+                    Mobile Development
+                    <Badge text="Swift" colour="yellow" className="" />
+                  </li>
+                </ul>
+              </>
             ),
           },
         ]}
