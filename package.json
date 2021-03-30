@@ -2,32 +2,23 @@
   "name": "oliverbutler",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "node-sass": "^4.13.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-rotating-text": "^1.4.1",
-    "react-scripts": "3.2.0"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "dependencies": {
+    "axios": "^0.21.1",
+    "framer-motion": "^4.0.3",
+    "github-calendar": "^2.2.7",
+    "lodash": "^4.17.21",
+    "next": "10.1.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.8",
+    "tailwindcss": "^2.0.4"
   }
 }
