@@ -125,48 +125,51 @@ export default function Home({ github, repos }) {
                 <p class="leading-relaxed">Total Repos</p>
               </div>
             </div>
-            <div class="lg:w-1/2 sm:w-1/3 w-full rounded-lg overflow-hidden mt-6 sm:mt-0">
+            {/* <div class="lg:w-1/2 sm:w-1/3 w-full rounded-lg overflow-hidden mt-6 sm:mt-0">
               <img
                 class="object-cover object-center w-full h-full"
                 src="https://dummyimage.com/600x300"
                 alt="stats"
               />
-            </div>
-          </div>
-          <div className="flex flex-wrap">
-            {repos.map((repo) => (
-              <div
-                class="p-4 md:w-1/3"
-                onClick={() => window.open(repo.html_url)}
-              >
-                <div class="flex rounded-lg h-full bg-gray-800 bg-opacity-60 hover:bg-opacity-100 cursor-pointer p-8 flex-col">
-                  <div class="flex items-center mb-3">
-                    <img
-                      class="relative z-30 inline object-cover w-10 h-10 rounded-full mr-2"
-                      src={repo.owner.avatar_url}
-                      alt="Profile image"
-                    />
-                    <h2 class="text-white text-lg title-font font-medium mr-3">
-                      {repo.name}
-                    </h2>
-                  </div>
-                  <div class="flex-grow">
-                    <p class="leading-relaxed text-base">{repo.description}</p>
-                    <div className="flex mt-2 items-center">
-                      <svg width="10" height="10" className="mr-2">
-                        <circle
-                          cx="5"
-                          cy="5"
-                          r="5"
-                          fill={getColour(repo.language)}
-                        />
-                      </svg>
-                      {repo.language}
+            </div> */}
+
+            <div className="flex flex-wrap">
+              {repos.map((repo) => (
+                <div
+                  class="p-4 md:w-1/3"
+                  onClick={() => window.open(repo.html_url)}
+                >
+                  <div class="flex rounded-lg h-full bg-gray-800 bg-opacity-60 hover:bg-opacity-100 cursor-pointer p-8 flex-col">
+                    <div class="flex items-center mb-3">
+                      <img
+                        class="relative z-30 inline object-cover w-10 h-10 rounded-full mr-2"
+                        src={repo.owner.avatar_url}
+                        alt="Profile image"
+                      />
+                      <h2 class="text-white text-lg title-font font-medium mr-3">
+                        {repo.name}
+                      </h2>
+                    </div>
+                    <div class="flex-grow">
+                      <p class="leading-relaxed text-base">
+                        {repo.description}
+                      </p>
+                      <div className="flex mt-2 items-center">
+                        <svg width="10" height="10" className="mr-2">
+                          <circle
+                            cx="5"
+                            cy="5"
+                            r="5"
+                            fill={getColour(repo.language)}
+                          />
+                        </svg>
+                        {repo.language}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 
