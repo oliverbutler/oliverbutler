@@ -26,7 +26,7 @@ export default function Home({ github, repos }) {
   const [accent, setAccent] = useState("indigo");
 
   return (
-    <div className="">
+    <div className="App">
       <Head>
         <title>Oliver Butler</title>
         <link rel="icon" href="/favicon.ico" />
@@ -34,7 +34,7 @@ export default function Home({ github, repos }) {
 
       <main className="">
         <div>
-          <header class="text-gray-400 bg-gray-900 body-font z-10">
+          <header class="text-gray-400 bg-gray-900 body-font">
             <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
               <nav class="flex lg:w-2/5 flex-wrap items-center text-base mr-auto">
                 <a class="mr-5 hover:text-white">Projects</a>
@@ -59,7 +59,7 @@ export default function Home({ github, repos }) {
             </div>
           </header>
 
-          <section class="text-gray-400 bg-gray-900 body-font z-10">
+          <section class="text-gray-400 bg-gray-900 body-font">
             <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
               <img
                 class="inline object-cover w-32 h-32 mb-4 rounded-full"
@@ -90,7 +90,7 @@ export default function Home({ github, repos }) {
           </section>
         </div>
 
-        <section class="text-gray-400 bg-gray-900 body-font z-10">
+        <section class="text-gray-400 bg-gray-900 body-font">
           <div class="container px-5 py-24 mx-auto flex flex-wrap">
             <div class="flex flex-wrap -mx-4 mt-auto mb-auto lg:w-1/2 sm:w-2/3 content-start sm:pr-10">
               <div class="w-full sm:p-4 px-4 mb-6">
@@ -197,8 +197,6 @@ export default function Home({ github, repos }) {
             </div>
           </div>
         </section> */}
-
-        <Particles />
       </main>
 
       <footer class="text-gray-400 bg-gray-900 body-font">
@@ -268,6 +266,7 @@ export default function Home({ github, repos }) {
           </span>
         </div>
       </footer>
+      {/* <Particles /> */}
     </div>
   );
 }
