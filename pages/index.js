@@ -198,7 +198,7 @@ export default function Home({ github, repos }) {
           </div>
         </section> */}
 
-        {/* <Particles /> */}
+        <Particles />
       </main>
 
       <footer class="text-gray-400 bg-gray-900 body-font">
@@ -317,25 +317,23 @@ export async function getStaticProps() {
       "owner.avatar_url",
     ]);
 
-    var contributors = await axios
+    await axios
       .get("https://api.github.com/repos/" + name + "/contributors", {
         headers: {
           Authorization: "Bearer " + pat,
         },
       })
-      .then((res) => res.data)
+      .then((res) => {
+        var contrib = res.data.map((c) =>
+          _.pick(c, ["login", "contributions", "avatar_url"])
+        );
+
+        individualRepo.contributors = contrib;
+      })
       .catch((err) => new Error("Issue!"));
-
-    contributors = contributors.map((c) =>
-      _.pick(c, ["login", "contributions", "avatar_url"])
-    );
-
-    individualRepo.contributors = contributors;
 
     repos.push(individualRepo);
   }
-
-  console.log(repos);
 
   return {
     props: {
