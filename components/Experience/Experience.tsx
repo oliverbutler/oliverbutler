@@ -1,6 +1,7 @@
 import Section from "components/Layout/Section";
 import Split from "components/Layout/Split";
 import Badge from "components/Typography/Badge";
+import { PythonBadge, ReactBadge } from "components/Typography/Badge/Badge";
 import Heading from "components/Typography/Heading";
 import React from "react";
 
@@ -40,11 +41,7 @@ const IndividualExperience = ({
             {role}
           </h2>
           <p className="leading-relaxed">{text}</p>
-          <div className="flex mt-1">
-            {stack.map((tool) => (
-              <Badge colour={tool.colour} text={tool.title} className="mr-2" />
-            ))}
-          </div>
+          <div className="flex mt-1">{stack.map((tag) => tag)}</div>
         </>
       }
     />
@@ -73,13 +70,7 @@ const Experience = () => {
             React, Nodejs, Strapi, and Stripe.
           </p>
         }
-        stack={[
-          { title: "React", colour: "blue" },
-          { title: "TS", colour: "yellow" },
-          { title: "Next.js", colour: "yellow" },
-          { title: "Node.js", colour: "yellow" },
-          { title: "Python", colour: "green" },
-        ]}
+        stack={[<ReactBadge />, <PythonBadge />]}
       />
       <IndividualExperience
         img="https://yt3.ggpht.com/ytc/AAUvwnhr8kN2eebXR1zAqiF--WVa9ub_ViUYAZTjzX9YTQ=s900-c-k-c0x00ffffff-no-rj"
@@ -97,10 +88,7 @@ const Experience = () => {
             Cyber.
           </p>
         }
-        stack={[
-          { title: "React", colour: "blue" },
-          { title: "Java", colour: "red" },
-        ]}
+        stack={[<ReactBadge />]}
       />
       <IndividualExperience
         img="https://ak.picdn.net/shutterstock/videos/1012970891/thumb/1.jpg"
@@ -118,10 +106,7 @@ const Experience = () => {
             information.
           </p>
         }
-        stack={[
-          { title: "Vue.js", colour: "yellow" },
-          { title: "Python", colour: "green" },
-        ]}
+        stack={[]}
       />
       <IndividualExperience
         date="February 2019"

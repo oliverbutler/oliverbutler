@@ -63,18 +63,19 @@ const Education = () => {
                   <li>Algorithm Design &amp; Analysis</li>
                   <li>
                     Programming I and II{" "}
-                    <Badge text="Java" colour="red" className="" />
+                    {/* <Badge text="Java" colour="red" className="" /> */}
                   </li>
                   <li>
-                    Game Design <Badge text="C#" colour="pink" className="" />
+                    Game Design
+                    {/* <Badge text="C#" colour="pink" className="" /> */}
                   </li>
                   <li>
                     Programming for Games{" "}
-                    <Badge text="C++" colour="gray" className="" />
+                    {/* <Badge text="C++" colour="gray" className="" /> */}
                   </li>
                   <li>
                     Mobile Development
-                    <Badge text="Swift" colour="yellow" className="" />
+                    {/* <Badge text="Swift" colour="yellow" className="" /> */}
                   </li>
                 </ul>
               </>
