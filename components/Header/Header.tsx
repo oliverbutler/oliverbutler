@@ -20,7 +20,7 @@ const Header = ({ accent }) => {
           </p>
           <div className="flex justify-center z-10">
             <button
-              className={`inline-flex text-white bg-${accent}-500 border-0 py-2 px-6 focus:outline-none hover:bg-${accent}-600 rounded text-lg z-10`}
+              className={`inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg z-10`}
             >
               My Work
             </button>

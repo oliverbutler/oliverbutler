@@ -19,7 +19,7 @@ const IndividualExperience = ({
         <>
           <div>
             <img
-              className="inline object-cover w-14 h-14 rounded-full mr-4"
+              className="inline object-cover w-16 h-16 rounded-full mr-4"
               src={img}
             ></img>
           </div>
