@@ -1,7 +1,12 @@
 import Section from "components/Layout/Section";
 import Split from "components/Layout/Split";
 import Badge from "components/Typography/Badge";
-import { PythonBadge, ReactBadge } from "components/Typography/Badge/Badge";
+import {
+  JavaBadge,
+  NodeBadge,
+  PythonBadge,
+  ReactBadge,
+} from "components/Typography/Badge/Badge";
 import Heading from "components/Typography/Heading";
 import React from "react";
 
@@ -41,7 +46,11 @@ const IndividualExperience = ({
             {role}
           </h2>
           <p className="leading-relaxed">{text}</p>
-          <div className="flex mt-1">{stack.map((tag) => tag)}</div>
+          <div className="flex mt-1">
+            {stack.map((tag) => (
+              <div className="mr-2"> {tag} </div>
+            ))}
+          </div>
         </>
       }
     />
@@ -70,7 +79,7 @@ const Experience = () => {
             React, Nodejs, Strapi, and Stripe.
           </p>
         }
-        stack={[<ReactBadge />, <PythonBadge />]}
+        stack={[<ReactBadge />, <NodeBadge />, <PythonBadge />]}
       />
       <IndividualExperience
         img="https://yt3.ggpht.com/ytc/AAUvwnhr8kN2eebXR1zAqiF--WVa9ub_ViUYAZTjzX9YTQ=s900-c-k-c0x00ffffff-no-rj"
@@ -88,25 +97,7 @@ const Experience = () => {
             Cyber.
           </p>
         }
-        stack={[<ReactBadge />]}
-      />
-      <IndividualExperience
-        img="https://ak.picdn.net/shutterstock/videos/1012970891/thumb/1.jpg"
-        date="July 2019 - August 2019"
-        title="Cyber Training Course"
-        type="Summer Placement"
-        role="Student"
-        text={
-          <p>
-            Developed malware analysis, penetration testing, and network
-            analysis skills. Worked to develop a full stack application for LSB
-            image steganography called <i>Stegosaurus</i>. The software was
-            capable of encryption, decryption, and obfuscation of any data
-            source and was built with Vue.js and Python. Contact for more
-            information.
-          </p>
-        }
-        stack={[]}
+        stack={[<ReactBadge />, <JavaBadge />]}
       />
       <IndividualExperience
         date="February 2019"

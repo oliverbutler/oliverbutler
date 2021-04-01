@@ -26,14 +26,6 @@ const GitHub = ({ github, repos }) => {
               statistics below. (Yes, you can see this on GitHub, but isn't this more fun?)"
         />
         <div className="flex text-black dark:text-white">
-          {/* <div className="p-4 sm:w-1/2">
-            <h2 className="title-font font-medium text-3xl ">518</h2>
-            <p className="leading-relaxed">Commits</p>
-          </div>
-          <div className="p-4 sm:w-1/2 ">
-            <h2 className="title-font font-medium text-3xl ">1.8</h2>
-            <p className="leading-relaxed">Issues Created</p>
-          </div> */}
           <div className="p-4 sm:w-1/2">
             <h2 className="title-font font-medium text-3xl ">
               {github ? github.public_repos : 0}

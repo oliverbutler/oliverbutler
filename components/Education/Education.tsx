@@ -1,6 +1,12 @@
 import Section from "components/Layout/Section";
 import Split from "components/Layout/Split";
 import Badge from "components/Typography/Badge";
+import {
+  CPPBadge,
+  CSharpBadge,
+  JavaBadge,
+  SwiftBadge,
+} from "components/Typography/Badge/Badge";
 import Heading from "components/Typography/Heading";
 import React from "react";
 
@@ -24,7 +30,7 @@ const IndividualEducation = ({ date, img, title, modules }) => {
       right={
         <>
           {modules.map((module) => (
-            <div className="mb-4">
+            <div className="mb-4" key={"module-" + module.title}>
               <h2 className="title-font font-medium text-black dark:text-white title-font mb-2">
                 {module.title}
               </h2>
@@ -45,7 +51,7 @@ const Education = () => {
       <IndividualEducation
         date="2018-2021"
         title="Newcastle University"
-        img="https://lh3.googleusercontent.com/proxy/5EdQsAAdMWcWKIdJU80ixY6Fv_4hoVlkB6SH190b4jZl4KxTHbVonhQ_uN5NCJ8uSUuFdR1jVUWom1ResBJGC31-ocjMaweoPJZZO2WREaLJLgMac2x135qYRtUrdTxRxTgHJTtS5EFm1znA1i9K3dzXuKjvOwTIn4mG53CWSmfBKHSZOnTG"
+        img="/uni.jpeg"
         modules={[
           {
             title: "BSc (Hons) Computer Science",
@@ -60,22 +66,20 @@ const Education = () => {
                   mechanisms.
                 </p>
                 <ul className="list list-disc ml-6 mt-2">
-                  <li>Algorithm Design &amp; Analysis</li>
                   <li>
-                    Programming I and II{" "}
-                    {/* <Badge text="Java" colour="red" className="" /> */}
+                    Algorithm Design &amp; Analysis <JavaBadge />
                   </li>
                   <li>
-                    Game Design
-                    {/* <Badge text="C#" colour="pink" className="" /> */}
+                    Programming I and II <JavaBadge />
                   </li>
                   <li>
-                    Programming for Games{" "}
-                    {/* <Badge text="C++" colour="gray" className="" /> */}
+                    Game Design <CSharpBadge />
                   </li>
                   <li>
-                    Mobile Development
-                    {/* <Badge text="Swift" colour="yellow" className="" /> */}
+                    Programming for Games <CPPBadge />
+                  </li>
+                  <li>
+                    Mobile Development <SwiftBadge />
                   </li>
                 </ul>
               </>
