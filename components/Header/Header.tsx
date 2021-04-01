@@ -18,7 +18,7 @@ const Header = ({ accent }) => {
             previous industry experience and diverse knowledge of multiple
             technology stacks.
           </p>
-          <div className="flex justify-center z-10">
+          {/* <div className="flex justify-center z-10">
             <button
               className={`inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg z-10`}
             >
@@ -27,7 +27,7 @@ const Header = ({ accent }) => {
             <button className="ml-4 inline-flex dark:text-gray-400 text-gray-700 bg-gray-100 dark:bg-gray-800 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 hover:dark:text-white rounded text-lg z-10">
               Blog
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
