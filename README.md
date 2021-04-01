@@ -1,9 +1,9 @@
 ## Hi, I'm Olly.
 
 - ❤️ **Loves** Open Source
+- 👨‍💻 Passionate for security 
 - ✨Currently developing TeenyChef 👩‍🍳
-- 👨‍🎓 Integrated Masters Student at Newcastle University
-- 👨‍💻 Currently studying
+- 👨‍🎓 Final year Student at Newcastle University
 - 🌱 Learning AWS Cloud Development
   - DynamoDB
   - Lambda@Edge 🔥
