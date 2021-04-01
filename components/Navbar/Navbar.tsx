@@ -15,7 +15,7 @@ const Navbar = ({ switchTheme }) => {
 
   return (
     <header className="body-font">
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+      <div className="container mx-auto flex flex-wrap p-5 flex-row md:flex-row items-center">
         <nav className="flex lg:w-2/5 flex-wrap items-center text-base mr-auto">
           <a className="mr-5 hover:text-black hover:dark:text-white z-10 cursor-pointer">
             Projects
