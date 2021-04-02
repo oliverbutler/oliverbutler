@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "projects",
+  "collectionName": "posts",
   "info": {
-    "name": "Project",
+    "name": "Post",
     "description": ""
   },
   "options": {
@@ -11,27 +11,29 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "name": {
+    "title": {
       "type": "string",
-      "required": true
+      "unique": true
+    },
+    "description": {
+      "type": "text"
     },
     "image": {
       "model": "file",
       "via": "related",
       "allowedTypes": [
-        "images"
+        "images",
+        "files",
+        "videos"
       ],
       "plugin": "upload",
-      "required": true
+      "required": false
     },
-    "github_url": {
+    "content": {
+      "type": "richtext"
+    },
+    "slug": {
       "type": "string"
-    },
-    "project_url": {
-      "type": "string"
-    },
-    "description": {
-      "type": "text"
     }
   }
 }
