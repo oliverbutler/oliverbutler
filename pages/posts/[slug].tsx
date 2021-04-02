@@ -1,24 +1,45 @@
-import { PostOrPage } from "@tryghost/content-api";
-import { getPosts, getSinglePost } from "utils/post";
+import { gql } from "@apollo/client";
+import Section from "components/Layout/Section";
+import Heading from "components/Typography/Heading";
+import client from "utils/apollo";
+import Image from "components/Image";
+
+import { PostType } from ".";
 
 type PostProps = {
-  post: PostOrPage;
+  post: PostType;
 };
 
 const Post = ({ post }: PostProps) => {
   return (
-    <div>
-      <h1>{post.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: post.html }} />
-    </div>
+    <Section>
+      <Image
+        image={post.image}
+        alt="blog"
+        blur
+        className="w-full h-60 relative"
+      />
+      <Heading title={post.title} subtitle={post.description} />
+
+      <p>{post.content}</p>
+    </Section>
   );
 };
 
 export async function getStaticPaths() {
-  const posts = await getPosts();
+  const { data } = await client.query({
+    query: gql`
+      query Posts {
+        posts {
+          id
+          slug
+        }
+      }
+    `,
+  });
 
   // Get the paths we want to create based on posts
-  const paths = posts.map((post) => ({
+  const paths = data.posts.map((post) => ({
     params: { slug: post.slug },
   }));
 
@@ -27,16 +48,24 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps = async (context) => {
-  const post = await getSinglePost(context.params.slug);
-
-  if (!post) {
-    return {
-      notFound: true,
-    };
-  }
+  const { data } = await client.query({
+    query: gql`
+      query Post {
+        posts(where: { slug: "better-images-in-strapi-blurhash" }) {
+          title
+          description
+          image {
+            url
+            blurHash
+          }
+          content
+        }
+      }
+    `,
+  });
 
   return {
-    props: { post },
+    props: { post: data.posts[0] },
   };
 };
 
