@@ -5,6 +5,7 @@ import client from "utils/apollo";
 import Image from "components/Image";
 
 import { PostType } from ".";
+import Markdown from "components/Typography/Markdown";
 
 type PostProps = {
   post: PostType;
@@ -17,11 +18,13 @@ const Post = ({ post }: PostProps) => {
         image={post.image}
         alt="blog"
         blur
-        className="w-full h-60 relative"
+        className="w-full h-70 relative"
       />
       <Heading title={post.title} subtitle={post.description} />
 
-      <p>{post.content}</p>
+      <div>
+        <Markdown>{post.content}</Markdown>
+      </div>
     </Section>
   );
 };
