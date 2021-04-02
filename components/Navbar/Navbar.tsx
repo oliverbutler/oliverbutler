@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import React from "react";
 
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 const Navbar = ({ switchTheme }) => {
   // const [colourTheme, setTheme] = useDarkMode();
@@ -17,12 +18,16 @@ const Navbar = ({ switchTheme }) => {
     <header className="body-font">
       <div className="container mx-auto flex flex-wrap p-5 flex-row md:flex-row items-center">
         <nav className="flex lg:w-2/5 flex-wrap items-center text-base mr-auto">
-          <a className="mr-5 hover:text-black hover:dark:text-white z-10 cursor-pointer">
-            Projects
-          </a>
-          <a className="mr-5 hover:text-black hover:dark:text-white z-10 cursor-pointer">
-            Blog
-          </a>
+          <Link href="/">
+            <a className="mr-5 hover:text-black hover:dark:text-white z-10 cursor-pointer">
+              Projects
+            </a>
+          </Link>
+          <Link href="/posts">
+            <a className="mr-5 hover:text-black hover:dark:text-white z-10 cursor-pointer">
+              Blog
+            </a>
+          </Link>
         </nav>
         <div className="lg:w-2/5 inline-flex lg:justify-end ml-5 lg:ml-0">
           <button

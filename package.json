@@ -8,6 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@tryghost/content-api": "^1.5.2",
+    "@types/tryghost__content-api": "^1.3.6",
     "axios": "^0.21.1",
     "framer-motion": "^4.0.3",
     "github-calendar": "^2.2.7",

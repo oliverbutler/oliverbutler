@@ -34,7 +34,7 @@ const IndividualEducation = ({ date, img, title, modules }) => {
               <h2 className="title-font font-medium text-black dark:text-white title-font mb-2">
                 {module.title}
               </h2>
-              <p className="leading-relaxed">{module.text}</p>
+              <div className="leading-relaxed">{module.text}</div>
             </div>
           ))}
         </>

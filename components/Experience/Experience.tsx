@@ -45,10 +45,12 @@ const IndividualExperience = ({
           <h2 className="title-font font-medium text-black dark:text-white title-font mb-2 w-full">
             {role}
           </h2>
-          <p className="leading-relaxed">{text}</p>
+          <div className="leading-relaxed">{text}</div>
           <div className="flex mt-1">
-            {stack.map((tag) => (
-              <div className="mr-2"> {tag} </div>
+            {stack.map((tag, index) => (
+              <div className="mr-2" key={`tag-${index}`}>
+                {tag}
+              </div>
             ))}
           </div>
         </>

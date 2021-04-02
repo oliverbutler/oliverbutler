@@ -45,6 +45,7 @@ const GitHub = ({ github, repos }) => {
               <div
                 className={`p-4 md:w-1/3 w-full z-10 `}
                 onClick={() => window.open(repo.html_url)}
+                key={`repo-${repo.name}`}
               >
                 <div className="flex rounded-lg h-full p-8 flex-col cursor-pointer dark:bg-gray-800 hover:bg-gray-100 bg-opacity-60 dark:bg-opacity-60 dark:hover:bg-opacity-100 border-2 border-gray-200 border-opacity-50 dark:border-opacity-0">
                   <div className="flex items-center mb-3">
