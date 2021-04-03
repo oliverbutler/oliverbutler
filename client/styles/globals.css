@@ -8,24 +8,3 @@ body,
 #App {
   min-height: 100vh !important;
 }
-
-/* #App {
-  min-height: ;
-} */
-
-#App {
-  display: flex;
-  flex-direction: column;
-
-  justify-content: space-between;
-}
-
-/* header {
-  align-self: flex-start;
-}
-
-
-
-footer {
-  align-self: flex-end;
-} */

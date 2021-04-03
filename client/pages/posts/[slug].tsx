@@ -1,75 +1,52 @@
-import { gql } from "@apollo/client";
 import Section from "components/Layout/Section";
-import Heading from "components/Typography/Heading";
-import client from "utils/apollo";
-import Image from "components/Image";
+import Post from "components/Post";
+import { GetStaticPaths, GetStaticProps } from "next";
+import {
+  GET_POST_PATHS,
+  GET_POST_SLUG,
+  PostsQuery,
+} from "components/Post/Post";
 
-import { PostType } from ".";
-import Markdown from "components/Typography/Markdown";
+import React from "react";
+import { addApolloState, initializeApollo } from "utils/apollo";
 
-type PostProps = {
-  post: PostType;
-};
-
-const Post = ({ post }: PostProps) => {
+const IndividualPost = () => {
   return (
     <Section>
-      <Image
-        image={post.image}
-        alt="blog"
-        blur
-        className="w-full h-70 relative"
-      />
-      <Heading title={post.title} subtitle={post.description} />
-
-      <div>
-        <Markdown>{post.content}</Markdown>
-      </div>
+      <Post />
     </Section>
   );
 };
 
-export async function getStaticPaths() {
-  const { data } = await client.query({
-    query: gql`
-      query Posts {
-        posts {
-          id
-          slug
-        }
-      }
-    `,
+// In order to build all the posts at build we *must* first figure out what all
+// of the posts are, as such, we do a query to search through them all
+export const getStaticPaths: GetStaticPaths = async () => {
+  const apolloClient = initializeApollo();
+
+  const { data } = await apolloClient.query<PostsQuery>({
+    query: GET_POST_PATHS,
   });
 
-  // Get the paths we want to create based on posts
-  const paths = data.posts.map((post) => ({
-    params: { slug: post.slug },
-  }));
+  const paths = data.posts.map((post) => ({ params: { slug: post.slug } }));
 
-  // { fallback: false } means posts not found should 404.
   return { paths, fallback: false };
-}
-
-export const getStaticProps = async (context) => {
-  const { data } = await client.query({
-    query: gql`
-      query Post {
-        posts(where: { slug: "better-images-in-strapi-blurhash" }) {
-          title
-          description
-          image {
-            url
-            blurHash
-          }
-          content
-        }
-      }
-    `,
-  });
-
-  return {
-    props: { post: data.posts[0] },
-  };
 };
 
-export default Post;
+// At build time (and max every second) we fetch the data into the apollo cache
+export const getStaticProps: GetStaticProps = async (context) => {
+  const apolloClient = initializeApollo();
+
+  const slug = context.params.slug;
+
+  await apolloClient.query<PostsQuery>({
+    query: GET_POST_SLUG,
+    variables: { slug },
+  });
+
+  return addApolloState(apolloClient, {
+    props: {},
+    revalidate: 1,
+  });
+};
+
+export default IndividualPost;
