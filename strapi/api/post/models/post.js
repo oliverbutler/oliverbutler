@@ -12,7 +12,7 @@ const onSave = (post) => {
   if (post.content) {
     const words = post.content.split(" ").length;
 
-    post.reading_time = words / WORDS_PER_MINUTE;
+    post.readingTime = words / WORDS_PER_MINUTE;
   }
 };
 

@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_display_projects",
+  "info": {
+    "name": "Projects",
+    "icon": "project-diagram"
+  },
+  "options": {},
+  "attributes": {
+    "projects": {
+      "collection": "project"
+    }
+  }
+}

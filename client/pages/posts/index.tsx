@@ -1,13 +1,14 @@
 import React from "react";
 
 import { addApolloState, initializeApollo } from "utils/apollo";
-import PostList, { GET_POSTS } from "components/Post/PostList/PostList";
+import PostList from "components/Post/PostList/PostList";
 import Heading from "components/Typography/Heading";
 import Section from "components/Layout/Section";
 import { PostsQuery } from "components/Post/Post";
 import Header from "components/Header";
 import Title from "components/Layout/Title";
 import { motion } from "framer-motion";
+import { GET_POSTS } from "queries/postQuery";
 
 const Posts = () => {
   return (

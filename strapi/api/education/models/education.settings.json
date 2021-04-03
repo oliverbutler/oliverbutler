@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "posts",
+  "collectionName": "educations",
   "info": {
-    "name": "Post",
+    "name": "Education",
     "description": ""
   },
   "options": {
@@ -11,33 +11,27 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "title": {
+    "name": {
       "type": "string",
-      "unique": true
+      "required": true
     },
-    "description": {
-      "type": "text"
+    "dates": {
+      "type": "string",
+      "required": true
+    },
+    "modules": {
+      "type": "component",
+      "repeatable": true,
+      "component": "education.module"
     },
     "image": {
       "model": "file",
       "via": "related",
       "allowedTypes": [
-        "images",
-        "files",
-        "videos"
+        "images"
       ],
       "plugin": "upload",
       "required": false
-    },
-    "content": {
-      "type": "richtext"
-    },
-    "slug": {
-      "type": "string"
-    },
-    "readingTime": {
-      "type": "float",
-      "default": 0
     }
   }
 }

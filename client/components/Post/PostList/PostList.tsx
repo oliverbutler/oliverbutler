@@ -1,22 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
+import { GET_POSTS } from "queries/postQuery";
 import React from "react";
 import { PostsQuery } from "../Post";
 import PostCard from "../PostCard";
-
-export const GET_POSTS = gql`
-  query Posts {
-    posts {
-      title
-      slug
-      description
-      reading_time
-      image {
-        url
-        blurHash
-      }
-    }
-  }
-`;
 
 const PostList = () => {
   const { error, data } = useQuery<PostsQuery>(GET_POSTS, {

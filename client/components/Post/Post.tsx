@@ -5,53 +5,14 @@ import Title from "components/Layout/Title";
 import Markdown from "components/Typography/Markdown";
 import Image from "components/Image";
 import Section from "components/Layout/Section";
-
-type ImageType = {
-  url: string;
-  blurHash: string;
-};
-
-export type PostType = {
-  title: string;
-  slug: string;
-  description: string;
-  reading_time: number;
-  image: ImageType;
-  content: string;
-};
-
-export type PostsQuery = {
-  posts: [PostType];
-};
-
-export const GET_POST_SLUG = gql`
-  query Posts($slug: String) {
-    posts(where: { slug: $slug }) {
-      title
-      slug
-      description
-      content
-      image {
-        url
-        blurHash
-      }
-    }
-  }
-`;
-
-export const GET_POST_PATHS = gql`
-  query Posts {
-    posts {
-      slug
-    }
-  }
-`;
+import { GET_POST_SLUG } from "queries/postQuery";
+import { PostsBySlug } from "queries/types/PostsBySlug";
 
 const Post = () => {
   const router = useRouter();
   const { slug } = router.query;
 
-  const { error, data } = useQuery<PostsQuery>(GET_POST_SLUG, {
+  const { error, data } = useQuery<PostsBySlug>(GET_POST_SLUG, {
     variables: { slug },
   });
 
@@ -61,13 +22,18 @@ const Post = () => {
 
   return (
     <>
-      <Image
-        image={post.image}
-        alt="blog"
-        blur
-        className="h-64 lg:h-96  w-full relative"
+      <Title
+        title={post.title}
+        subtitle={post.description}
+        image={
+          <Image
+            image={post.image}
+            alt="blog"
+            blur
+            className="h-64 lg:h-96 mb-4 w-2/3 relative"
+          />
+        }
       />
-      <Title title={post.title} subtitle={post.description} />
       <Section>
         <Markdown>{post.content}</Markdown>
       </Section>

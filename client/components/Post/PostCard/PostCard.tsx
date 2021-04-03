@@ -2,13 +2,12 @@ import Card from "components/Layout/Card";
 import Icon from "components/Typography/Icon";
 import Image from "components/Image";
 import React from "react";
-import { PostType } from "../Post";
+import { Post } from "queries/types/Post";
 
-type PostCardProps = {
-  post: PostType;
-};
-
-const PostCard = ({ post }: PostCardProps) => {
+/**
+ * Render a Post within a card.
+ */
+const PostCard = ({ post }: Post) => {
   return (
     <Card
       image={
@@ -27,7 +26,7 @@ const PostCard = ({ post }: PostCardProps) => {
       bottom={[
         <Icon
           icon="hourglass-outline"
-          text={parseInt(post.reading_time.toString()) + " mins"}
+          text={parseInt(post.readingTime.toString()) + " mins"}
         />,
       ]}
     />

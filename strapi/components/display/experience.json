@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_display_experiences",
+  "info": {
+    "name": "Experience",
+    "icon": "laptop-code"
+  },
+  "options": {},
+  "attributes": {
+    "experiences": {
+      "collection": "experience"
+    }
+  }
+}

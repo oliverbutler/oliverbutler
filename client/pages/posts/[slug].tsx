@@ -1,15 +1,13 @@
 import Section from "components/Layout/Section";
 import Post from "components/Post";
 import { GetStaticPaths, GetStaticProps } from "next";
-import {
-  GET_POST_PATHS,
-  GET_POST_SLUG,
-  PostsQuery,
-} from "components/Post/Post";
 
 import React from "react";
 import { addApolloState, initializeApollo } from "utils/apollo";
 import { motion } from "framer-motion";
+import { GET_POST_PATHS, GET_POST_SLUG } from "queries/postQuery";
+import { Posts } from "queries/types/Posts";
+import { PostsBySlug } from "queries/types/PostsBySlug";
 
 const IndividualPost = () => {
   return (
@@ -26,7 +24,7 @@ const IndividualPost = () => {
 export const getStaticPaths: GetStaticPaths = async () => {
   const apolloClient = initializeApollo();
 
-  const { data } = await apolloClient.query<PostsQuery>({
+  const { data } = await apolloClient.query<Posts>({
     query: GET_POST_PATHS,
   });
 
@@ -41,7 +39,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const slug = context.params.slug;
 
-  await apolloClient.query<PostsQuery>({
+  await apolloClient.query<PostsBySlug>({
     query: GET_POST_SLUG,
     variables: { slug },
   });
