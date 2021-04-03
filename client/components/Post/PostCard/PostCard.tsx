@@ -11,12 +11,7 @@ const PostCard = ({ post }: Post) => {
   return (
     <Card
       image={
-        <Image
-          image={post.image}
-          alt="blog"
-          blur
-          className="h-52 w-full relative"
-        />
+        <Image image={post.image} alt="blog" blur className="h-52 w-full" />
       }
       key={`post-${post.slug}`}
       href={`/posts/${post.slug}`}

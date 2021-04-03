@@ -1,13 +1,11 @@
 import { gql, useQuery } from "@apollo/client";
 import { GET_POSTS } from "queries/postQuery";
+import { Posts } from "queries/types/Posts";
 import React from "react";
-import { PostsQuery } from "../Post";
 import PostCard from "../PostCard";
 
 const PostList = () => {
-  const { error, data } = useQuery<PostsQuery>(GET_POSTS, {
-    notifyOnNetworkStatusChange: true,
-  });
+  const { error, data } = useQuery<Posts>(GET_POSTS);
 
   if (error) return <h1>Error Loading Posts</h1>;
 

@@ -1,6 +1,12 @@
 import React from "react";
 
-const Title = ({ title, subtitle, image }) => {
+type TitleProps = {
+  title: string;
+  subtitle?: string;
+  image?: any;
+};
+
+const Title = ({ title, subtitle, image }: TitleProps) => {
   return (
     <section className="body-font w-full">
       <div className="container w-full mx-auto flex px-5 pt-5 items-center justify-center flex-col">

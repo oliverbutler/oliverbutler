@@ -19,6 +19,7 @@ import { default as NextImage } from "next/image";
 
 import styles from "./Image.module.scss";
 import { Blurhash, BlurhashCanvas } from "react-blurhash";
+import classNames from "classnames";
 
 interface StrapiImageProps {
   url: string;
@@ -34,6 +35,7 @@ interface ImageProps {
   alt?: string;
   width?: number;
   height?: number;
+  rounded?: boolean;
 }
 
 /**
@@ -47,6 +49,7 @@ const Image: FC<ImageProps> = ({
   alt,
   width,
   height,
+  rounded = false,
 }) => {
   var imgSrc = process.env.NEXT_PUBLIC_SERVER_URL + src;
   var fixed = false;
@@ -73,7 +76,7 @@ const Image: FC<ImageProps> = ({
   }
 
   return (
-    <div className={className}>
+    <div className={className + " relative"}>
       <div
         className={
           styles.image +
@@ -85,15 +88,27 @@ const Image: FC<ImageProps> = ({
       >
         {blur && (
           <BlurhashCanvas
-            className={styles.blur}
+            className={classNames(styles.blur, { "rounded-full": rounded })}
             hash={image.blurHash}
             punch={1}
+            hidden={fixed}
           />
         )}
         {fixed ? (
-          <NextImage src={imgSrc} width={width} height={height} alt={altText} />
+          <NextImage
+            src={imgSrc}
+            width={width}
+            height={height}
+            alt={altText}
+            className={rounded && "rounded-full"}
+          />
         ) : (
-          <NextImage src={imgSrc} layout="fill" alt={altText} />
+          <NextImage
+            src={imgSrc}
+            layout="fill"
+            alt={altText}
+            className={rounded && "rounded-full"}
+          />
         )}
       </div>
     </div>

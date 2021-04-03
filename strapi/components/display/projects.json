@@ -2,12 +2,19 @@
   "collectionName": "components_display_projects",
   "info": {
     "name": "Projects",
-    "icon": "project-diagram"
+    "icon": "project-diagram",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "projects": {
       "collection": "project"
+    },
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
     }
   }
 }

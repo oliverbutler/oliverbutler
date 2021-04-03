@@ -13,6 +13,19 @@ type CardProps = {
   href?: string;
 };
 
+type LinkWrapperProps = {
+  href: string;
+  children?: any;
+};
+
+const LinkWrapper = ({ href, children }: LinkWrapperProps) => {
+  if (href) {
+    return <Link href={href}>{children}</Link>;
+  } else {
+    return children;
+  }
+};
+
 const Card = ({
   bodyJSX,
   image,
@@ -26,7 +39,7 @@ const Card = ({
 }: CardProps) => {
   return (
     <div className={"p-4 " + className} key={key}>
-      <Link href={href}>
+      <LinkWrapper href={href}>
         <div
           className="h-full border-2 border-gray-200  dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer rounded-lg overflow-hidden flex flex-col"
           onClick={() => {}}
@@ -48,14 +61,15 @@ const Card = ({
             )}
           </div>
           <div className="flex items-center flex-wrap">
-            {bottom.map((icon) => (
-              <div className="text-gray-500 inline-flex items-center  ml-auto leading-none text-md pr-3 pb-3 ">
-                {icon}
-              </div>
-            ))}
+            {bottom &&
+              bottom.map((icon) => (
+                <div className="text-gray-500 inline-flex items-center  ml-auto leading-none text-md pr-3 pb-3 ">
+                  {icon}
+                </div>
+              ))}
           </div>
         </div>
-      </Link>
+      </LinkWrapper>
     </div>
   );
 };

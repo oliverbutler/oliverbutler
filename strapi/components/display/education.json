@@ -2,12 +2,19 @@
   "collectionName": "components_display_educations",
   "info": {
     "name": "Education",
-    "icon": "book-open"
+    "icon": "book-open",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "educations": {
       "collection": "education"
+    },
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
     }
   }
 }
