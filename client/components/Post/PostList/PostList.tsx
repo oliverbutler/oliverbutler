@@ -1,10 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
-import Image from "components/Image";
-import Card from "components/Layout/Card";
-import Icon from "components/Typography/Icon/Icon";
-import Link from "next/link";
 import React from "react";
 import { PostsQuery } from "../Post";
+import PostCard from "../PostCard";
 
 export const GET_POSTS = gql`
   query Posts {
@@ -12,6 +9,7 @@ export const GET_POSTS = gql`
       title
       slug
       description
+      reading_time
       image {
         url
         blurHash
@@ -21,7 +19,7 @@ export const GET_POSTS = gql`
 `;
 
 const PostList = () => {
-  const { loading, error, data } = useQuery<PostsQuery>(GET_POSTS, {
+  const { error, data } = useQuery<PostsQuery>(GET_POSTS, {
     notifyOnNetworkStatusChange: true,
   });
 
@@ -32,22 +30,7 @@ const PostList = () => {
   return (
     <div className="flex flex-wrap -m-4">
       {posts.map((post) => (
-        <Card
-          image={
-            <Image
-              image={post.image}
-              alt="blog"
-              blur
-              className="h-52 w-full relative"
-            />
-          }
-          key={`post-${post.slug}`}
-          href={`/posts/${post.slug}`}
-          tags="TAGS"
-          title={post.title}
-          content={post.description}
-          bottom={[<Icon icon="hourglass-outline" text="5 Mins" />]}
-        />
+        <PostCard post={post} />
       ))}
     </div>
   );

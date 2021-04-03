@@ -22,7 +22,7 @@ const Card = ({
   bottom,
   key,
   href,
-  className = "sm:w-1/2 lg:w-1/3 xl:w-1/4",
+  className = "sm:w-1/2 lg:w-1/3 xl:w-1/4 w-full",
 }: CardProps) => {
   return (
     <div className={"p-4 " + className} key={key}>
@@ -49,7 +49,7 @@ const Card = ({
           </div>
           <div className="flex items-center flex-wrap">
             {bottom.map((icon) => (
-              <div className="text-gray-500 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-md pr-3 py-1 ">
+              <div className="text-gray-500 inline-flex items-center  ml-auto leading-none text-md pr-3 pb-3 ">
                 {icon}
               </div>
             ))}

@@ -9,18 +9,17 @@ import Experience from "components/Experience";
 import Education from "components/Education";
 
 import Skills from "components/Skills/Skills";
+import { motion } from "framer-motion";
 
 export default function Home({ github, repos }) {
-  const [accent, setAccent] = useState("indigo");
-
   return (
-    <>
-      <Header accent={accent} />
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <Header />
       <GitHub github={github} repos={repos} />
       <Skills />
       <Experience />
       <Education />
-    </>
+    </motion.div>
   );
 }
 

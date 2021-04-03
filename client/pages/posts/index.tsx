@@ -5,13 +5,21 @@ import PostList, { GET_POSTS } from "components/Post/PostList/PostList";
 import Heading from "components/Typography/Heading";
 import Section from "components/Layout/Section";
 import { PostsQuery } from "components/Post/Post";
+import Header from "components/Header";
+import Title from "components/Layout/Title";
+import { motion } from "framer-motion";
 
 const Posts = () => {
   return (
-    <Section>
-      <Heading title="Posts" subtitle="My latest blog posts" />
-      <PostList />
-    </Section>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <Title
+        title="Welcome to my Blog"
+        subtitle="Here you will find posts about loads of good stuff. React, Security, Python, and AWS sounds good?"
+      />
+      <Section>
+        <PostList />
+      </Section>
+    </motion.div>
   );
 };
 

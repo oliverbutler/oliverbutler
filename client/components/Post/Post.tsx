@@ -1,6 +1,10 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { useRouter } from "next/router";
+import Title from "components/Layout/Title";
+import Markdown from "components/Typography/Markdown";
+import Image from "components/Image";
+import Section from "components/Layout/Section";
 
 type ImageType = {
   url: string;
@@ -11,6 +15,7 @@ export type PostType = {
   title: string;
   slug: string;
   description: string;
+  reading_time: number;
   image: ImageType;
   content: string;
 };
@@ -25,6 +30,7 @@ export const GET_POST_SLUG = gql`
       title
       slug
       description
+      content
       image {
         url
         blurHash
@@ -54,10 +60,18 @@ const Post = () => {
   const post = data.posts[0];
 
   return (
-    <div>
-      <h1>{post.title}</h1>
-      <p>{post.description}</p>
-    </div>
+    <>
+      <Image
+        image={post.image}
+        alt="blog"
+        blur
+        className="h-64 lg:h-96  w-full relative"
+      />
+      <Title title={post.title} subtitle={post.description} />
+      <Section>
+        <Markdown>{post.content}</Markdown>
+      </Section>
+    </>
   );
 };
 

@@ -1,6 +1,12 @@
+import { motion } from "framer-motion";
+
 export default function Custom500() {
   return (
-    <div className="flex w-full justify-center">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="flex w-full  mt-10 justify-center "
+    >
       <div className="w-1/3">
         <img src="/500.svg" className="w-full mb-4" />
         <p>
@@ -8,6 +14,6 @@ export default function Custom500() {
           into it!
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }

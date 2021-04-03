@@ -9,12 +9,15 @@ import {
 
 import React from "react";
 import { addApolloState, initializeApollo } from "utils/apollo";
+import { motion } from "framer-motion";
 
 const IndividualPost = () => {
   return (
-    <Section>
-      <Post />
-    </Section>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <Section>
+        <Post />
+      </Section>
+    </motion.div>
   );
 };
 

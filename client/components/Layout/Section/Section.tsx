@@ -1,11 +1,14 @@
 import React from "react";
 
-const Section = ({ children }) => {
+type SectionProps = {
+  children: any;
+  id?: string;
+};
+
+const Section = ({ children, id }: SectionProps) => {
   return (
-    <section className="body-font">
-      <div className="container px-5 py-12 mx-auto flex flex-wrap">
-        {children}
-      </div>
+    <section className="body-font" id={id}>
+      <div className="container px-5 py-12 mx-auto">{children}</div>
     </section>
   );
 };

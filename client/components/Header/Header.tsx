@@ -1,6 +1,7 @@
+import Link from "next/link";
 import React from "react";
 
-const Header = ({ accent }) => {
+const Header = () => {
   return (
     <section className="body-font">
       <div className="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
@@ -18,16 +19,18 @@ const Header = ({ accent }) => {
             previous industry experience and diverse knowledge of multiple
             technology stacks.
           </p>
-          {/* <div className="flex justify-center z-10">
-            <button
+          <div className="flex justify-center z-10">
+            <a
               className={`inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg z-10`}
             >
               My Work
-            </button>
-            <button className="ml-4 inline-flex dark:text-gray-400 text-gray-700 bg-gray-100 dark:bg-gray-800 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 hover:dark:text-white rounded text-lg z-10">
-              Blog
-            </button>
-          </div> */}
+            </a>
+            <Link href="/posts">
+              <a className="ml-4 inline-flex dark:text-gray-400 text-gray-700 bg-gray-100 dark:bg-gray-800 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 hover:dark:text-white rounded text-lg z-10">
+                Blog
+              </a>
+            </Link>
+          </div>
         </div>
       </div>
     </section>
