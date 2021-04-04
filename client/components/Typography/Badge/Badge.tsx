@@ -7,9 +7,9 @@ type RenderBadgeProps = {
 export const RenderBadge = ({ name }: RenderBadgeProps) => {
   switch (name) {
     case "React":
-      return <Badge tag="React" bg="bg-yellow-200" text="text-yellow-700" />;
+      return <Badge tag="React" bg="bg-blue-200" text="text-blue-700" />;
     case "Next":
-      return <Badge tag="Next.js" bg="bg-yellow-200" text="text-yellow-700" />;
+      return <Badge tag="Next.js" bg="bg-blue-200" text="text-blue-700" />;
     case "TypeScript":
       return <Badge tag="TypeScript" bg="bg-green-200" text="text-green-700" />;
     case "Node":

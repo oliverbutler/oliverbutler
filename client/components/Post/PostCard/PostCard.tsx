@@ -10,6 +10,8 @@ type PostCardProps = {
   ExteriorDiv?: any;
 };
 const PostCard = ({ post, ExteriorDiv }: PostCardProps) => {
+  const date = new Date(Date.parse(post.createdAt));
+
   return (
     <Card
       ExteriorDiv={ExteriorDiv}
@@ -20,6 +22,7 @@ const PostCard = ({ post, ExteriorDiv }: PostCardProps) => {
       href={`/posts/${post.slug}`}
       tags={post.tags}
       title={post.title}
+      topText={date.toLocaleDateString("en-GB")}
       content={post.description}
       bottom={[
         <Icon

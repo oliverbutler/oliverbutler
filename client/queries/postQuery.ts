@@ -7,6 +7,9 @@ export const GET_POSTS = gql`
       slug
       description
       readingTime
+      updatedAt
+      createdAt
+      published_at
       tags {
         name
       }
@@ -25,6 +28,9 @@ export const GET_POST = gql`
       slug
       description
       readingTime
+      updatedAt
+      createdAt
+      published_at
       tags {
         name
       }
@@ -43,6 +49,9 @@ export const GET_POST_SLUG = gql`
       slug
       description
       content
+      updatedAt
+      createdAt
+      published_at
       tags {
         name
       }
