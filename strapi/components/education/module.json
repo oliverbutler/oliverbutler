@@ -15,6 +15,9 @@
     },
     "grades": {
       "type": "string"
+    },
+    "tags": {
+      "collection": "tag"
     }
   }
 }

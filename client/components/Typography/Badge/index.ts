@@ -1,3 +1,3 @@
-import Badge from "./Badge";
+import { RenderBadge } from "./Badge";
 
-export default Badge;
+export { RenderBadge };

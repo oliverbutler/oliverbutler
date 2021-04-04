@@ -7,6 +7,9 @@ export const GET_POSTS = gql`
       slug
       description
       readingTime
+      tags {
+        name
+      }
       image {
         url
         blurHash
@@ -22,6 +25,9 @@ export const GET_POST = gql`
       slug
       description
       readingTime
+      tags {
+        name
+      }
       image {
         url
         blurHash
@@ -37,6 +43,9 @@ export const GET_POST_SLUG = gql`
       slug
       description
       content
+      tags {
+        name
+      }
       image {
         url
         blurHash

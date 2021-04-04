@@ -13,6 +13,11 @@ export interface HomePage_homePage_image {
   blurHash: string | null;
 }
 
+export interface HomePage_homePage_dynamicContent_ComponentDisplayProjects_projects_tags {
+  __typename: "Tag";
+  name: string | null;
+}
+
 export interface HomePage_homePage_dynamicContent_ComponentDisplayProjects_projects_image {
   __typename: "UploadFile";
   url: string;
@@ -25,6 +30,7 @@ export interface HomePage_homePage_dynamicContent_ComponentDisplayProjects_proje
   description: string | null;
   project_url: string | null;
   github_url: string | null;
+  tags: (HomePage_homePage_dynamicContent_ComponentDisplayProjects_projects_tags | null)[] | null;
   image: HomePage_homePage_dynamicContent_ComponentDisplayProjects_projects_image | null;
 }
 
@@ -33,6 +39,11 @@ export interface HomePage_homePage_dynamicContent_ComponentDisplayProjects {
   title: string | null;
   subtitle: string | null;
   projects: (HomePage_homePage_dynamicContent_ComponentDisplayProjects_projects | null)[] | null;
+}
+
+export interface HomePage_homePage_dynamicContent_ComponentDisplayExperience_experiences_tags {
+  __typename: "Tag";
+  name: string | null;
 }
 
 export interface HomePage_homePage_dynamicContent_ComponentDisplayExperience_experiences_image {
@@ -47,6 +58,7 @@ export interface HomePage_homePage_dynamicContent_ComponentDisplayExperience_exp
   role: string | null;
   dates: string | null;
   type: string | null;
+  tags: (HomePage_homePage_dynamicContent_ComponentDisplayExperience_experiences_tags | null)[] | null;
   description: string | null;
   image: HomePage_homePage_dynamicContent_ComponentDisplayExperience_experiences_image | null;
 }
@@ -64,11 +76,17 @@ export interface HomePage_homePage_dynamicContent_ComponentDisplayEducation_educ
   blurHash: string | null;
 }
 
+export interface HomePage_homePage_dynamicContent_ComponentDisplayEducation_educations_modules_tags {
+  __typename: "Tag";
+  name: string | null;
+}
+
 export interface HomePage_homePage_dynamicContent_ComponentDisplayEducation_educations_modules {
   __typename: "ComponentEducationModule";
   title: string | null;
   description: string | null;
   grades: string | null;
+  tags: (HomePage_homePage_dynamicContent_ComponentDisplayEducation_educations_modules_tags | null)[] | null;
 }
 
 export interface HomePage_homePage_dynamicContent_ComponentDisplayEducation_educations {

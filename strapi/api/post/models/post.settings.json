@@ -38,6 +38,9 @@
     "readingTime": {
       "type": "float",
       "default": 0
+    },
+    "tags": {
+      "collection": "tag"
     }
   }
 }

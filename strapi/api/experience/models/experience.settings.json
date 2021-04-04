@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "experiences",
   "info": {
-    "name": "Experience"
+    "name": "Experience",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -33,6 +34,9 @@
       ],
       "plugin": "upload",
       "required": false
+    },
+    "tags": {
+      "collection": "tag"
     }
   }
 }

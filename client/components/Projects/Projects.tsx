@@ -22,7 +22,7 @@ const Projects = ({ projects }: ProjectsProps) => {
                 <Image image={project.image} blur className="h-52 w-full" />
               }
               title={project.name}
-              tags={project.project_url}
+              tags={project.tags}
               content={project.description}
             />
           ))}

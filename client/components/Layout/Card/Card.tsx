@@ -1,11 +1,15 @@
+import { RenderBadge } from "components/Typography/Badge/Badge";
 import Link from "next/link";
-import React from "react";
+import { HomePage_homePage_dynamicContent_ComponentDisplayProjects_projects_tags } from "queries/types/HomePage";
+import React, { useState } from "react";
 
 type CardProps = {
   bodyJSX?: any;
+  bottomJSX?: any;
+  ExteriorDiv?: any;
   bottom?: [any];
   image?: any;
-  tags?: string;
+  tags?: HomePage_homePage_dynamicContent_ComponentDisplayProjects_projects_tags[];
   title?: string;
   content?: string;
   className?: string;
@@ -26,8 +30,26 @@ const LinkWrapper = ({ href, children }: LinkWrapperProps) => {
   }
 };
 
+const MotionWrapper = ({ ExteriorDiv, children, className, key }) => {
+  if (ExteriorDiv) {
+    return (
+      <ExteriorDiv className={"p-4 " + className} key={key}>
+        {children}
+      </ExteriorDiv>
+    );
+  } else {
+    return (
+      <div className={"p-4 " + className} key={key}>
+        {children}
+      </div>
+    );
+  }
+};
+
 const Card = ({
   bodyJSX,
+  bottomJSX,
+  ExteriorDiv,
   image,
   tags,
   title,
@@ -38,7 +60,7 @@ const Card = ({
   className = "sm:w-1/2 lg:w-1/3 xl:w-1/4 w-full",
 }: CardProps) => {
   return (
-    <div className={"p-4 " + className} key={key}>
+    <MotionWrapper ExteriorDiv={ExteriorDiv} className={className} key={key}>
       <LinkWrapper href={href}>
         <div
           className="h-full border-2 border-gray-200  dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer rounded-lg overflow-hidden flex flex-col"
@@ -50,15 +72,21 @@ const Card = ({
               bodyJSX
             ) : (
               <>
-                <h2 className="tracking-widest text-xs title-font font-medium text-gray-500 mb-1">
-                  {tags}
-                </h2>
                 <h1 className="title-font text-lg font-medium dark:text-white text-black mb-3">
                   {title}
                 </h1>
+                <div className="mb-1 -mt-1 flex flex-row">
+                  {tags &&
+                    tags.map((tag, index) => (
+                      <div className="mr-2" key={`tag-${tag.name}-${index}`}>
+                        <RenderBadge name={tag.name} />
+                      </div>
+                    ))}
+                </div>
                 <p className="leading-relaxed mb-auto">{content}</p>
               </>
             )}
+            {bottomJSX && bottomJSX}
           </div>
           <div className="flex items-center flex-wrap">
             {bottom &&
@@ -70,7 +98,7 @@ const Card = ({
           </div>
         </div>
       </LinkWrapper>
-    </div>
+    </MotionWrapper>
   );
 };
 

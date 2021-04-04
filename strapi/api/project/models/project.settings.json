@@ -32,6 +32,9 @@
     },
     "description": {
       "type": "text"
+    },
+    "tags": {
+      "collection": "tag"
     }
   }
 }

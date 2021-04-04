@@ -3,19 +3,22 @@ import Icon from "components/Typography/Icon";
 import Image from "components/Image";
 import React from "react";
 import { Post } from "queries/types/Post";
+import { Posts_posts } from "queries/types/Posts";
 
-/**
- * Render a Post within a card.
- */
-const PostCard = ({ post }: Post) => {
+type PostCardProps = {
+  post: Posts_posts;
+  ExteriorDiv?: any;
+};
+const PostCard = ({ post, ExteriorDiv }: PostCardProps) => {
   return (
     <Card
+      ExteriorDiv={ExteriorDiv}
       image={
         <Image image={post.image} alt="blog" blur className="h-52 w-full" />
       }
       key={`post-${post.slug}`}
       href={`/posts/${post.slug}`}
-      tags="TAGS"
+      tags={post.tags}
       title={post.title}
       content={post.description}
       bottom={[

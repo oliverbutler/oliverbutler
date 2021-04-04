@@ -1,12 +1,6 @@
 import Section from "components/Layout/Section";
 import Split from "components/Layout/Split";
-import Badge from "components/Typography/Badge";
-import {
-  JavaBadge,
-  NodeBadge,
-  PythonBadge,
-  ReactBadge,
-} from "components/Typography/Badge/Badge";
+import { RenderBadge } from "components/Typography/Badge/Badge";
 import Heading from "components/Typography/Heading";
 import {
   HomePage_homePage_dynamicContent_ComponentDisplayExperience,
@@ -51,11 +45,11 @@ const IndividualExperience = ({ experience }: IndividualExperienceProps) => {
           </h2>
           <div className="leading-relaxed">{experience.description}</div>
           <div className="flex mt-1">
-            {/* {stack.map((tag, index) => (
+            {experience.tags.map((tag, index) => (
               <div className="mr-2" key={`tag-${index}`}>
-                {tag}
+                <RenderBadge name={tag.name} />
               </div>
-            ))} */}
+            ))}
           </div>
         </>
       }

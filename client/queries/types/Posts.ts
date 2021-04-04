@@ -7,6 +7,11 @@
 // GraphQL query operation: Posts
 // ====================================================
 
+export interface Posts_posts_tags {
+  __typename: "Tag";
+  name: string | null;
+}
+
 export interface Posts_posts_image {
   __typename: "UploadFile";
   url: string;
@@ -19,6 +24,7 @@ export interface Posts_posts {
   slug: string | null;
   description: string | null;
   readingTime: number | null;
+  tags: (Posts_posts_tags | null)[] | null;
   image: Posts_posts_image | null;
 }
 

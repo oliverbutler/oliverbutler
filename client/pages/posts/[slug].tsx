@@ -11,7 +11,7 @@ import { PostsBySlug } from "queries/types/PostsBySlug";
 
 const IndividualPost = () => {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+    <motion.div initial={{ opacity: 0, y: 150 }} animate={{ opacity: 1, y: 0 }}>
       <Section>
         <Post />
       </Section>

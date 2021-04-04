@@ -19,6 +19,9 @@ export const GET_HOME = gql`
             description
             project_url
             github_url
+            tags {
+              name
+            }
             image {
               url
               blurHash
@@ -34,6 +37,9 @@ export const GET_HOME = gql`
             role
             dates
             type
+            tags {
+              name
+            }
             description
             image {
               url
@@ -56,6 +62,9 @@ export const GET_HOME = gql`
               title
               description
               grades
+              tags {
+                name
+              }
             }
           }
         }

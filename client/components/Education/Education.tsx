@@ -7,6 +7,7 @@ import React from "react";
 import Image from "components/Image";
 import Section from "components/Layout/Section";
 import Heading from "components/Typography/Heading";
+import { RenderBadge } from "components/Typography/Badge/Badge";
 
 type IndividualEducationProps = {
   education: HomePage_homePage_dynamicContent_ComponentDisplayEducation_educations;
@@ -41,6 +42,11 @@ const IndividualEducation = ({ education }: IndividualEducationProps) => {
                 {module.title}
               </h2>
               <div className="leading-relaxed">{module.description}</div>
+              {module.tags.map((tag, index) => (
+                <div className="mr-2" key={`tag-${index}`}>
+                  <RenderBadge name={tag.name} />
+                </div>
+              ))}
             </div>
           ))}
         </>
