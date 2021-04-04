@@ -24,6 +24,9 @@ export interface Post_post {
   slug: string | null;
   description: string | null;
   readingTime: number | null;
+  updatedAt: any;
+  createdAt: any;
+  published_at: any | null;
   tags: (Post_post_tags | null)[] | null;
   image: Post_post_image | null;
 }

@@ -24,6 +24,9 @@ export interface PostsBySlug_posts {
   slug: string | null;
   description: string | null;
   content: string | null;
+  updatedAt: any;
+  createdAt: any;
+  published_at: any | null;
   tags: (PostsBySlug_posts_tags | null)[] | null;
   image: PostsBySlug_posts_image | null;
 }
