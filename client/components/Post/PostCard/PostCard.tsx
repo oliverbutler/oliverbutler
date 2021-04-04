@@ -2,7 +2,6 @@ import Card from "components/Layout/Card";
 import Icon from "components/Typography/Icon";
 import Image from "components/Image";
 import React from "react";
-import { Post } from "queries/types/Post";
 import { Posts_posts } from "queries/types/Posts";
 
 type PostCardProps = {
