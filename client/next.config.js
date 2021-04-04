@@ -3,6 +3,6 @@ module.exports = {
     webpack5: false,
   },
   images: {
-    domains: ["localhost", "oliverbutler.uk"],
+    domains: ["localhost", "oliverbutler.s3.eu-west-2.amazonaws.com"],
   },
 };

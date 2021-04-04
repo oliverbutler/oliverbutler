@@ -51,14 +51,14 @@ const Image: FC<ImageProps> = ({
   height,
   rounded = false,
 }) => {
-  var imgSrc = process.env.NEXT_PUBLIC_SERVER_URL + src;
+  var imgSrc = src;
   var fixed = false;
   var altText = alt;
 
   // if (image && image.alternativeText) altText = image.alternativeText;
 
   if (image) {
-    imgSrc = process.env.NEXT_PUBLIC_SERVER_URL + image.url;
+    imgSrc = image.url;
   }
 
   if (width && height) fixed = true;
