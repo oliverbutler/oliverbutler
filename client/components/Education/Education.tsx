@@ -38,9 +38,10 @@ const IndividualEducation = ({ education }: IndividualEducationProps) => {
         <>
           {education.modules.map((module) => (
             <div className="mb-4" key={"module-" + module.title}>
-              <h2 className="title-font font-medium text-black dark:text-white title-font mb-2">
+              <h2 className="title-font font-medium text-black dark:text-white title-font">
                 {module.title}
               </h2>
+              <h2 className="text-gray-500 text-sm mb-1">{module.grades}</h2>
               <div className="leading-relaxed">{module.description}</div>
               {module.tags.map((tag, index) => (
                 <div className="mr-2" key={`tag-${index}`}>
