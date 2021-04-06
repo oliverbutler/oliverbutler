@@ -2,12 +2,12 @@ FROM strapi/base
 
 WORKDIR /my-path
 
-COPY ./package.json ./
-COPY ./yarn.lock ./
+COPY ./strapi/package.json ./
+COPY ./strapi/yarn.lock ./
 
 RUN yarn install
 
-COPY . .
+COPY ./strapi .
 
 ENV NODE_ENV production
 
