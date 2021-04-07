@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_display_texts",
+  "info": {
+    "name": "Text",
+    "icon": "align-justify",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "markdown": {
+      "type": "richtext"
+    }
+  }
+}

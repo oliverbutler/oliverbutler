@@ -11,6 +11,9 @@ export interface HomePage_homePage_image {
   __typename: "UploadFile";
   url: string;
   blurHash: string | null;
+  width: number | null;
+  height: number | null;
+  alternativeText: string | null;
 }
 
 export interface HomePage_homePage_dynamicContent_ComponentDisplayProjects_projects_tags {
@@ -22,6 +25,9 @@ export interface HomePage_homePage_dynamicContent_ComponentDisplayProjects_proje
   __typename: "UploadFile";
   url: string;
   blurHash: string | null;
+  width: number | null;
+  height: number | null;
+  alternativeText: string | null;
 }
 
 export interface HomePage_homePage_dynamicContent_ComponentDisplayProjects_projects {
@@ -50,6 +56,9 @@ export interface HomePage_homePage_dynamicContent_ComponentDisplayExperience_exp
   __typename: "UploadFile";
   url: string;
   blurHash: string | null;
+  width: number | null;
+  height: number | null;
+  alternativeText: string | null;
 }
 
 export interface HomePage_homePage_dynamicContent_ComponentDisplayExperience_experiences {
@@ -74,6 +83,9 @@ export interface HomePage_homePage_dynamicContent_ComponentDisplayEducation_educ
   __typename: "UploadFile";
   url: string;
   blurHash: string | null;
+  width: number | null;
+  height: number | null;
+  alternativeText: string | null;
 }
 
 export interface HomePage_homePage_dynamicContent_ComponentDisplayEducation_educations_modules_tags {

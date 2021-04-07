@@ -1,7 +1,7 @@
 import Card from "components/Layout/Card";
 import Section from "components/Layout/Section";
 import Heading from "components/Typography/Heading";
-import Image from "components/Image";
+import BlurImage from "components/BlurImage";
 import { HomePage_homePage_dynamicContent_ComponentDisplayProjects } from "queries/types/HomePage";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -39,7 +39,7 @@ const Projects = ({ projects }: ProjectsProps) => {
           {projects.projects.map((project) => (
             <Card
               image={
-                <Image image={project.image} blur className="h-52 w-full" />
+                <BlurImage image={project.image} className="h-64 w-full" />
               }
               title={project.name}
               tags={project.tags}

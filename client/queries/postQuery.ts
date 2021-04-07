@@ -16,6 +16,9 @@ export const GET_POSTS = gql`
       image {
         url
         blurHash
+        width
+        height
+        alternativeText
       }
     }
   }
@@ -37,6 +40,9 @@ export const GET_POST = gql`
       image {
         url
         blurHash
+        width
+        height
+        alternativeText
       }
     }
   }
@@ -48,16 +54,38 @@ export const GET_POST_SLUG = gql`
       title
       slug
       description
-      content
       updatedAt
       createdAt
       published_at
+      dynamic {
+        __typename
+        ... on ComponentDisplayText {
+          markdown
+        }
+
+        ... on ComponentDisplayCode {
+          code
+        }
+
+        ... on ComponentDisplayImage {
+          images {
+            url
+            blurHash
+            width
+            height
+            alternativeText
+          }
+        }
+      }
       tags {
         name
       }
       image {
         url
         blurHash
+        width
+        height
+        alternativeText
       }
     }
   }

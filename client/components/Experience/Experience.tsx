@@ -9,6 +9,7 @@ import {
 import React from "react";
 
 import Image from "components/Image";
+import BlurImage from "components/BlurImage";
 
 type IndividualExperienceProps = {
   experience: HomePage_homePage_dynamicContent_ComponentDisplayExperience_experiences;
@@ -19,12 +20,11 @@ const IndividualExperience = ({ experience }: IndividualExperienceProps) => {
     <Split
       left={
         <>
-          <Image
-            className="inline object-cover w-16 h-16 rounded-full mr-4"
+          <BlurImage
+            className="w-16 h-16 mr-4"
             image={experience.image}
-            blur
             rounded
-          ></Image>
+          />
           <div className="flex flex-col">
             <span className="font-semibold title-font text-black dark:text-white">
               {experience.company}

@@ -1,6 +1,6 @@
 import Card from "components/Layout/Card";
 import Icon from "components/Typography/Icon";
-import Image from "components/Image";
+import BlurImage from "components/BlurImage";
 import React from "react";
 import { Posts_posts } from "queries/types/Posts";
 
@@ -14,9 +14,7 @@ const PostCard = ({ post, ExteriorDiv }: PostCardProps) => {
   return (
     <Card
       ExteriorDiv={ExteriorDiv}
-      image={
-        <Image image={post.image} alt="blog" blur className="h-52 w-full" />
-      }
+      image={<BlurImage image={post.image} className="h-64 w-full" />}
       key={`post-${post.slug}`}
       href={`/posts/${post.slug}`}
       tags={post.tags}

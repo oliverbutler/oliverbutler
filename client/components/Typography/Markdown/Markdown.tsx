@@ -1,11 +1,7 @@
 import React from "react";
-import ReactMarkdown from "react-markdown";
-import Image from "components/Image";
+import ReactMarkdown, { ReactMarkdownProps } from "react-markdown";
 
 const renderers = {
-  image: ({ src, alt }) => {
-    return <div className="">{/* <Image src={src} alt={alt} /> */}</div>;
-  },
   heading: ({ children, level }) => {
     switch (level) {
       case 1:

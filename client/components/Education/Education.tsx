@@ -8,6 +8,7 @@ import Image from "components/Image";
 import Section from "components/Layout/Section";
 import Heading from "components/Typography/Heading";
 import { RenderBadge } from "components/Typography/Badge/Badge";
+import BlurImage from "components/BlurImage";
 
 type IndividualEducationProps = {
   education: HomePage_homePage_dynamicContent_ComponentDisplayEducation_educations;
@@ -18,10 +19,9 @@ const IndividualEducation = ({ education }: IndividualEducationProps) => {
     <Split
       left={
         <>
-          <Image
-            className="inline object-cover w-16 h-16 rounded-full mr-4 "
+          <BlurImage
+            className="w-16 h-16 mr-4 "
             image={education.image}
-            blur
             rounded
           />
           <div className="flex flex-col">

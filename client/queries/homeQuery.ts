@@ -8,6 +8,9 @@ export const GET_HOME = gql`
       image {
         url
         blurHash
+        width
+        height
+        alternativeText
       }
       dynamicContent {
         ... on ComponentDisplayProjects {
@@ -25,6 +28,9 @@ export const GET_HOME = gql`
             image {
               url
               blurHash
+              width
+              height
+              alternativeText
             }
           }
         }
@@ -44,6 +50,9 @@ export const GET_HOME = gql`
             image {
               url
               blurHash
+              width
+              height
+              alternativeText
             }
           }
         }
@@ -57,6 +66,9 @@ export const GET_HOME = gql`
             image {
               url
               blurHash
+              width
+              height
+              alternativeText
             }
             modules {
               title

@@ -1,3 +1,4 @@
+import BlurImage from "components/BlurImage";
 import Image from "components/Image";
 import Link from "next/link";
 import { HomePage_homePage_image } from "queries/types/HomePage";
@@ -13,13 +14,7 @@ const Header = ({ title, subtitle, image }: HeaderProps) => {
   return (
     <section className="body-font">
       <div className="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
-        <Image
-          className="inline object-cover w-32 h-32 mb-4  z-10 relative"
-          alt="olivers photo"
-          image={image}
-          rounded
-          blur
-        />
+        <BlurImage className="w-32 h-32 mb-4 z-10" image={image} rounded />
         <div className="text-center lg:w-2/3 w-full">
           <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium dark:text-white text-black z-10">
             {title}

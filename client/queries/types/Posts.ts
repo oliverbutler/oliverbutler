@@ -16,6 +16,9 @@ export interface Posts_posts_image {
   __typename: "UploadFile";
   url: string;
   blurHash: string | null;
+  width: number | null;
+  height: number | null;
+  alternativeText: string | null;
 }
 
 export interface Posts_posts {

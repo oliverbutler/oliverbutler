@@ -29,9 +29,6 @@
       "plugin": "upload",
       "required": false
     },
-    "content": {
-      "type": "richtext"
-    },
     "slug": {
       "type": "string"
     },
@@ -41,6 +38,14 @@
     },
     "tags": {
       "collection": "tag"
+    },
+    "dynamic": {
+      "type": "dynamiczone",
+      "components": [
+        "display.text",
+        "display.code",
+        "display.image"
+      ]
     }
   }
 }

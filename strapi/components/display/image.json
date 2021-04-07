@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_display_images",
+  "info": {
+    "name": "Image",
+    "icon": "photo-video"
+  },
+  "options": {},
+  "attributes": {
+    "images": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    }
+  }
+}

@@ -3,10 +3,35 @@ import React from "react";
 import { useRouter } from "next/router";
 import Title from "components/Layout/Title";
 import Markdown from "components/Typography/Markdown";
-import Image from "components/Image";
+import BlurImage from "components/BlurImage";
+import NextImage from "next/image";
 import Section from "components/Layout/Section";
 import { GET_POST_SLUG } from "queries/postQuery";
-import { PostsBySlug } from "queries/types/PostsBySlug";
+import {
+  PostsBySlug,
+  PostsBySlug_posts_dynamic,
+} from "queries/types/PostsBySlug";
+import Image from "components/Image";
+
+const renderDynamicContent = (dynamic: PostsBySlug_posts_dynamic) => {
+  switch (dynamic.__typename) {
+    case "ComponentDisplayText":
+      return <Markdown>{dynamic.markdown}</Markdown>;
+    case "ComponentDisplayImage":
+      return (
+        <>
+          {dynamic.images.map((image, index) => (
+            <BlurImage
+              key={`image-${index}`}
+              image={image}
+              className="my-6 w-full md:w-2/3 mx-auto"
+              fixed
+            />
+          ))}
+        </>
+      );
+  }
+};
 
 const Post = () => {
   const router = useRouter();
@@ -26,16 +51,15 @@ const Post = () => {
         title={post.title}
         subtitle={post.description}
         image={
-          <Image
+          <BlurImage
             image={post.image}
-            alt="blog"
-            blur
-            className="h-64 lg:h-96 mb-4 w-2/3 relative"
+            className="mb-4 -mt-4 w-full md:w-2/3"
+            fixed
           />
         }
       />
       <Section>
-        <Markdown>{post.content}</Markdown>
+        {post.dynamic.map((dynamic) => renderDynamicContent(dynamic))}
       </Section>
     </>
   );
