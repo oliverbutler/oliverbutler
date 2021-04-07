@@ -19,6 +19,7 @@ export interface Post_post_image {
   width: number | null;
   height: number | null;
   alternativeText: string | null;
+  caption: string | null;
 }
 
 export interface Post_post {

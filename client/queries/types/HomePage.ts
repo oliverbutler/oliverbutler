@@ -14,6 +14,7 @@ export interface HomePage_homePage_image {
   width: number | null;
   height: number | null;
   alternativeText: string | null;
+  caption: string | null;
 }
 
 export interface HomePage_homePage_dynamicContent_ComponentDisplayProjects_projects_tags {
@@ -28,6 +29,7 @@ export interface HomePage_homePage_dynamicContent_ComponentDisplayProjects_proje
   width: number | null;
   height: number | null;
   alternativeText: string | null;
+  caption: string | null;
 }
 
 export interface HomePage_homePage_dynamicContent_ComponentDisplayProjects_projects {
@@ -59,6 +61,7 @@ export interface HomePage_homePage_dynamicContent_ComponentDisplayExperience_exp
   width: number | null;
   height: number | null;
   alternativeText: string | null;
+  caption: string | null;
 }
 
 export interface HomePage_homePage_dynamicContent_ComponentDisplayExperience_experiences {
@@ -86,6 +89,7 @@ export interface HomePage_homePage_dynamicContent_ComponentDisplayEducation_educ
   width: number | null;
   height: number | null;
   alternativeText: string | null;
+  caption: string | null;
 }
 
 export interface HomePage_homePage_dynamicContent_ComponentDisplayEducation_educations_modules_tags {

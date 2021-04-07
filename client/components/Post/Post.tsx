@@ -11,25 +11,45 @@ import {
   PostsBySlug,
   PostsBySlug_posts_dynamic,
 } from "queries/types/PostsBySlug";
+import { SectionWidth } from "components/Layout/Section/Section";
+import { motion, useViewportScroll } from "framer-motion";
 
 const renderDynamicContent = (dynamic: PostsBySlug_posts_dynamic) => {
   switch (dynamic.__typename) {
     case "ComponentDisplayText":
-      return <Markdown>{dynamic.markdown}</Markdown>;
+      return (
+        <Section width={SectionWidth.Narrow}>
+          <Markdown>{dynamic.markdown}</Markdown>
+        </Section>
+      );
     case "ComponentDisplayImage":
       return (
         <>
           {dynamic.images.map((image, index) => (
-            <BlurImage
-              key={`image-${index}`}
-              image={image}
-              className="my-6 w-full md:w-2/3 mx-auto"
-              fixed
-            />
+            <Section width={SectionWidth.Narrow} noPadding>
+              <BlurImage
+                key={`image-${index}`}
+                image={image}
+                className="my-6 w-full mx-auto"
+                fixed
+                caption
+              />
+            </Section>
           ))}
         </>
       );
   }
+};
+
+const ScrollIndicator = () => {
+  const { scrollYProgress } = useViewportScroll();
+
+  return (
+    <motion.path
+      d="M 0, 20 a 20, 20 0 1,0 40,0 a 20, 20 0 1,0 -40,0"
+      style={{ pathLength: scrollYProgress }}
+    />
+  );
 };
 
 const Post = () => {
@@ -44,22 +64,23 @@ const Post = () => {
 
   const post = data.posts[0];
 
+  const date = new Date(Date.parse(post.createdAt));
+
   return (
     <>
-      <Title
-        title={post.title}
-        subtitle={post.description}
-        image={
-          <BlurImage
-            image={post.image}
-            className="mb-4 -mt-4 w-full md:w-2/3"
-            fixed
-          />
-        }
-      />
-      <Section>
-        {post.dynamic.map((dynamic) => renderDynamicContent(dynamic))}
+      <ScrollIndicator />
+      <Section width={SectionWidth.Narrow}>
+        <h1 className="title-font text-3xl mb-4 font-medium dark:text-white text-black z-10">
+          {post.title}
+        </h1>
+        <p className="leading-relaxed mb-2">{post.description}</p>
+        <p className="leading-relaxed mb-8">
+          {date.toLocaleDateString("en-GB")} -{" "}
+          {parseInt(post.readingTime.toString())} Min Read
+        </p>
+        <BlurImage image={post.image} className="w-full" fixed caption />
       </Section>
+      {post.dynamic.map((dynamic) => renderDynamicContent(dynamic))}
     </>
   );
 };

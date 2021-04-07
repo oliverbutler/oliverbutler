@@ -19,6 +19,7 @@ export const GET_POSTS = gql`
         width
         height
         alternativeText
+        caption
       }
     }
   }
@@ -43,6 +44,7 @@ export const GET_POST = gql`
         width
         height
         alternativeText
+        caption
       }
     }
   }
@@ -57,6 +59,7 @@ export const GET_POST_SLUG = gql`
       updatedAt
       createdAt
       published_at
+      readingTime
       dynamic {
         __typename
         ... on ComponentDisplayText {
@@ -74,6 +77,7 @@ export const GET_POST_SLUG = gql`
             width
             height
             alternativeText
+            caption
           }
         }
       }
@@ -86,6 +90,7 @@ export const GET_POST_SLUG = gql`
         width
         height
         alternativeText
+        caption
       }
     }
   }

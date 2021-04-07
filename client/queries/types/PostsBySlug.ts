@@ -24,6 +24,7 @@ export interface PostsBySlug_posts_dynamic_ComponentDisplayImage_images {
   width: number | null;
   height: number | null;
   alternativeText: string | null;
+  caption: string | null;
 }
 
 export interface PostsBySlug_posts_dynamic_ComponentDisplayImage {
@@ -45,6 +46,7 @@ export interface PostsBySlug_posts_image {
   width: number | null;
   height: number | null;
   alternativeText: string | null;
+  caption: string | null;
 }
 
 export interface PostsBySlug_posts {
@@ -55,6 +57,7 @@ export interface PostsBySlug_posts {
   updatedAt: any;
   createdAt: any;
   published_at: any | null;
+  readingTime: number | null;
   dynamic: (PostsBySlug_posts_dynamic | null)[] | null;
   tags: (PostsBySlug_posts_tags | null)[] | null;
   image: PostsBySlug_posts_image | null;

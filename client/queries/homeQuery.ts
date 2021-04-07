@@ -11,6 +11,7 @@ export const GET_HOME = gql`
         width
         height
         alternativeText
+        caption
       }
       dynamicContent {
         ... on ComponentDisplayProjects {
@@ -31,6 +32,7 @@ export const GET_HOME = gql`
               width
               height
               alternativeText
+              caption
             }
           }
         }
@@ -53,6 +55,7 @@ export const GET_HOME = gql`
               width
               height
               alternativeText
+              caption
             }
           }
         }
@@ -69,6 +72,7 @@ export const GET_HOME = gql`
               width
               height
               alternativeText
+              caption
             }
             modules {
               title
