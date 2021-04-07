@@ -9,11 +9,14 @@ const onSave = (post) => {
     post.slug = slugify(post.title.toLowerCase());
   }
 
-  if (post.content) {
-    const words = post.content.split(" ").length;
+  var wordTotal = 0;
 
-    post.readingTime = words / WORDS_PER_MINUTE;
-  }
+  post.dynamic.forEach((section) => {
+    if (section.__component == "display.text")
+      wordTotal += section.markdown.split(" ").length;
+  });
+
+  post.readingTime = wordTotal / WORDS_PER_MINUTE;
 };
 
 module.exports = {
