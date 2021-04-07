@@ -44,7 +44,8 @@
       "components": [
         "display.text",
         "display.code",
-        "display.image"
+        "display.image",
+        "display.gif"
       ]
     }
   }

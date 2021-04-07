@@ -32,7 +32,13 @@ export interface PostsBySlug_posts_dynamic_ComponentDisplayImage {
   images: (PostsBySlug_posts_dynamic_ComponentDisplayImage_images | null)[] | null;
 }
 
-export type PostsBySlug_posts_dynamic = PostsBySlug_posts_dynamic_ComponentDisplayText | PostsBySlug_posts_dynamic_ComponentDisplayCode | PostsBySlug_posts_dynamic_ComponentDisplayImage;
+export interface PostsBySlug_posts_dynamic_ComponentDisplayGif {
+  __typename: "ComponentDisplayGif";
+  url: string | null;
+  caption: string | null;
+}
+
+export type PostsBySlug_posts_dynamic = PostsBySlug_posts_dynamic_ComponentDisplayText | PostsBySlug_posts_dynamic_ComponentDisplayCode | PostsBySlug_posts_dynamic_ComponentDisplayImage | PostsBySlug_posts_dynamic_ComponentDisplayGif;
 
 export interface PostsBySlug_posts_tags {
   __typename: "Tag";

@@ -65,11 +65,9 @@ export const GET_POST_SLUG = gql`
         ... on ComponentDisplayText {
           markdown
         }
-
         ... on ComponentDisplayCode {
           code
         }
-
         ... on ComponentDisplayImage {
           images {
             url
@@ -79,6 +77,10 @@ export const GET_POST_SLUG = gql`
             alternativeText
             caption
           }
+        }
+        ... on ComponentDisplayGif {
+          url
+          caption
         }
       }
       tags {

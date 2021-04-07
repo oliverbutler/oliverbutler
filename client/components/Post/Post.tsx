@@ -1,10 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { useRouter } from "next/router";
-import Title from "components/Layout/Title";
 import Markdown from "components/Typography/Markdown";
 import BlurImage from "components/BlurImage";
-import NextImage from "next/image";
 import Section from "components/Layout/Section";
 import { GET_POST_SLUG } from "queries/postQuery";
 import {
@@ -12,7 +10,6 @@ import {
   PostsBySlug_posts_dynamic,
 } from "queries/types/PostsBySlug";
 import { SectionWidth } from "components/Layout/Section/Section";
-import { motion, useViewportScroll } from "framer-motion";
 
 const renderDynamicContent = (dynamic: PostsBySlug_posts_dynamic) => {
   switch (dynamic.__typename) {
@@ -37,6 +34,15 @@ const renderDynamicContent = (dynamic: PostsBySlug_posts_dynamic) => {
             </Section>
           ))}
         </>
+      );
+    case "ComponentDisplayGif":
+      return (
+        <Section width={SectionWidth.Narrow}>
+          <img src={dynamic.url}></img>
+          {dynamic.caption && (
+            <p className="text-center mt-1">{dynamic.caption}</p>
+          )}
+        </Section>
       );
   }
 };
