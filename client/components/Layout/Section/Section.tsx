@@ -23,7 +23,7 @@ const Section = ({
     <section className="body-font" id={id}>
       {width == SectionWidth.Normal ? (
         <div
-          className={classNames("container px-5 mx-auto", {
+          className={classNames("container px-3 mx-auto", {
             "py-12": !noPadding,
           })}
         >
@@ -31,7 +31,7 @@ const Section = ({
         </div>
       ) : (
         <div
-          className={classNames("container px-5 md:px-0 max-w-2xl mx-auto", {
+          className={classNames("container px-3 md:px-0 max-w-3xl mx-auto", {
             "py-12": !noPadding,
           })}
         >

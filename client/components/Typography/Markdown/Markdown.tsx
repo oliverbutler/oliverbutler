@@ -9,14 +9,17 @@ import styles from "./Markdown.module.scss";
 const renderers = {
   link: (props) => {
     return (
-      <a className="text-indigo-600 underline" href={props.href}>
+      <a
+        className="text-indigo-600 dark:text-indigo-400 underline"
+        href={props.href}
+      >
         {props.children}
       </a>
     );
   },
   inlineCode: (props) => {
     return (
-      <code className="dark:bg-gray-800 bg-gray-100 px-1 text-indigo-400 dark:text-indigo-800">
+      <code className="dark:bg-gray-800 bg-gray-100 px-1 text-indigo-400 dark:text-indigo-300 break-all">
         {props.value}
       </code>
     );

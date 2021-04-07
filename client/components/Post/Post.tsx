@@ -38,7 +38,7 @@ const renderDynamicContent = (dynamic: PostsBySlug_posts_dynamic) => {
     case "ComponentDisplayGif":
       return (
         <Section width={SectionWidth.Narrow}>
-          <img src={dynamic.url}></img>
+          <img src={dynamic.url} className="mx-auto"></img>
           {dynamic.caption && (
             <p className="text-center mt-1">{dynamic.caption}</p>
           )}
@@ -69,8 +69,8 @@ const Post = () => {
         </h1>
         <p className="leading-relaxed mb-2">{post.description}</p>
         <p className="leading-relaxed mb-8">
-          {date.toLocaleDateString("en-GB")} -{" "}
-          {parseInt(post.readingTime.toString())} Min Read
+          {date.toDateString()} - {parseInt(post.readingTime.toString())} Min
+          Read
         </p>
         <BlurImage image={post.image} className="w-full" fixed caption />
       </Section>

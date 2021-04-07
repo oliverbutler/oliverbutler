@@ -33,8 +33,8 @@ const BlurImage: FC<ImageProps> = ({
   caption,
 }) => {
   return (
-    <>
-      <div className={classNames(className, "py-0 my-0", styles.container)}>
+    <div className={classNames(className)}>
+      <div className={classNames(styles.container)}>
         <BlurhashCanvas
           className={classNames(className, styles.blur, {
             "rounded-full": rounded,
@@ -60,7 +60,7 @@ const BlurImage: FC<ImageProps> = ({
         )}
       </div>
       {caption && <p className="text-center mt-1">{image.caption}</p>}
-    </>
+    </div>
   );
 };
 
