@@ -1,7 +1,30 @@
 import React from "react";
 import ReactMarkdown, { ReactMarkdownProps } from "react-markdown";
 
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+
 const renderers = {
+  inlineCode: (props) => {
+    return (
+      <code className="dark:bg-gray-800 bg-gray-100 px-1 text-indigo-400 dark:text-indigo-800">
+        {props.value}
+      </code>
+    );
+  },
+  code: (props) => {
+    return (
+      <pre className="my-4 ">
+        <SyntaxHighlighter
+          language={props.language}
+          style={dracula}
+          showLineNumbers
+        >
+          {props.value}
+        </SyntaxHighlighter>
+      </pre>
+    );
+  },
   heading: ({ children, level }) => {
     switch (level) {
       case 1:
