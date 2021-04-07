@@ -41,17 +41,6 @@ const renderDynamicContent = (dynamic: PostsBySlug_posts_dynamic) => {
   }
 };
 
-const ScrollIndicator = () => {
-  const { scrollYProgress } = useViewportScroll();
-
-  return (
-    <motion.path
-      d="M 0, 20 a 20, 20 0 1,0 40,0 a 20, 20 0 1,0 -40,0"
-      style={{ pathLength: scrollYProgress }}
-    />
-  );
-};
-
 const Post = () => {
   const router = useRouter();
   const { slug } = router.query;
@@ -68,8 +57,7 @@ const Post = () => {
 
   return (
     <>
-      <ScrollIndicator />
-      <Section width={SectionWidth.Narrow}>
+      <Section width={SectionWidth.Narrow} noPadding>
         <h1 className="title-font text-3xl mb-4 font-medium dark:text-white text-black z-10">
           {post.title}
         </h1>

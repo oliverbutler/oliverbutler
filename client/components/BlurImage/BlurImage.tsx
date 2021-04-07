@@ -22,22 +22,6 @@ interface ImageProps {
   caption?: boolean;
 }
 
-type CaptionWrapperProps = {
-  caption: string;
-  children?: any;
-};
-
-const CaptionWrapper = ({ caption, children }: CaptionWrapperProps) => {
-  if (caption) {
-    return (
-      <>
-        {children}
-        <p className="text-center mt-2">{caption}</p>
-      </>
-    );
-  } else return children;
-};
-
 /**
  * Improves next/image through allowing you to not specify width or height,
  */
@@ -49,8 +33,8 @@ const BlurImage: FC<ImageProps> = ({
   caption,
 }) => {
   return (
-    <CaptionWrapper caption={caption ? image.caption : ""}>
-      <div className={classNames(className, styles.container)}>
+    <div className={classNames(className)}>
+      <div className={classNames(styles.container)}>
         <BlurhashCanvas
           className={classNames(styles.blur, {
             "rounded-full": rounded,
@@ -63,20 +47,20 @@ const BlurImage: FC<ImageProps> = ({
             src={image.url}
             width={image.width}
             height={image.height}
-            // layout="fill"
             alt={image.alternativeText}
-            className={classNames(className, { "rounded-full": rounded })}
+            className={classNames({ "rounded-full": rounded })}
           />
         ) : (
           <NextImage
             src={image.url}
             layout="fill"
             alt={image.alternativeText}
-            className={classNames(className, { "rounded-full": rounded })}
+            className={classNames({ "rounded-full": rounded })}
           />
         )}
       </div>
-    </CaptionWrapper>
+      {caption && <p className="text-center mt-1">{image.caption}</p>}
+    </div>
   );
 };
 
