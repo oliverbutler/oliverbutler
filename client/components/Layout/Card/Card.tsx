@@ -86,10 +86,13 @@ const Card = ({
                 <h1 className="title-font text-lg font-medium dark:text-white text-black mb-3">
                   {title}
                 </h1>
-                <div className="mb-1 -mt-1 flex flex-row">
+                <div className="mb-1 -mt-1 flex flex-row flex-wrap">
                   {tags &&
                     tags.map((tag, index) => (
-                      <div className="mr-2" key={`tag-${tag.name}-${index}`}>
+                      <div
+                        className="mr-2 mt-2"
+                        key={`tag-${tag.name}-${index}`}
+                      >
                         <RenderBadge name={tag.name} />
                       </div>
                     ))}

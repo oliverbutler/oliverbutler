@@ -34,9 +34,9 @@ const BlurImage: FC<ImageProps> = ({
 }) => {
   return (
     <div className={classNames(className)}>
-      <div className={classNames(styles.container)}>
+      <div className={classNames(className, styles.container)}>
         <BlurhashCanvas
-          className={classNames(styles.blur, {
+          className={classNames(className, styles.blur, {
             "rounded-full": rounded,
           })}
           hash={image.blurHash}
@@ -48,14 +48,14 @@ const BlurImage: FC<ImageProps> = ({
             width={image.width}
             height={image.height}
             alt={image.alternativeText}
-            className={classNames({ "rounded-full": rounded })}
+            className={classNames(className, { "rounded-full": rounded })}
           />
         ) : (
           <NextImage
             src={image.url}
             layout="fill"
             alt={image.alternativeText}
-            className={classNames({ "rounded-full": rounded })}
+            className={classNames(className, { "rounded-full": rounded })}
           />
         )}
       </div>

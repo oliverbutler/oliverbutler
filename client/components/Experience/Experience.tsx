@@ -43,9 +43,9 @@ const IndividualExperience = ({ experience }: IndividualExperienceProps) => {
             {experience.role}
           </h2>
           <div className="leading-relaxed">{experience.description}</div>
-          <div className="flex mt-1">
+          <div className="flex mt-1 flex-wrap">
             {experience.tags.map((tag, index) => (
-              <div className="mr-2" key={`tag-${index}`}>
+              <div className="mr-2 mb-2" key={`tag-${index}`}>
                 <RenderBadge name={tag.name} />
               </div>
             ))}

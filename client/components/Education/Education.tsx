@@ -8,6 +8,7 @@ import Section from "components/Layout/Section";
 import Heading from "components/Typography/Heading";
 import { RenderBadge } from "components/Typography/Badge/Badge";
 import BlurImage from "components/BlurImage";
+import { SectionWidth } from "components/Layout/Section/Section";
 
 type IndividualEducationProps = {
   education: HomePage_homePage_dynamicContent_ComponentDisplayEducation_educations;
@@ -42,11 +43,13 @@ const IndividualEducation = ({ education }: IndividualEducationProps) => {
               </h2>
               <h2 className="text-gray-500 text-sm mb-1">{module.grades}</h2>
               <div className="leading-relaxed">{module.description}</div>
-              {module.tags.map((tag, index) => (
-                <div className="mr-2" key={`tag-${index}`}>
-                  <RenderBadge name={tag.name} />
-                </div>
-              ))}
+              <div className="mt-1 flex flex-row flex-wrap">
+                {module.tags.map((tag, index) => (
+                  <div className="mr-2 mb-2" key={`tag-${index}`}>
+                    <RenderBadge name={tag.name} />
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </>
