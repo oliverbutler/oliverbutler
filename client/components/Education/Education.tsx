@@ -4,7 +4,6 @@ import {
   HomePage_homePage_dynamicContent_ComponentDisplayEducation_educations,
 } from "queries/types/HomePage";
 import React from "react";
-import Image from "components/Image";
 import Section from "components/Layout/Section";
 import Heading from "components/Typography/Heading";
 import { RenderBadge } from "components/Typography/Badge/Badge";

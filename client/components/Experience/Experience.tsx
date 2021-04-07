@@ -8,7 +8,6 @@ import {
 } from "queries/types/HomePage";
 import React from "react";
 
-import Image from "components/Image";
 import BlurImage from "components/BlurImage";
 
 type IndividualExperienceProps = {

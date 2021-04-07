@@ -1,5 +1,4 @@
 import BlurImage from "components/BlurImage";
-import Image from "components/Image";
 import Link from "next/link";
 import { HomePage_homePage_image } from "queries/types/HomePage";
 import React from "react";

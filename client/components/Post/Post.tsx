@@ -11,7 +11,6 @@ import {
   PostsBySlug,
   PostsBySlug_posts_dynamic,
 } from "queries/types/PostsBySlug";
-import Image from "components/Image";
 
 const renderDynamicContent = (dynamic: PostsBySlug_posts_dynamic) => {
   switch (dynamic.__typename) {
