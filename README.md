@@ -1,9 +1,6 @@
 ## Hi, I'm Olly.
 
+- 👨‍💻 Full Stack Web Developer @ T##### UK <- ⏰
 - ❤️ **Loves** Open Source
-- 👨‍💻 Passionate for security 
-- ✨Currently developing TeenyChef 👩‍🍳
-- 👨‍🎓 Final year Student at Newcastle University
-- 🌱 Learning AWS Cloud Development
-  - DynamoDB
-  - Lambda@Edge 🔥
+- 🚀 Founder and developer of [Slate](https://github.com/slate-labs)
+- 🌱 Currently learning Go!
