@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { AnimatePresence, AnimationProps, motion } from "framer-motion";
 import { GET_POSTS } from "queries/postQuery";
-import { Posts } from "queries/types/Posts";
+import { Posts, Posts_posts } from "queries/types/Posts";
 import React, { useState } from "react";
 import PostCard from "../PostCard";
 

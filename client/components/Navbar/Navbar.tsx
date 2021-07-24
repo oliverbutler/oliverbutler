@@ -5,8 +5,6 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 
 const Navbar = ({ switchTheme }) => {
-  // const [colourTheme, setTheme] = useDarkMode();
-
   const { theme, setTheme } = useTheme();
 
   const variants = {
