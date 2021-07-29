@@ -30,7 +30,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const paths = data.posts.map((post) => ({ params: { slug: post.slug } }));
 
-  return { paths, fallback: false };
+  return { paths, fallback: "blocking" };
 };
 
 // At build time (and max every second) we fetch the data into the apollo cache
@@ -46,7 +46,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return addApolloState(apolloClient, {
     props: {},
-    revalidate: 1,
+    revalidate: 5,
   });
 };
 
