@@ -11,10 +11,12 @@ const onSave = (post) => {
 
   var wordTotal = 0;
 
-  post.dynamic.forEach((section) => {
-    if (section.__component == "display.text")
-      wordTotal += section.markdown.split(" ").length;
-  });
+  if (post.dynamic) {
+    post.dynamic.forEach((section) => {
+      if (section.__component == "display.text")
+        wordTotal += section.markdown.split(" ").length;
+    });
+  }
 
   post.readingTime = wordTotal / WORDS_PER_MINUTE;
 };
