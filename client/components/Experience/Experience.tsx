@@ -62,8 +62,6 @@ type ExperienceProps = {
 };
 
 const Experience = ({ experience }: ExperienceProps) => {
-  console.log(experience);
-
   const experiences = [...experience.experiences];
 
   return (
