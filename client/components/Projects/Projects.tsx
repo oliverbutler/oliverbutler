@@ -35,9 +35,10 @@ const Projects = ({ projects }: ProjectsProps) => {
       <div className="flex flex-wrap -mx-4 mt-auto mb-auto">
         <Heading title={projects.title} subtitle={projects.subtitle} />
 
-        <div className="flex flex-wrap w-full">
+        <div className="flex flex-wrap w-full justify-center">
           {projects.projects.map((project) => (
             <Card
+              key={project.name}
               image={
                 <BlurImage image={project.image} className="h-64 w-full" />
               }

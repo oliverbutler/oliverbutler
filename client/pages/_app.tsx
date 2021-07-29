@@ -6,7 +6,6 @@ import { ThemeProvider, useTheme } from "next-themes";
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "utils/apollo";
 
-import Particles from "components/Particles";
 import Footer from "components/Footer";
 import Navbar from "components/Navbar";
 import { useEffect, useState } from "react";
@@ -45,7 +44,6 @@ const Wrapper = ({ children }) => {
       <div id="Content" className="flex-grow ">
         {children}
       </div>
-      {/* <Particles /> */}
       <Footer />
     </div>
   );

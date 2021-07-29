@@ -17,6 +17,7 @@ type IndividualExperienceProps = {
 const IndividualExperience = ({ experience }: IndividualExperienceProps) => {
   return (
     <Split
+      key={experience.company}
       left={
         <>
           <BlurImage
@@ -61,13 +62,19 @@ type ExperienceProps = {
 };
 
 const Experience = ({ experience }: ExperienceProps) => {
+  console.log(experience);
+
+  const experiences = [...experience.experiences];
+
   return (
     <Section>
       <Heading title={experience.title} subtitle={experience.subtitle} />
 
-      {experience.experiences.map((e) => (
-        <IndividualExperience experience={e} />
-      ))}
+      {experiences
+        .sort((a, b) => b.order - a.order)
+        .map((e) => (
+          <IndividualExperience experience={e} />
+        ))}
     </Section>
   );
 };

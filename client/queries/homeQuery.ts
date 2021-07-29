@@ -41,6 +41,7 @@ export const GET_HOME = gql`
           title
           subtitle
           experiences {
+            order
             company
             role
             dates

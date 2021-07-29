@@ -66,6 +66,7 @@ export interface HomePage_homePage_dynamicContent_ComponentDisplayExperience_exp
 
 export interface HomePage_homePage_dynamicContent_ComponentDisplayExperience_experiences {
   __typename: "Experience";
+  order: number;
   company: string | null;
   role: string | null;
   dates: string | null;

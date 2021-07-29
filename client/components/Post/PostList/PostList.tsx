@@ -41,10 +41,10 @@ const PostList = () => {
   };
 
   return (
-    <div className="flex flex-wrap -m-4">
-      {posts.map(
-        (post) => true && <PostCard post={post} ExteriorDiv={ExteriorDiv} />
-      )}
+    <div className="flex flex-wrap -m-4 justify-center">
+      {posts.map((post) => (
+        <PostCard key={post.slug} post={post} ExteriorDiv={ExteriorDiv} />
+      ))}
     </div>
   );
 };

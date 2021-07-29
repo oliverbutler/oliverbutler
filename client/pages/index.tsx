@@ -19,13 +19,13 @@ import Projects from "components/Projects";
 const renderDynamicContent = (dynamic: HomePage_homePage_dynamicContent) => {
   switch (dynamic.__typename) {
     case "ComponentDisplayEducation":
-      return <Education education={dynamic} />;
+      return <Education key={dynamic.title} education={dynamic} />;
 
     case "ComponentDisplayExperience":
-      return <Experience experience={dynamic} />;
+      return <Experience key={dynamic.title} experience={dynamic} />;
 
     case "ComponentDisplayProjects":
-      return <Projects projects={dynamic} />;
+      return <Projects key={dynamic.title} projects={dynamic} />;
   }
 };
 

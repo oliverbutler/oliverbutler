@@ -4,18 +4,18 @@ import BlurImage from "components/BlurImage";
 import React from "react";
 import { Posts_posts } from "queries/types/Posts";
 
-type PostCardProps = {
+type Props = {
   post: Posts_posts;
   ExteriorDiv?: any;
 };
-const PostCard = ({ post, ExteriorDiv }: PostCardProps) => {
+const PostCard: React.FunctionComponent<Props> = ({ post, ExteriorDiv }) => {
   const date = new Date(Date.parse(post.createdAt));
 
   return (
     <Card
+      key={post.slug}
       ExteriorDiv={ExteriorDiv}
       image={<BlurImage image={post.image} className="h-64 w-full" />}
-      key={`post-${post.slug}`}
       href={`/posts/${post.slug}`}
       tags={post.tags}
       title={post.title}
