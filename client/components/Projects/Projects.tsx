@@ -1,14 +1,8 @@
 import Card from "components/Layout/Card";
 import Section from "components/Layout/Section";
 import Heading from "components/Typography/Heading";
-import BlurImage from "components/BlurImage";
-import { HomePage_homePage_dynamicContent_ComponentDisplayProjects } from "queries/types/HomePage";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-
-type ProjectsProps = {
-  projects: HomePage_homePage_dynamicContent_ComponentDisplayProjects;
-};
 
 type MotionComponentProps = {
   children: any;
@@ -29,7 +23,7 @@ const ExteriorDiv = ({ className, key, children }: MotionComponentProps) => {
   );
 };
 
-const Projects = ({ projects }: ProjectsProps) => {
+const Projects = ({ projects }) => {
   return (
     <Section>
       <div className="flex flex-wrap -mx-4 mt-auto mb-auto">
@@ -39,9 +33,9 @@ const Projects = ({ projects }: ProjectsProps) => {
           {projects.projects.map((project) => (
             <Card
               key={project.name}
-              image={
-                <BlurImage image={project.image} className="h-64 w-full" />
-              }
+              // image={
+              //   <BlurImage image={project.image} className="h-64 w-full" />
+              // }
               title={project.name}
               tags={project.tags}
               contentJSX={

@@ -1,81 +1,38 @@
-import { gql, useQuery } from "@apollo/client";
 import React from "react";
-import { useRouter } from "next/router";
-import Markdown from "components/Typography/Markdown";
-import BlurImage from "components/BlurImage";
 import Section from "components/Layout/Section";
-import { GET_POST_SLUG } from "queries/postQuery";
-import {
-  PostsBySlug,
-  PostsBySlug_posts_dynamic,
-} from "queries/types/PostsBySlug";
-import { SectionWidth } from "components/Layout/Section/Section";
+import Image from "next/image";
+import { motion } from "framer-motion";
+interface PostProps {
+  meta: {
+    title: string;
+    description: string;
+    date: string;
+    image: string;
+    readTime: number;
+  };
+}
 
-const renderDynamicContent = (dynamic: PostsBySlug_posts_dynamic) => {
-  switch (dynamic.__typename) {
-    case "ComponentDisplayText":
-      return (
-        <Section width={SectionWidth.Narrow}>
-          <Markdown>{dynamic.markdown}</Markdown>
-        </Section>
-      );
-    case "ComponentDisplayImage":
-      return (
-        <>
-          {dynamic.images.map((image, index) => (
-            <Section width={SectionWidth.Narrow} noPadding>
-              <BlurImage
-                key={`image-${index}`}
-                image={image}
-                className="my-6 w-full mx-auto"
-                fixed
-                caption
-              />
-            </Section>
-          ))}
-        </>
-      );
-    case "ComponentDisplayGif":
-      return (
-        <Section width={SectionWidth.Narrow}>
-          <img src={dynamic.url} className="mx-auto"></img>
-          {dynamic.caption && (
-            <p className="text-center mt-1">{dynamic.caption}</p>
-          )}
-        </Section>
-      );
-  }
-};
-
-const Post = () => {
-  const router = useRouter();
-  const { slug } = router.query;
-
-  const { error, data } = useQuery<PostsBySlug>(GET_POST_SLUG, {
-    variables: { slug },
-  });
-
-  if (error) return <h1>Error Loading Posts </h1>;
-
-  const post = data.posts[0];
-
-  const date = new Date(Date.parse(post.createdAt));
-
+const Post: React.FunctionComponent<PostProps> = ({ meta, children }) => {
   return (
-    <>
-      <Section width={SectionWidth.Narrow} noPadding>
+    <motion.div initial={{ opacity: 0, y: 150 }} animate={{ opacity: 1, y: 0 }}>
+      <Section className="prose mx-auto my-10">
         <h1 className="title-font text-3xl mb-4 font-medium dark:text-white text-black z-10">
-          {post.title}
+          {meta.title}
         </h1>
-        <p className="leading-relaxed mb-2">{post.description}</p>
+        <p className="leading-relaxed mb-2">{meta.description}</p>
         <p className="leading-relaxed mb-8">
-          {date.toDateString()} - {parseInt(post.readingTime.toString())} Min
-          Read
+          {meta.date} - {meta.readTime} Min Read
         </p>
-        <BlurImage image={post.image} className="w-full" fixed caption />
+        <Image
+          src={meta.image}
+          className="w-full"
+          alt="Post Thumbnail"
+          width={1000}
+          height={600}
+        />
       </Section>
-      {post.dynamic.map((dynamic) => renderDynamicContent(dynamic))}
-    </>
+      <Section className="prose mx-auto">{children}</Section>
+    </motion.div>
   );
 };
 

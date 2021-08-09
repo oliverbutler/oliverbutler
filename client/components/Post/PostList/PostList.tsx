@@ -1,17 +1,10 @@
 import { gql, useQuery } from "@apollo/client";
 import { AnimatePresence, AnimationProps, motion } from "framer-motion";
-import { GET_POSTS } from "queries/postQuery";
 import { Posts, Posts_posts } from "queries/types/Posts";
 import React, { useState } from "react";
 import PostCard from "../PostCard";
 
 const PostList = () => {
-  const { error, data } = useQuery<Posts>(GET_POSTS);
-
-  if (error) return <h1>Error Loading Posts</h1>;
-
-  const { posts } = data;
-
   type MotionComponentProps = {
     children: any;
     className: any;
@@ -42,9 +35,9 @@ const PostList = () => {
 
   return (
     <div className="flex flex-wrap -m-4 justify-center">
-      {posts.map((post) => (
+      {/* {[].map((post) => (
         <PostCard key={post.slug} post={post} ExteriorDiv={ExteriorDiv} />
-      ))}
+      ))} */}
     </div>
   );
 };

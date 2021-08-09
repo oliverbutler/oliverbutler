@@ -3,9 +3,6 @@ import "../styles/globals.css";
 import Head from "next/head";
 import { ThemeProvider, useTheme } from "next-themes";
 
-import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "utils/apollo";
-
 import Footer from "components/Footer";
 import Navbar from "components/Navbar";
 import { useEffect, useState } from "react";
@@ -50,14 +47,11 @@ const Wrapper = ({ children }) => {
 };
 
 const MyApp = ({ Component, pageProps }) => {
-  const apolloClient = useApollo(pageProps);
   return (
     <ThemeProvider attribute="class">
-      <ApolloProvider client={apolloClient}>
-        <Wrapper>
-          <Component {...pageProps} />
-        </Wrapper>
-      </ApolloProvider>
+      <Wrapper>
+        <Component {...pageProps} />
+      </Wrapper>
     </ThemeProvider>
   );
 };
