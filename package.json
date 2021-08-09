@@ -1,36 +1,32 @@
 {
   "name": "oliverbutler",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3005",
     "build": "next build",
-    "start": "next start",
-    "codegen": "yarn run apollo client:codegen --target typescript --endpoint=http://localhost:1337/graphql --outputFlat --includes \"{pages,components,queries}/**\" --excludes \"queries/types\" queries/types"
+    "start": "next start"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.13",
+    "@apollo/client": "^3.4.5",
     "@mdx-js/loader": "^1.6.22",
     "@next/mdx": "^11.0.1",
     "@tailwindcss/typography": "^0.4.1",
     "axios": "^0.21.1",
-    "blurhash": "^1.1.3",
     "classnames": "^2.3.1",
-    "deepmerge": "^4.2.2",
     "framer-motion": "^4.0.3",
-    "github-calendar": "^2.2.7",
     "next": "^11.0.1",
-    "next-themes": "^0.0.14",
+    "next-themes": "^0.0.15",
     "prismjs": "^1.23.0",
     "react": "^17.0.2",
     "react-blurhash": "^0.1.3",
     "react-dom": "^17.0.2",
-    "react-markdown": "^5.0.3",
+    "react-markdown": "^6.0.3",
     "react-syntax-highlighter": "^15.4.3",
-    "sass": "^1.32.8"
+    "sass": "^1.37.5"
   },
   "devDependencies": {
-    "@types/react": "^17.0.3",
+    "@types/react": "^17.0.16",
     "autoprefixer": "^10.2.5",
     "postcss": "^8.2.8",
     "tailwindcss": "^2.0.4",

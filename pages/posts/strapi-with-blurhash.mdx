@@ -1,0 +1,213 @@
+import Post from "components/Post/Post";
+import Section from "components/Layout/Section/Section";
+import Image from "next/image";
+
+export const meta = {
+  id: 0,
+  title: "Better Images in Strapi with BlurHash",
+  description:
+    "Do you like waiting for images to load? Me neither - Today were going to look at how to implement BlurHash in Strapi.",
+  image: "/strapi-blurhash.jpg",
+  date: "April 06, 2021",
+  tags: ["strapi"],
+  readTime: 10,
+};
+
+export default ({ children }) => <Post meta={meta}>{children}</Post>;
+
+## What is Strapi
+
+Strapi is an open-source headless CMS written with React and Node.js. By Default Strapi provides the ability to resize a photo to multiple different sizes, to allow for placeholders, thumbnails etc.
+
+Strapi also allows you to override any of the core functions or plugins, this allows us to override any part we want - For example, to add Blurhash integration.
+
+## What is BlurHash
+
+Blurhash takes an image and returns a short string which represents its placeholder. Rather than sending a client a URL of an image placeholder that you may blur, instead you return the placeholder directly in the reply.
+
+This means that rather than a client rendering black boxes whilst waiting for an image to appear, they can instantaneously display a low resolution (but visually appealing) placeholder.
+
+Below we can see an example of using [blurha.sh](https://blurha.sh) to convert an example image to a BlurHash string.
+
+<Image src="/blurhash-hlf.png" width={1000} height={600} />
+
+## What we are trying to achieve
+
+Below is the structure of an image within Strapi, what we want to add to each image is the `blurHash` variable. This will allow us to render the BlurHash in our front-end application.
+
+```javascript
+{
+  "_id": "606ba7fdb8c966001589e29c",
+  "name": "strapi-blurhash.jpg",
+  "alternativeText": "",
+  "caption": "Strapi Logo",
+  "hash": "strapi_blurhash_56388c4e39",
+  "ext": ".jpg",
+  "mime": "image/jpeg",
+  "size": 22.49,
+  "width": 1920,
+  "height": 1080,
+  "blurHash": "U6BL~rj^04V}xvj@Rla#02ju~movDsWDx?oc",
+  "url": "https://oliverbutler.s3.eu-west-2.amazonaws.com/strapi_blurhash_56388c4e39.jpg",
+  "formats": {
+    ...
+  },
+  "provider": "aws-s3"
+}
+```
+
+## How do I do this?
+
+There has been several questions on Stack Overflow regarding how to use Blurhash with Strapi. I managed to find a working solution by overriding the Upload Extension, allowing a custom blurHash field that can be set upon image upload.
+
+### Update the model of a file
+
+We need to add the file`./extensions/upload/models/File.settings.json`. This file contains the default definition of a File, we have added the lines 23-26 for a blurHash string.
+
+```javascript
+{
+  "info": {
+    "name": "file",
+    "description": ""
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "configurable": false,
+      "required": true
+    },
+    "alternativeText": {
+      "type": "string",
+      "configurable": false
+    },
+    "caption": {
+      "type": "string",
+      "configurable": false
+    },
+    "blurHash": {
+      "type": "string",
+      "configurable": false
+    },
+    "width": {
+      "type": "integer",
+      "configurable": false
+    },
+    "height": {
+      "type": "integer",
+      "configurable": false
+    },
+    "formats": {
+      "type": "json",
+      "configurable": false
+    },
+    "hash": {
+      "type": "string",
+      "configurable": false,
+      "required": true
+    },
+    "ext": {
+      "type": "string",
+      "configurable": false
+    },
+    "mime": {
+      "type": "string",
+      "configurable": false,
+      "required": true
+    },
+    "size": {
+      "type": "decimal",
+      "configurable": false,
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "configurable": false,
+      "required": true
+    },
+    "previewUrl": {
+      "type": "string",
+      "configurable": false
+    },
+    "provider": {
+      "type": "string",
+      "configurable": false,
+      "required": true
+    },
+    "provider_metadata": {
+      "type": "json",
+      "configurable": false
+    },
+    "related": {
+      "collection": "*",
+      "filter": "field",
+      "configurable": false
+    }
+  }
+}
+```
+
+### Update the Upload Service
+
+We need to add the file`./extensions/upload/services/Upload.js`. The raw file for this can be found at [github.com/strapi](https://github.com/strapi/strapi/blob/e65ad58d2c9a09be9622f8cab5d5f619886d0a8b/packages/strapi-plugin-upload/services/Upload.js#L145).
+
+The specific part of this file we are focussing on is the function `uploadFileAndPersist`. By adding some logic upon the successful creation of a thumbnail preview of this file we can reduce the overhead added by BlurHash as we can process an extremely small image.
+
+The custom code added is between the `BEGIN BLURHASH` and the `END BLURHASH` comments.
+
+```javascript
+async uploadFileAndPersist(fileData, { user } = {}) {
+  const config = strapi.plugins.upload.config;
+
+  const {
+    getDimensions,
+    generateThumbnail,
+    generateResponsiveFormats,
+  } = strapi.plugins.upload.services["image-manipulation"];
+
+  const thumbnailFile = await generateThumbnail(fileData);
+  if (thumbnailFile) {
+    await strapi.plugins.upload.provider.upload(thumbnailFile);
+
+    // Begin Override
+
+    const encodeImageToBlurhash = (imageBuffer) =>
+      new Promise((resolve, reject) => {
+        sharp(imageBuffer)
+          .raw()
+          .ensureAlpha()
+          .toBuffer((err, buffer, { width, height }) => {
+            if (err) return reject(err);
+            resolve(
+              blurhash.encode(
+                new Uint8ClampedArray(buffer),
+                width,
+                height,
+                4,
+                4
+              )
+            );
+          });
+      });
+
+    const blurHash = await encodeImageToBlurhash(thumbnailFile.buffer);
+
+    // Add a custom field in File.settings.json to add a blurHash
+    fileData.blurHash = blurHash;
+
+    // End Override
+
+    await strapi.plugins.upload.provider.upload(fileData);
+
+    delete thumbnailFile.buffer;
+    _.set(fileData, "formats.thumbnail", thumbnailFile);
+  }
+```
+
+## Summary 🎉
+
+Upon successfully editing these files, all new images uploaded to Strapi will automatically generate BlurHashes, previous files can either be re-uploaded or you could write a function to loop through all the images within Strapi and generate their Blur Hashes.
+
+If theres anything you think I've missed or you want to discuss this further, contact me.

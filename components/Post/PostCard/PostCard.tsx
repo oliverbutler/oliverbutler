@@ -1,30 +1,33 @@
 import Card from "components/Layout/Card";
 import Icon from "components/Typography/Icon";
-import BlurImage from "components/BlurImage";
 import React from "react";
-import { Posts_posts } from "queries/types/Posts";
+import { PostFile } from "utils/getPosts";
+import Image from "next/image";
 
 type Props = {
-  post: Posts_posts;
-  ExteriorDiv?: any;
+  post: PostFile;
 };
-const PostCard: React.FunctionComponent<Props> = ({ post, ExteriorDiv }) => {
-  const date = new Date(Date.parse(post.createdAt));
-
+const PostCard: React.FunctionComponent<Props> = ({ post }) => {
   return (
     <Card
-      key={post.slug}
-      ExteriorDiv={ExteriorDiv}
-      image={<BlurImage image={post.image} className="h-64 w-full" />}
-      href={`/posts/${post.slug}`}
-      tags={post.tags}
-      title={post.title}
-      topText={date.toLocaleDateString("en-GB")}
-      content={post.description}
+      key={post.path}
+      image={
+        <Image
+          src={post.meta.image}
+          width={1000}
+          height={600}
+          className="h-64 w-full"
+        />
+      }
+      href={`/posts/${post.path}`}
+      // tags={post.tags}
+      title={post.meta.title}
+      topText={post.meta.date}
+      content={post.meta.description}
       bottom={[
         <Icon
           icon="hourglass-outline"
-          text={parseInt(post.readingTime.toString()) + " mins"}
+          text={parseInt(post.meta.readTime.toString()) + " mins"}
         />,
       ]}
     />
