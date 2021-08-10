@@ -59,7 +59,7 @@ const Card = ({
   bottom,
   key,
   href,
-  className = "sm:w-1/2 lg:w-1/3 xl:w-1/4 w-full",
+  className = "prose dark:prose-light sm:w-1/2 lg:w-1/3 xl:w-1/4 w-full",
 }: CardProps) => {
   return (
     <MotionWrapper ExteriorDiv={ExteriorDiv} className={className} key={key}>

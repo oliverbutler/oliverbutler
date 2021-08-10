@@ -17,6 +17,8 @@ const PostCard: React.FunctionComponent<Props> = ({ post }) => {
           width={1000}
           height={600}
           className="h-64 w-full"
+          objectFit="cover"
+          placeholder="blur"
         />
       }
       href={`/posts/${post.path}`}

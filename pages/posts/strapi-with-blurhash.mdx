@@ -1,13 +1,16 @@
 import Post from "components/Post/Post";
 import Section from "components/Layout/Section/Section";
 import Image from "next/image";
+import thumbnail from "public/strapi-blurhash.jpg";
+import blurhashHlf from "public/blurhash-hlf.png";
+import { Gif } from "components/Gif/Gif";
 
 export const meta = {
   id: 0,
   title: "Better Images in Strapi with BlurHash",
   description:
     "Do you like waiting for images to load? Me neither - Today were going to look at how to implement BlurHash in Strapi.",
-  image: "/strapi-blurhash.jpg",
+  image: thumbnail,
   date: "April 06, 2021",
   tags: ["strapi"],
   readTime: 10,
@@ -29,7 +32,12 @@ This means that rather than a client rendering black boxes whilst waiting for an
 
 Below we can see an example of using [blurha.sh](https://blurha.sh) to convert an example image to a BlurHash string.
 
-<Image src="/blurhash-hlf.png" width={1000} height={600} />
+<Image src={blurhashHlf} placeholder="blur" />
+
+<Gif
+  url="https://media.giphy.com/media/zIwIWQx12YNEI/source.gif"
+  caption="No no. BlurHash. 🪄"
+/>
 
 ## What we are trying to achieve
 
@@ -211,3 +219,8 @@ async uploadFileAndPersist(fileData, { user } = {}) {
 Upon successfully editing these files, all new images uploaded to Strapi will automatically generate BlurHashes, previous files can either be re-uploaded or you could write a function to loop through all the images within Strapi and generate their Blur Hashes.
 
 If theres anything you think I've missed or you want to discuss this further, contact me.
+
+<Gif
+  url="https://media.giphy.com/media/g9582DNuQppxC/source.gif"
+  caption="Congratulations 🎉"
+/>

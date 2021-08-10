@@ -1,19 +1,27 @@
-// import BlurImage from "components/BlurImage";
+import Section from "components/Layout/Section";
+import Image from "next/image";
 import Link from "next/link";
-import { HomePage_homePage_image } from "queries/types/HomePage";
 import React from "react";
 
 type HeaderProps = {
   title: string;
   subtitle: string;
-  image: HomePage_homePage_image;
+  image: StaticImageData;
 };
 
 const Header = ({ title, subtitle, image }: HeaderProps) => {
   return (
-    <section className="body-font">
-      <div className="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
-        {/* <BlurImage className="w-32 h-32 mb-4 z-10" image={image} rounded /> */}
+    <Section className="prose dark:prose-light mx-auto">
+      <div className="mx-auto flex py-24 items-center justify-center flex-col">
+        <div className="mb-6 ">
+          <Image
+            className="rounded-full"
+            width={128}
+            height={128}
+            src={image}
+          />
+        </div>
+
         <div className="text-center lg:w-2/3 w-full">
           <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium dark:text-white text-black z-10">
             {title}
@@ -33,7 +41,7 @@ const Header = ({ title, subtitle, image }: HeaderProps) => {
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 

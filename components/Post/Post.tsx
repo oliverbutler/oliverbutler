@@ -8,7 +8,7 @@ export interface PostMeta {
   title: string;
   description: string;
   date: string;
-  image: string;
+  image: any;
   tags: string[];
   readTime: number;
 }
@@ -31,8 +31,7 @@ const Post: React.FunctionComponent<PostProps> = ({ meta, children }) => {
           src={meta.image}
           className="w-full"
           alt="Post Thumbnail"
-          width={1000}
-          height={600}
+          placeholder="blur"
         />
       </Section>
       <Section className="prose dark:prose-light mx-auto">{children}</Section>
