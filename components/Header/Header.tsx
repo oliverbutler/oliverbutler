@@ -2,7 +2,6 @@ import Section from "components/Layout/Section";
 import Button from "components/Typography/Button/Button";
 import { Title } from "components/Typography/Title/Title";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 type HeaderProps = {
@@ -28,7 +27,7 @@ export const Header = ({ title, subtitle, image }: HeaderProps) => {
 
         <div className="flex justify-center z-10">
           <Button variant="primary">My Work</Button>
-          <Button variant="secondary" link={{ href: "/posts" }}>
+          <Button variant="secondary" link={{ href: "/blog" }}>
             Blog
           </Button>
         </div>

@@ -21,7 +21,7 @@ export const Navbar = ({ switchTheme }) => {
               About
             </a>
           </Link>
-          <Link href="/posts">
+          <Link href="/blog">
             <a className="mr-5 hover:text-black dark:hover:text-white z-10 cursor-pointer">
               Blog
             </a>
