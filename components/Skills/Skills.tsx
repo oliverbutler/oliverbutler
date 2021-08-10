@@ -1,4 +1,4 @@
-import Heading from "components/Typography/Heading";
+import { Heading } from "components/Typography/Heading/Heading";
 import Section from "components/Layout/Section";
 import React from "react";
 import { motion } from "framer-motion";

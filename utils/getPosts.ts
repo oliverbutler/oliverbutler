@@ -6,6 +6,7 @@ export interface PostFile {
 }
 
 export const getPosts = (): PostFile[] => {
+  // @ts-ignore
   const rawMdxFiles = require.context("pages", true, /^\.\/.*mdx$/);
   const mdxFiles: PostFile[] = rawMdxFiles.keys().map((fileName: string) => {
     return {

@@ -30,6 +30,7 @@ export const Experience: React.FunctionComponent<Props> = ({ experience }) => {
               src={experience.image}
               placeholder="blur"
               objectFit="cover"
+              alt="company logo"
             />
           </div>
 

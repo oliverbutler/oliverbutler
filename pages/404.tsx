@@ -1,6 +1,7 @@
 import Button from "components/Typography/Button/Button";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import Image from "next/image";
+import image from "public/404.svg";
 
 export default function Custom404() {
   return (
@@ -10,13 +11,13 @@ export default function Custom404() {
       className="flex w-full  mt-10 justify-center "
     >
       <div className="w-1/3">
-        <img src="/404.svg" className="w-full mb-4" />
+        <Image src={image} className="w-full mb-4" alt="404 image" />
         <p className="mb-4">
-          Oh no! That wasn't found sorry, either try again or contact me.
+          Oh no! That wasn&lsquo;t found sorry, either try again or contact me.
         </p>
-        <Link href="/">
-          <Button text="Take me Back!" type="primary" />
-        </Link>
+        <Button variant="secondary" link={{ href: "/" }}>
+          Take me Back!
+        </Button>
       </div>
     </motion.div>
   );

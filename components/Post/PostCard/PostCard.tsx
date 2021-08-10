@@ -19,6 +19,7 @@ const PostCard: React.FunctionComponent<Props> = ({ post }) => {
           className="h-64 w-full"
           objectFit="cover"
           placeholder="blur"
+          alt="post thumbnail"
         />
       }
       href={`/blog/${post.path}`}
@@ -28,6 +29,7 @@ const PostCard: React.FunctionComponent<Props> = ({ post }) => {
       content={post.meta.description}
       bottom={[
         <Icon
+          key="hourglass-outline"
           icon="hourglass-outline"
           text={parseInt(post.meta.readTime.toString()) + " mins"}
         />,

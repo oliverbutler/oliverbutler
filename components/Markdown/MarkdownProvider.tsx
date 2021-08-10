@@ -6,7 +6,7 @@ import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { Typography } from "components/Typography/Typography";
 
 const components: MDXProviderComponentsProp = {
-  link: (props) => {
+  link: function Link(props) {
     return (
       <a
         className="text-indigo-600 dark:text-indigo-400 underline"
@@ -16,14 +16,14 @@ const components: MDXProviderComponentsProp = {
       </a>
     );
   },
-  inlineCode: (props) => {
+  inlineCode: function InlineCode(props) {
     return (
       <code className="dark:bg-gray-800 bg-gray-100 px-1 text-indigo-600 dark:text-indigo-300 break-all">
         {props.children}
       </code>
     );
   },
-  code: (props) => {
+  code: function CodeBlock(props) {
     return (
       <pre className="my-6 ">
         <SyntaxHighlighter
@@ -36,11 +36,21 @@ const components: MDXProviderComponentsProp = {
       </pre>
     );
   },
-  p: (props) => <Typography variant="p">{props.children}</Typography>,
-  h1: (props) => <Typography variant="h1">{props.children}</Typography>,
-  h2: (props) => <Typography variant="h2">{props.children}</Typography>,
-  h3: (props) => <Typography variant="h3">{props.children}</Typography>,
-  h4: (props) => <Typography variant="h4">{props.children}</Typography>,
+  p: function TypographyP(props) {
+    return <Typography variant="p">{props.children}</Typography>;
+  },
+  h1: function TypographyH1(props) {
+    return <Typography variant="h1">{props.children}</Typography>;
+  },
+  h2: function TypographyH2(props) {
+    return <Typography variant="h2">{props.children}</Typography>;
+  },
+  h3: function TypographyH3(props) {
+    return <Typography variant="h3">{props.children}</Typography>;
+  },
+  h4: function TypographyH4(props) {
+    return <Typography variant="h4">{props.children}</Typography>;
+  },
 };
 
 interface Props {}

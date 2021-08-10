@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import Image from "next/image";
+import image from "public/500.svg";
 
 export default function Custom500() {
   return (
@@ -8,10 +10,10 @@ export default function Custom500() {
       className="flex w-full  mt-10 justify-center "
     >
       <div className="w-1/3">
-        <img src="/500.svg" className="w-full mb-4" />
+        <Image src={image} className="w-full mb-4" alt="505 image" />
         <p>
-          Oh no! Something's gone wrong... This will be logged and i'll look
-          into it!
+          Oh no! Something&lsquo;s gone wrong... This will be logged and
+          i&lsquo;ll look into it!
         </p>
       </div>
     </motion.div>

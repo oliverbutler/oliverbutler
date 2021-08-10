@@ -52,10 +52,10 @@ export const Education = ({ education }) => {
   return (
     <Section>
       {/* <Heading title={education.title} subtitle={education.subtitle} /> */}
-      {education.educations.map((e) => (
+      {/* {education.educations.map((e) => (
         // <IndividualEducation education={e} />
         <p>education</p>
-      ))}
+      ))} */}
     </Section>
   );
 };

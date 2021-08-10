@@ -73,8 +73,11 @@ const Card = ({
         {bottomJSX && bottomJSX}
         <div className="flex items-center flex-wrap">
           {bottom &&
-            bottom.map((icon) => (
-              <div className="text-gray-500 inline-flex items-center  ml-auto leading-none text-md pr-3 pb-3 ">
+            bottom.map((icon, index) => (
+              <div
+                key={index}
+                className="text-gray-500 inline-flex items-center  ml-auto leading-none text-md pr-3 pb-3 "
+              >
                 {icon}
               </div>
             ))}

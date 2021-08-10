@@ -47,7 +47,7 @@ export default function Home() {
           graduated from Newcastle University with a first class degree.
         </Typography>
         {experiences.map((experience) => (
-          <Experience experience={experience} />
+          <Experience key={experience.company} experience={experience} />
         ))}
       </Section>
     </motion.div>
