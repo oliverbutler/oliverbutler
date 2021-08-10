@@ -1,7 +1,6 @@
 import Split from "components/Layout/Split";
 import React from "react";
 import Section from "components/Layout/Section";
-import Heading from "components/Typography/Heading";
 import { RenderBadge } from "components/Typography/Badge/Badge";
 import { SectionWidth } from "components/Layout/Section/Section";
 
@@ -52,7 +51,7 @@ import { SectionWidth } from "components/Layout/Section/Section";
 export const Education = ({ education }) => {
   return (
     <Section>
-      <Heading title={education.title} subtitle={education.subtitle} />
+      {/* <Heading title={education.title} subtitle={education.subtitle} /> */}
       {education.educations.map((e) => (
         // <IndividualEducation education={e} />
         <p>education</p>

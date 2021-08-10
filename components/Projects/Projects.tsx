@@ -1,6 +1,5 @@
 import Card from "components/Layout/Card";
 import Section from "components/Layout/Section";
-import Heading from "components/Typography/Heading";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
@@ -27,7 +26,7 @@ export const Projects = ({ projects }) => {
   return (
     <Section>
       <div className="flex flex-wrap -mx-4 mt-auto mb-auto">
-        <Heading title={projects.title} subtitle={projects.subtitle} />
+        {/* <Heading title={projects.title} subtitle={projects.subtitle} /> */}
 
         <div className="flex flex-wrap w-full justify-center">
           {projects.projects.map((project) => (
