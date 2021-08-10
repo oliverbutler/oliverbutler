@@ -23,7 +23,7 @@ const ExteriorDiv = ({ className, key, children }: MotionComponentProps) => {
   );
 };
 
-const Projects = ({ projects }) => {
+export const Projects = ({ projects }) => {
   return (
     <Section>
       <div className="flex flex-wrap -mx-4 mt-auto mb-auto">
@@ -70,5 +70,3 @@ const Projects = ({ projects }) => {
     </Section>
   );
 };
-
-export default Projects;

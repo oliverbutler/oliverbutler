@@ -47,7 +47,7 @@ import React from "react";
 //   );
 // };
 
-const Experience = ({ experience }) => {
+export const Experience = ({ experience }) => {
   const experiences = [...experience.experiences];
 
   return (
@@ -63,5 +63,3 @@ const Experience = ({ experience }) => {
     </Section>
   );
 };
-
-export default Experience;

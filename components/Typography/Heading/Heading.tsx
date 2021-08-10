@@ -1,6 +1,6 @@
 import React from "react";
 
-const Heading = ({ title, subtitle }) => {
+export const Heading = ({ title, subtitle }) => {
   return (
     <div className="w-full sm:p-4 px-4 mb-6">
       <h1 className="title-font font-medium text-xl mb-2 text-black dark:text-white">
@@ -10,5 +10,3 @@ const Heading = ({ title, subtitle }) => {
     </div>
   );
 };
-
-export default Heading;

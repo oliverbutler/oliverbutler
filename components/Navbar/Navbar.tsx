@@ -4,7 +4,7 @@ import React from "react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-const Navbar = ({ switchTheme }) => {
+export const Navbar = ({ switchTheme }) => {
   const { theme, setTheme } = useTheme();
 
   const variants = {
@@ -48,5 +48,3 @@ const Navbar = ({ switchTheme }) => {
     </header>
   );
 };
-
-export default Navbar;

@@ -49,7 +49,7 @@ import { SectionWidth } from "components/Layout/Section/Section";
 //   );
 // };
 
-const Education = ({ education }) => {
+export const Education = ({ education }) => {
   return (
     <Section>
       <Heading title={education.title} subtitle={education.subtitle} />
@@ -60,5 +60,3 @@ const Education = ({ education }) => {
     </Section>
   );
 };
-
-export default Education;

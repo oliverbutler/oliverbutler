@@ -1,12 +1,10 @@
-import Header from "components/Header";
-import Experience from "components/Experience";
-import Education from "components/Education";
-
 import { motion } from "framer-motion";
-import Projects from "components/Projects";
+import { Header } from "components/Header/Header";
+import { Experience } from "components/Experience/Experience";
+import { Education } from "components/Education/Education";
+import { Projects } from "components/Projects/Projects";
 
 import profilePicture from "public/profile-photo.jpeg";
-import Section from "components/Layout/Section";
 
 export default function Home() {
   return (
@@ -16,9 +14,6 @@ export default function Home() {
         title="I'm Oliver - it's nice to meet you 👋"
         subtitle="I'm a full stack developer at Theodo UK specializing with React, Typescript and all things JS"
       />
-      <Section className="prose dark:prose-light mx-auto">
-        <h2>Experience</h2>
-      </Section>
     </motion.div>
   );
 }

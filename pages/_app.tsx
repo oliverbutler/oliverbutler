@@ -3,9 +3,10 @@ import "../styles/globals.css";
 import Head from "next/head";
 import { ThemeProvider, useTheme } from "next-themes";
 
-import Footer from "components/Footer";
-import Navbar from "components/Navbar";
-import { useEffect, useState } from "react";
+import { Footer } from "components/Footer/Footer";
+import { Navbar } from "components/Navbar/Navbar";
+import React, { useEffect, useState } from "react";
+import { MarkdownProvider } from "components/Markdown/MarkdownProvider";
 
 declare global {
   namespace JSX {
@@ -49,9 +50,11 @@ const Wrapper = ({ children }) => {
 const MyApp = ({ Component, pageProps }) => {
   return (
     <ThemeProvider attribute="class">
-      <Wrapper>
-        <Component {...pageProps} />
-      </Wrapper>
+      <MarkdownProvider>
+        <Wrapper>
+          <Component {...pageProps} />
+        </Wrapper>
+      </MarkdownProvider>
     </ThemeProvider>
   );
 };

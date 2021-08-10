@@ -5,6 +5,7 @@ import Section from "components/Layout/Section";
 import { motion } from "framer-motion";
 import { GetStaticProps } from "next";
 import { getPosts, PostFile } from "utils/getPosts";
+import { Title } from "components/Typography/Title/Title";
 
 interface Props {
   posts: PostFile[];
@@ -13,13 +14,11 @@ interface Props {
 const PostsPage: React.FunctionComponent<Props> = ({ posts }) => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <Section className="prose dark:prose-light mx-auto">
-        <h1>Welcome to my Blog</h1>
-        <p>
-          Here you will find posts about loads of good stuff. React, Security,
-          Python, and AWS sounds good?
-        </p>
-      </Section>
+      <Title
+        title="Welcome to my Blog"
+        subtitle="Here you will find posts about loads of good stuff. React, Security,
+          Python, and AWS sounds good?"
+      />
       <PostList posts={posts} />
     </motion.div>
   );

@@ -21,8 +21,8 @@ const PostCard: React.FunctionComponent<Props> = ({ post }) => {
           placeholder="blur"
         />
       }
-      href={`/posts/${post.path}`}
-      // tags={post.tags}
+      href={`/blog/${post.path}`}
+      tags={post.meta.tags}
       title={post.meta.title}
       topText={post.meta.date}
       content={post.meta.description}
