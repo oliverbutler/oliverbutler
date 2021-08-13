@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createBlog, getBlog, getBlogs } from "utils/db/blogs";
+import { createBlog, getBlog, getBlogs } from "utils/db/blog";
 import requestIp from "request-ip";
 
 export default async function handler(
@@ -19,10 +19,6 @@ export default async function handler(
       if (blog === undefined)
         return res.status(404).json({ message: "Blog not found" });
       else return res.status(200).json(blog);
-
-    case "POST":
-      const insertion = await createBlog({ slug: blogId as string, points: 1 });
-      return res.status(201).json(insertion);
 
     default:
       return res.status(405).json({ message: "Method not allowed" });

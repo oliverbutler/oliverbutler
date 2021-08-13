@@ -1,4 +1,5 @@
 import sha256 from "crypto-js/sha256";
+import { connectMongo } from "../mongodb";
 
 /**
  * Takes a users IP and returns a unique hash, the IP was concatenated

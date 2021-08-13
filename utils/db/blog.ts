@@ -1,4 +1,4 @@
-import { FindCursor, InsertOneResult } from "mongodb";
+import { Document, InsertOneResult, UpdateResult } from "mongodb";
 import { Blog } from "types/global";
 import { connectMongo } from "./mongodb";
 
@@ -15,11 +15,23 @@ export const getBlog = async (slug: string): Promise<Blog> => {
 };
 
 export const createBlog = async (
-  blog: Omit<Blog, "_id">
+  blog: Omit<Blog, "_id" | "hitCount">
 ): Promise<InsertOneResult<Document> | false> => {
   const { db } = await connectMongo();
 
+  const blogToInsert: Omit<Blog, "_id"> = { ...blog, hitCount: 0 };
+
   if ((await getBlog(blog.slug)) === undefined) {
-    return db.collection("blog").insertOne(blog);
+    return db.collection("blog").insertOne(blogToInsert);
   } else return false;
+};
+
+export const registerBlogHit = async (
+  slug: string
+): Promise<Document | UpdateResult> => {
+  const { db } = await connectMongo();
+
+  return db
+    .collection("blog")
+    .updateOne({ slug: slug }, { $inc: { hitCount: 1 } });
 };
