@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Title } from "components/Typography/Title/Title";
 import { SectionWidth } from "components/Layout/Section/Section";
+import { Love } from "components/Love/Love";
 
 export interface PostMeta {
   id: number;
@@ -21,6 +22,7 @@ interface PostProps {
 const Post: React.FunctionComponent<PostProps> = ({ meta, children }) => {
   return (
     <motion.div initial={{ opacity: 0, y: 150 }} animate={{ opacity: 1, y: 0 }}>
+      <Love className="fixed right-10 top-52" />
       <Section width={SectionWidth.Narrow}>
         <Title title={meta.title} subtitle={meta.description} />
 

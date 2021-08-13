@@ -16,6 +16,12 @@ declare global {
   }
 }
 
+if (typeof window !== "undefined" && process.env.NODE_ENV === "production")
+  console.log(
+    "%cHey there! ❤️ \nLook at you being all adventurous, have fun! https://github.com/oliverbutler ",
+    "font-size: 1.2rem; font-family: monospace; padding: 1rem; color: rgb(105, 99, 224); "
+  );
+
 const Wrapper = ({ children }) => {
   const { theme, setTheme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
@@ -34,7 +40,10 @@ const Wrapper = ({ children }) => {
       <Head>
         <title>Oliver Butler</title>
         <link rel="icon" href="/favicon.ico" />
-        <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+        <script
+          type="module"
+          src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"
+        ></script>
       </Head>
 
       <Navbar switchTheme={switchTheme} />

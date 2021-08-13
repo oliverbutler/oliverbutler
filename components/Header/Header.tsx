@@ -20,6 +20,8 @@ export const Header = ({ title, subtitle, image }: HeaderProps) => {
             width={128}
             height={128}
             src={image}
+            alt="Profile Picture"
+            placeholder="blur"
           />
         </div>
 
