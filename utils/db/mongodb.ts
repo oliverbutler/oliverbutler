@@ -42,6 +42,7 @@ export const connectMongo = async (): Promise<Database> => {
       useUnifiedTopology: true,
     };
 
+    // @ts-ignore
     cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
       return {
         client,
