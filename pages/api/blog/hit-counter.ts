@@ -1,20 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createBlog, getBlog, getBlogs } from "utils/db/blog";
 import requestIp from "request-ip";
+import { getBlog, registerBlogHit } from "utils/db/blog";
+import { getIpHash } from "utils/db/likes/tracking";
+import { connectMongo } from "utils/db/mongodb";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { blogId } = req.query;
-  if (blogId === undefined)
-    return res.status(400).json({ error: "Missing blogId" });
+  const { slug, browserId } = req.query;
+  if (slug === undefined)
+    return res.status(400).json({ error: "Missing slug" });
+
+  const detectedIp = requestIp.getClientIp(req);
 
   switch (req.method) {
     case "GET":
-      const blog = await getBlog(blogId as string);
+      await registerBlogHit(slug as string);
 
-      console.log(req.headers);
+      const blog = await getBlog(slug as string);
 
       if (blog === undefined)
         return res.status(404).json({ message: "Blog not found" });

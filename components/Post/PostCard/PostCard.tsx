@@ -1,5 +1,4 @@
 import Card from "components/Layout/Card";
-import Icon from "components/Typography/Icon";
 import React from "react";
 import { PostFile } from "utils/getPosts";
 import Image from "next/image";
@@ -27,13 +26,15 @@ const PostCard: React.FunctionComponent<Props> = ({ post }) => {
       title={post.meta.title}
       topText={post.meta.date}
       content={post.meta.description}
-      bottom={[
-        <Icon
-          key="hourglass-outline"
-          icon="hourglass-outline"
-          text={parseInt(post.meta.readTime.toString()) + " mins"}
-        />,
-      ]}
+      // bottom={
+      //   [
+      //     // <Icon
+      //     //   key="hourglass-outline"
+      //     //   icon="hourglass-outline"
+      //     //   text={parseInt(post.meta.readTime.toString()) + " mins"}
+      //     // />,
+      //   ]
+      // }
     />
   );
 };

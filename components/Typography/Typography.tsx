@@ -29,7 +29,7 @@ export const Typography: React.FunctionComponent<Props> = ({
       return (
         <h1
           className={classNames(
-            "dark:text-white text-black text-4xl font-bold mb-4",
+            "dark:text-white text-black text-4xl font-bold mb-4 ",
             className
           )}
         >

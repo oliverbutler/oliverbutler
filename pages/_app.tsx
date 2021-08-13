@@ -40,10 +40,6 @@ const Wrapper = ({ children }) => {
       <Head>
         <title>Oliver Butler</title>
         <link rel="icon" href="/favicon.ico" />
-        <script
-          type="module"
-          src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"
-        ></script>
       </Head>
 
       <Navbar switchTheme={switchTheme} />
