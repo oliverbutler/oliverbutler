@@ -1,5 +1,6 @@
 import { Document, InsertOneResult, UpdateResult } from "mongodb";
 import { Blog } from "types/global";
+import { PostFile } from "utils/getPosts";
 import { connectMongo } from "./mongodb";
 
 export const getBlogs = async (): Promise<Blog[]> => {
@@ -24,6 +25,16 @@ export const createBlog = async (
   if ((await getBlog(blog.slug)) === undefined) {
     return db.collection("blog").insertOne(blogToInsert);
   } else return false;
+};
+
+export const populateBlogsFromMDXFiles = (blogFiles: PostFile[]) => {
+  blogFiles.forEach((blogFile) => {
+    createBlog({ slug: blogFile.meta.slug, points: 0 }).then((res) => {
+      if (res !== false) {
+        console.log("[DB] Just created entry for " + blogFile.meta.slug);
+      }
+    });
+  });
 };
 
 export const registerBlogHit = async (

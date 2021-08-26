@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { GetStaticProps } from "next";
 import { getPosts, PostFile } from "utils/getPosts";
 import { Title } from "components/Typography/Title/Title";
+import { populateBlogsFromMDXFiles } from "utils/db/blog";
 
 interface Props {
   posts: PostFile[];
@@ -26,6 +27,9 @@ const PostsPage: React.FunctionComponent<Props> = ({ posts }) => {
 
 export const getStaticProps: GetStaticProps = () => {
   const posts = getPosts();
+
+  // For each blog file, populate the DB if it doesn't already exist
+  populateBlogsFromMDXFiles(posts);
 
   return {
     props: {

@@ -40,6 +40,11 @@ const Wrapper = ({ children }) => {
       <Head>
         <title>Oliver Butler</title>
         <link rel="icon" href="/favicon.ico" />
+        <script
+          defer
+          data-domain="oliverbutler.uk"
+          src="https://plausible.io/js/plausible.js"
+        ></script>
       </Head>
 
       <Navbar switchTheme={switchTheme} />

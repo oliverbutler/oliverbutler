@@ -1,23 +1,21 @@
-const mdxRenderer = `
-  import React from 'react'
-  import { mdx } from '@mdx-js/react'
+// const mdxRenderer = `
+//   import React from 'react'
+//   import { mdx } from '@mdx-js/react'
 
-  export async function getStaticProps () {
+//   export async function getStaticProps () {
 
-    console.log('hi tommy');
-
-    return {
-      props: {
-        foo: 'bar'
-      }
-    }
-  }
-`;
+//     return {
+//       props: {
+//         foo: 'bar'
+//       }
+//     }
+//   }
+// `;
 
 const withMDX = require("@next/mdx")({
   extension: /\.mdx$/,
   options: {
-    renderer: mdxRenderer,
+    // renderer: mdxRenderer,
   },
 });
 

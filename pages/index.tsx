@@ -8,29 +8,7 @@ import profilePicture from "public/profile-photo.jpeg";
 
 import Section from "components/Layout/Section";
 import { Typography } from "components/Typography/Typography";
-
-import logoTheodo from "public/logo-theodo.png";
-import logoLm from "public/logo-lm.png";
-
-const experiences: Experience[] = [
-  {
-    company: "Theodo UK",
-    image: logoTheodo,
-    description: "During my time at Theodo UK I have ",
-    tags: ["react", "typescript"],
-    dates: "June 2021 - Present",
-    role: "Full Stack Web Developer",
-  },
-  {
-    company: "Lockheed Martin RMS",
-    image: logoLm,
-    description:
-      "Worked alongside the team to develop an interoperability layer using React, SSE Events, and Java to compliment the existing infrastructure of a common services data network of an existing project. Also actively worked to design and develop an overhaul of a STEM application focussed to help get school children interested in Cyber.",
-    tags: ["react", "java"],
-    dates: "June 2021 - Present",
-    role: "Software Engineer",
-  },
-];
+import { experiences } from "me";
 
 export default function Home() {
   return (
@@ -49,6 +27,11 @@ export default function Home() {
         {experiences.map((experience) => (
           <Experience key={experience.company} experience={experience} />
         ))}
+        <Typography variant="h2">Education 🎓</Typography>
+        <Typography variant="p" className="mb-10">
+          Below explains my education to date; through University and High
+          School.
+        </Typography>
       </Section>
     </motion.div>
   );
