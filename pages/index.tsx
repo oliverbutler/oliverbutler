@@ -9,10 +9,12 @@ import profilePicture from "public/profile-photo.jpg";
 import Section from "components/Layout/Section/Section";
 import { Typography } from "components/Typography/Typography";
 import { educations, experiences } from "me";
+import { Particles } from "components/Particles/Particles";
 
 export default function Home() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <Particles />
       <Header
         image={profilePicture}
         title="I'm Oliver - it's nice to meet you 👋"
