@@ -1,5 +1,5 @@
-import Card from "components/Layout/Card";
-import Section from "components/Layout/Section";
+import Card from "components/Layout/Card/Card";
+import Section from "components/Layout/Section/Section";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
