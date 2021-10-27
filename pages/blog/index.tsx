@@ -1,7 +1,4 @@
-import React from "react";
-
 import PostList from "components/Post/PostList/PostList";
-import Section from "components/Layout/Section";
 import { motion } from "framer-motion";
 import { GetStaticProps } from "next";
 import { getPosts, PostFile } from "utils/getPosts";
@@ -25,11 +22,11 @@ const PostsPage: React.FunctionComponent<Props> = ({ posts }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = () => {
-  const posts = getPosts();
+export const getStaticProps: GetStaticProps = async () => {
+  const posts = await getPosts();
 
   // For each blog file, populate the DB if it doesn't already exist
-  populateBlogsFromMDXFiles(posts);
+  // populateBlogsFromMDXFiles(posts);
 
   return {
     props: {

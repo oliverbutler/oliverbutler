@@ -37,9 +37,7 @@ export const populateBlogsFromMDXFiles = (blogFiles: PostFile[]) => {
   });
 };
 
-export const registerBlogHit = async (
-  slug: string
-): Promise<Document | UpdateResult> => {
+export const registerBlogHit = async (slug: string) => {
   const { db } = await connectMongo();
 
   return db

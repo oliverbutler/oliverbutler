@@ -1,6 +1,6 @@
 import React from "react";
 import { PostFile } from "utils/getPosts";
-import PostCard from "../PostCard";
+import PostCard from "./PostCard";
 
 interface Props {
   posts: PostFile[];

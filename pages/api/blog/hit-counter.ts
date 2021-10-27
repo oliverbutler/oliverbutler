@@ -1,8 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import requestIp from "request-ip";
 import { getBlog, registerBlogHit } from "utils/db/blog";
-import { getIpHash } from "utils/db/likes/tracking";
-import { connectMongo } from "utils/db/mongodb";
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,8 +8,6 @@ export default async function handler(
   const { slug, browserId } = req.query;
   if (slug === undefined)
     return res.status(400).json({ error: "Missing slug" });
-
-  const detectedIp = requestIp.getClientIp(req);
 
   switch (req.method) {
     case "GET":

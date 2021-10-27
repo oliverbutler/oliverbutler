@@ -21,7 +21,6 @@ type CardProps = {
 const Card = ({
   bodyJSX,
   bottomJSX,
-  ExteriorDiv,
   image,
   title,
   topText,

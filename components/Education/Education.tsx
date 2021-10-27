@@ -1,61 +1,71 @@
-import Split from "components/Layout/Split";
+import Split from "components/Layout/Split/Split";
 import React from "react";
-import Section from "components/Layout/Section";
 import { RenderBadge } from "components/Typography/Badge/Badge";
-import { SectionWidth } from "components/Layout/Section/Section";
+import Image from "next/image";
 
-// const IndividualEducation = ({ education }) => {
-//   return (
-//     <Split
-//       left={
-//         <>
-//           <BlurImage
-//             className="w-16 h-16 mr-4 "
-//             image={education.image}
-//             rounded
-//           />
-//           <div className="flex flex-col">
-//             <span className="font-semibold title-font text-black dark:text-white">
-//               {education.name}
-//             </span>
-//             <span className="mt-1 text-gray-500 text-sm">
-//               {education.dates}
-//             </span>
-//           </div>
-//         </>
-//       }
-//       right={
-//         <>
-//           {education.modules.map((module) => (
-//             <div className="mb-4" key={"module-" + module.title}>
-//               <h2 className="title-font font-medium text-black dark:text-white title-font">
-//                 {module.title}
-//               </h2>
-//               <h2 className="text-gray-500 text-sm mb-1">{module.grades}</h2>
-//               <div className="leading-relaxed">{module.description}</div>
-//               <div className="mt-1 flex flex-row flex-wrap">
-//                 {module.tags.map((tag, index) => (
-//                   <div className="mr-2 mb-2" key={`tag-${index}`}>
-//                     <RenderBadge name={tag.name} />
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-//           ))}
-//         </>
-//       }
-//     />
-//   );
-// };
+export interface Education {
+  name: string;
+  dates: string;
+  image: StaticImageData;
+  modules: {
+    title: string;
+    description: string;
+    grades: string;
+    tags: string[];
+  }[];
+}
 
-export const Education = ({ education }) => {
+interface Props {
+  education: Education;
+}
+
+export const Education: React.FunctionComponent<Props> = ({ education }) => {
   return (
-    <Section>
-      {/* <Heading title={education.title} subtitle={education.subtitle} /> */}
-      {/* {education.educations.map((e) => (
-        // <IndividualEducation education={e} />
-        <p>education</p>
-      ))} */}
-    </Section>
+    <Split
+      left={
+        <>
+          <div className="mr-4">
+            <Image
+              width={50}
+              height={50}
+              src={education.image}
+              placeholder="blur"
+              objectFit="contain"
+              alt="company logo"
+            />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-semibold title-font text-black dark:text-white">
+              {education.name}
+            </span>
+            <span className="mt-1 text-gray-500 text-sm">
+              {education.dates}
+            </span>
+          </div>
+        </>
+      }
+      right={
+        <>
+          {education.modules.map((uniModule) => (
+            <div className="mb-4" key={"module-" + uniModule.title}>
+              <h2 className="title-font font-medium text-black dark:text-white title-font">
+                {uniModule.title}
+              </h2>
+              <h2 className="text-gray-500 text-sm mb-1">{uniModule.grades}</h2>
+              <div className="leading-relaxed">{uniModule.description}</div>
+              <div className="mt-1 flex flex-row flex-wrap">
+                {uniModule.tags
+                  .sort((a, b) => a.localeCompare(b))
+                  .map((tag) => (
+                    <div className="mr-2 mb-2" key={tag}>
+                      <RenderBadge name={tag} />
+                    </div>
+                  ))}
+              </div>
+            </div>
+          ))}
+        </>
+      }
+    />
   );
 };

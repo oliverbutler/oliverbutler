@@ -1,4 +1,4 @@
-import Split from "components/Layout/Split";
+import Split from "components/Layout/Split/Split";
 import { RenderBadge } from "components/Typography/Badge/Badge";
 import Image from "next/image";
 import React from "react";
@@ -10,7 +10,7 @@ export interface Experience {
   dates: string;
   role: string;
   description: string;
-  tags?: string[];
+  tags: string[];
 }
 interface Props {
   experience: Experience;
@@ -24,12 +24,11 @@ export const Experience: React.FunctionComponent<Props> = ({ experience }) => {
         <>
           <div className="mr-4">
             <Image
-              className="rounded-full"
-              width={64}
-              height={64}
+              width={50}
+              height={50}
               src={experience.image}
               placeholder="blur"
-              objectFit="cover"
+              objectFit="contain"
               alt="company logo"
             />
           </div>
@@ -54,8 +53,9 @@ export const Experience: React.FunctionComponent<Props> = ({ experience }) => {
           </h2>
           <div className="leading-relaxed">{experience.description}</div>
           <div className="flex mt-1 flex-wrap">
-            {experience.tags &&
-              experience.tags.map((tag) => (
+            {experience.tags
+              .sort((a, b) => a.localeCompare(b))
+              .map((tag) => (
                 <div className="mr-2 mb-2" key={tag}>
                   <RenderBadge name={tag} />
                 </div>

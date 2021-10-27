@@ -1,4 +1,4 @@
-import Section from "components/Layout/Section";
+import Section from "components/Layout/Section/Section";
 import Button from "components/Typography/Button/Button";
 import { Title } from "components/Typography/Title/Title";
 import Image from "next/image";
@@ -17,8 +17,8 @@ export const Header = ({ title, subtitle, image }: HeaderProps) => {
         <div className="mb-6 ">
           <Image
             className="rounded-full"
-            width={128}
-            height={128}
+            width={200}
+            height={200}
             src={image}
             alt="Profile Picture"
             placeholder="blur"

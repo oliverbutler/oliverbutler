@@ -1,5 +1,5 @@
 import React from "react";
-import Section from "components/Layout/Section";
+import Section from "components/Layout/Section/Section";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Title } from "components/Typography/Title/Title";
@@ -14,7 +14,7 @@ export interface PostMeta {
   title: string;
   description: string;
   date: string;
-  image: any;
+  image: StaticImageData;
   tags: string[];
   slug: string;
   readTime: number;
@@ -26,33 +26,38 @@ interface PostProps {
 const Post: React.FunctionComponent<PostProps> = ({ meta, children }) => {
   const [blogInfo, setBlogInfo] = React.useState<Blog | null>(null);
 
-  useEffect(() => {
-    fetch(API_URL + "/blog/hit-counter?slug=" + meta.slug)
-      .then((res) => res.json())
-      .then(setBlogInfo);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   fetch(API_URL + "/blog/hit-counter?slug=" + meta.slug)
+  //     .then((res) => res.json())
+  //     .then(setBlogInfo);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
-    <motion.div initial={{ opacity: 0, y: 150 }} animate={{ opacity: 1, y: 0 }}>
+    <>
       <Love className="fixed right-10 top-52" />
-      <Section width={SectionWidth.Narrow}>
-        <Title title={meta.title} subtitle={meta.description} />
+      <motion.div
+        initial={{ opacity: 0, y: 150 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <Section width={SectionWidth.Narrow}>
+          <Title title={meta.title} subtitle={meta.description} />
 
-        <Image
-          src={meta.image}
-          className="w-full"
-          alt="Post Thumbnail"
-          placeholder="blur"
-        />
-      </Section>
-      <Section width={SectionWidth.Narrow}>{children}</Section>
-      {blogInfo && (
-        <div className=" mx-auto w-min whitespace-nowrap font-mono  text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
-          Hit Count: {blogInfo.hitCount}
-        </div>
-      )}
-    </motion.div>
+          <Image
+            src={meta.image}
+            className="w-full"
+            alt="Post Thumbnail"
+            placeholder="blur"
+          />
+        </Section>
+        <Section width={SectionWidth.Narrow}>{children}</Section>
+        {blogInfo && (
+          <div className=" mx-auto w-min whitespace-nowrap font-mono  text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
+            Hit Count: {blogInfo.hitCount}
+          </div>
+        )}
+      </motion.div>
+    </>
   );
 };
 

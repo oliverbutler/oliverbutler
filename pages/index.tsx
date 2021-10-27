@@ -4,11 +4,11 @@ import { Experience } from "components/Experience/Experience";
 import { Education } from "components/Education/Education";
 import { Projects } from "components/Projects/Projects";
 
-import profilePicture from "public/profile-photo.jpeg";
+import profilePicture from "public/profile-photo.jpg";
 
-import Section from "components/Layout/Section";
+import Section from "components/Layout/Section/Section";
 import { Typography } from "components/Typography/Typography";
-import { experiences } from "me";
+import { educations, experiences } from "me";
 
 export default function Home() {
   return (
@@ -27,11 +27,16 @@ export default function Home() {
         {experiences.map((experience) => (
           <Experience key={experience.company} experience={experience} />
         ))}
+      </Section>
+      <Section>
         <Typography variant="h2">Education 🎓</Typography>
         <Typography variant="p" className="mb-10">
           Below explains my education to date; through University and High
           School.
         </Typography>
+        {educations.map((education) => (
+          <Education key={education.name} education={education} />
+        ))}
       </Section>
     </motion.div>
   );
