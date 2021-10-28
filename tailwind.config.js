@@ -1,12 +1,9 @@
 module.exports = {
-  purge: {
-    content: [
+  content: {
+    files: [
       "./pages/**/*.{js,ts,jsx,tsx}",
       "./components/**/*.{js,ts,jsx,tsx}",
     ],
-    options: {
-      safelist: [],
-    },
   },
   darkMode: "class",
   theme: {},

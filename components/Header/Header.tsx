@@ -14,7 +14,7 @@ export const Header = ({ title, subtitle, image }: HeaderProps) => {
   return (
     <Section>
       <div className="mx-auto flex py-24 items-center justify-center flex-col">
-        <div className="mb-6 ">
+        <div className="mb-6 rounded-full ">
           <Image
             className="rounded-full"
             width={200}
