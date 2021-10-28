@@ -11,7 +11,7 @@ export const Particles = () => {
     let balls = [];
 
     const maxSpeed = 0.15;
-    const numBalls = 25;
+    const numBalls = (canvas.width * canvas.height) / 100000;
 
     function genBall() {
       balls.push({
@@ -27,17 +27,31 @@ export const Particles = () => {
       return dist;
     }
 
-    var user = { x: 0, y: 0 };
+    var user = { x: null, y: null };
 
     canvas.onmousemove = function (e) {
       var rect = canvas.getBoundingClientRect();
       user.x = e.clientX - rect.left;
       user.y = e.clientY - rect.top;
+
+      console.log(rect, user);
     };
+
+    canvas.addEventListener(
+      "mouseout",
+      () => {
+        user.x = null;
+        user.y = null;
+      },
+      false
+    );
 
     for (let i = 0; i < numBalls; i++) genBall();
 
     const render = () => {
+      ctx.canvas.width = window.innerWidth;
+      ctx.canvas.height = window.innerHeight;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       balls.map((ball) => {
         balls.map((oBall) => {
@@ -54,7 +68,7 @@ export const Particles = () => {
         var dist = getDist(ball, user);
         if (dist < 250) {
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(52, 207, 228, ${1 - dist / 250})`;
+          ctx.strokeStyle = `rgba(79, 70, 229, ${1 - dist / 250})`;
           ctx.moveTo(ball.x, ball.y);
           ctx.lineTo(user.x, user.y);
           ctx.stroke();
@@ -92,8 +106,8 @@ export const Particles = () => {
         style={{
           backgroundColor: "transparent",
           position: "absolute",
-          top: 0,
-          left: 0,
+          width: "100vw",
+          height: "100vh",
           opacity: 0.5,
         }}
       />

@@ -21,7 +21,11 @@ export default function Home() {
         subtitle="I'm a full stack developer at Theodo UK specializing with React, Typescript and all things JS"
       />
       <Section>
-        <Typography variant="h2">Career Experiences</Typography>
+        <Typography variant="h2" className="relative">
+          Career Experiences{" "}
+          <div className="w-16 h-1 bg-indigo-600 absolute -bottom-2  " />
+        </Typography>
+
         <Typography variant="p" className="mb-10">
           I am currently working at TheodoUK as a Full Stack Developer having
           graduated from Newcastle University with a first class degree.
@@ -31,7 +35,10 @@ export default function Home() {
         ))}
       </Section>
       <Section>
-        <Typography variant="h2">Education 🎓</Typography>
+        <Typography variant="h2" className="relative">
+          Education 🎓
+          <div className="w-16 h-1 bg-indigo-600 absolute -bottom-2  " />
+        </Typography>
         <Typography variant="p" className="mb-10">
           Below explains my education to date; through University and High
           School.
