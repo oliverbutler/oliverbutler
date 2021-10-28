@@ -8,7 +8,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@apollo/client": "^3.4.16",
     "@mdx-js/loader": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "@next/mdx": "^12.0.1",
