@@ -101,6 +101,7 @@ const Particles = () => {
         ref={canvasRef}
         width={window.innerWidth}
         height={window.innerHeight}
+        className="select-none"
         style={{
           backgroundColor: "transparent",
           position: "absolute",
