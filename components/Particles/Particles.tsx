@@ -33,8 +33,6 @@ const Particles = () => {
       var rect = canvas.getBoundingClientRect();
       user.x = e.clientX - rect.left;
       user.y = e.clientY - rect.top;
-
-      console.log(rect, user);
     };
 
     canvas.addEventListener(
@@ -85,8 +83,6 @@ const Particles = () => {
         }
         ball.x += ball.vx;
         ball.y += ball.vy;
-
-        console.log(ball);
       });
 
       requestId = requestAnimationFrame(render);
