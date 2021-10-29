@@ -2,19 +2,22 @@ import { motion } from "framer-motion";
 import { Header } from "components/Header/Header";
 import { Experience } from "components/Experience/Experience";
 import { Education } from "components/Education/Education";
-import { Projects } from "components/Projects/Projects";
+import dynamic from "next/dynamic";
 
 import profilePicture from "public/profile-photo.jpg";
 
 import Section from "components/Layout/Section/Section";
 import { Typography } from "components/Typography/Typography";
 import { educations, experiences } from "me";
-import { Particles } from "components/Particles/Particles";
+
+const DynamicParticlesBackground = dynamic(
+  () => import("components/Particles/Particles")
+);
 
 export default function Home() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <Particles />
+      <DynamicParticlesBackground />
       <Header
         image={profilePicture}
         title="I'm Oliver - it's nice to meet you 👋"

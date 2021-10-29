@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-export const Particles = () => {
+const Particles = () => {
   const canvasRef = React.useRef(null);
 
   useEffect(() => {
@@ -85,6 +85,8 @@ export const Particles = () => {
         }
         ball.x += ball.vx;
         ball.y += ball.vy;
+
+        console.log(ball);
       });
 
       requestId = requestAnimationFrame(render);
@@ -116,3 +118,5 @@ export const Particles = () => {
     return <></>;
   }
 };
+
+export default Particles;
