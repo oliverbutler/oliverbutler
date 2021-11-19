@@ -12,6 +12,11 @@ declare global {
   interface Window {
     GA_INITIALIZED: any;
   }
+  namespace JSX {
+    interface IntrinsicElements {
+      "ion-icon";
+    }
+  }
 }
 
 if (typeof window !== "undefined" && process.env.NODE_ENV === "production")
