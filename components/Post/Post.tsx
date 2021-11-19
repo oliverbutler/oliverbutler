@@ -35,7 +35,7 @@ const Post: React.FunctionComponent<PostProps> = ({ meta, children }) => {
 
   return (
     <>
-      <Love className="fixed right-10 top-52" />
+      {/* <Love className="fixed right-10 top-52" /> */}
       <motion.div
         initial={{ opacity: 0, y: 150 }}
         animate={{ opacity: 1, y: 0 }}

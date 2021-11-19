@@ -1,14 +1,17 @@
 import "../styles/globals.css";
-
 import Head from "next/head";
 import { ThemeProvider, useTheme } from "next-themes";
-
 import { Footer } from "components/Footer/Footer";
 import { Navbar } from "components/Navbar/Navbar";
 import React, { useEffect, useState } from "react";
 import { MarkdownProvider } from "components/Markdown/MarkdownProvider";
+import { useRouter } from "next/dist/client/router";
+import { initGA, logPageView } from "utils/analytics/analytics";
 
 declare global {
+  interface Window {
+    GA_INITIALIZED: any;
+  }
   namespace JSX {
     interface IntrinsicElements {
       "ion-icon";
@@ -35,16 +38,21 @@ const Wrapper = ({ children }) => {
       setTheme(theme === "light" ? "dark" : "light");
     }
   };
+
+  const { pathname } = useRouter();
+
+  useEffect(() => {
+    if (!window.GA_INITIALIZED) {
+      initGA();
+      logPageView();
+    } else logPageView();
+  }, [pathname]);
+
   return (
     <div id="App" className="flex flex-col">
       <Head>
         <title>Oliver Butler</title>
         <link rel="icon" href="/favicon.ico" />
-        <script
-          defer
-          data-domain="oliverbutler.uk"
-          src="https://plausible.io/js/plausible.js"
-        ></script>
       </Head>
 
       <Navbar switchTheme={switchTheme} />
