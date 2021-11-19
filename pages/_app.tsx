@@ -12,11 +12,6 @@ declare global {
   interface Window {
     GA_INITIALIZED: any;
   }
-  namespace JSX {
-    interface IntrinsicElements {
-      "ion-icon";
-    }
-  }
 }
 
 if (typeof window !== "undefined" && process.env.NODE_ENV === "production")
@@ -44,8 +39,9 @@ const Wrapper = ({ children }) => {
   useEffect(() => {
     if (!window.GA_INITIALIZED) {
       initGA();
-      logPageView();
-    } else logPageView();
+      window.GA_INITIALIZED = true;
+    }
+    logPageView();
   }, [pathname]);
 
   return (
