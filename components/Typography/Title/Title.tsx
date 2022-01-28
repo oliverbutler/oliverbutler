@@ -1,5 +1,4 @@
 import React from "react";
-import { Typography } from "../Typography";
 
 interface Props {
   title: string;
@@ -13,13 +12,11 @@ export const Title: React.FunctionComponent<Props> = ({
   image,
 }) => {
   return (
-    <div className=" w-full flex pt-5 items-center justify-center flex-col ">
+    <div className="w-full flex pt-5 items-center justify-center flex-col ">
       {image}
-      <div className="text-center lg:w-2/3 w-full">
-        <Typography variant="h1">{title}</Typography>
-        <Typography variant="p" className="leading-relaxed mb-8">
-          {subtitle}
-        </Typography>
+      <div className="text-center w-full prose dark:prose-invert max-w-screen-lg px-1">
+        <h1 className="text-5xl">{title}</h1>
+        <p className="leading-relaxed mb-8">{subtitle}</p>
       </div>
     </div>
   );

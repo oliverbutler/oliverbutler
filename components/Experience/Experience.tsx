@@ -47,10 +47,8 @@ export const Experience: React.FunctionComponent<Props> = ({ experience }) => {
         </>
       }
       right={
-        <>
-          <h2 className="title-font font-medium text-black dark:text-white title-font mb-2 w-full">
-            {experience.role}
-          </h2>
+        <div className="ml-4">
+          <h3 className="mt-0">{experience.role}</h3>
           <div className="leading-relaxed">{experience.description}</div>
           <div className="flex mt-1 flex-wrap">
             {experience.tags
@@ -61,7 +59,7 @@ export const Experience: React.FunctionComponent<Props> = ({ experience }) => {
                 </div>
               ))}
           </div>
-        </>
+        </div>
       }
     />
   );

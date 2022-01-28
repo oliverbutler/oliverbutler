@@ -13,9 +13,8 @@ const PostsPage: React.FunctionComponent<Props> = ({ posts }) => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <Title
-        title="Welcome to my Blog"
-        subtitle="Here you will find posts about loads of good stuff. React, Security,
-          Python, and AWS sounds good?"
+        title="Here Are Some Recent Posts"
+        subtitle="Here you will find posts about loads of good stuff. React, Security, Python, and AWS sounds good?"
       />
       <PostList posts={posts} />
     </motion.div>

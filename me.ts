@@ -67,7 +67,7 @@ export const experiences: Experience[] = [
     description:
       "Worked alongside the team to develop an interoperability layer using React, SSE Events, and Java to compliment the existing infrastructure of a common services data network of an existing project. Also actively worked to design and develop an overhaul of a STEM application focussed to help get school children interested in Cyber.",
     tags: ["react", "java"],
-    dates: "June 2021 - Present",
+    dates: "July 2020 - August 2020",
     role: "Software Engineer",
   },
   {

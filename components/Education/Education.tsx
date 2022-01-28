@@ -45,12 +45,10 @@ export const Education: React.FunctionComponent<Props> = ({ education }) => {
         </>
       }
       right={
-        <>
+        <div className="ml-4">
           {education.modules.map((uniModule) => (
             <div className="mb-4" key={"module-" + uniModule.title}>
-              <h2 className="title-font font-medium text-black dark:text-white title-font">
-                {uniModule.title}
-              </h2>
+              <h3 className="mt-0">{uniModule.title}</h3>
               <h2 className="text-gray-500 text-sm mb-1">{uniModule.grades}</h2>
               <div className="leading-relaxed">{uniModule.description}</div>
               <div className="mt-1 flex flex-row flex-wrap">
@@ -64,7 +62,7 @@ export const Education: React.FunctionComponent<Props> = ({ education }) => {
               </div>
             </div>
           ))}
-        </>
+        </div>
       }
     />
   );

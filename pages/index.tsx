@@ -6,8 +6,6 @@ import dynamic from "next/dynamic";
 
 import profilePicture from "public/profile-photo.jpg";
 
-import Section from "components/Layout/Section/Section";
-import { Typography } from "components/Typography/Typography";
 import { educations, experiences } from "me";
 
 const DynamicParticlesBackground = dynamic(
@@ -17,39 +15,37 @@ const DynamicParticlesBackground = dynamic(
 export default function Home() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <DynamicParticlesBackground />
+      {/* <DynamicParticlesBackground /> */}
       <Header
         image={profilePicture}
         title="I'm Oliver - it's nice to meet you 👋"
         subtitle="I'm a full stack developer at Theodo UK specializing with React, Typescript and all things JS"
       />
-      <Section>
-        <Typography variant="h2" className="relative">
+      <div className="prose dark:prose-invert max-w-screen-lg px-3 mx-auto">
+        <h2 className="relative">
           Career Experiences{" "}
           <div className="w-16 h-1 bg-indigo-600 absolute -bottom-2  " />
-        </Typography>
+        </h2>
 
-        <Typography variant="p" className="mb-10">
+        <p className="mb-10">
           I am currently working at TheodoUK as a Full Stack Developer having
           graduated from Newcastle University with a first class degree.
-        </Typography>
+        </p>
         {experiences.map((experience) => (
           <Experience key={experience.company} experience={experience} />
         ))}
-      </Section>
-      <Section>
-        <Typography variant="h2" className="relative">
+        <h2 className="relative">
           Education 🎓
           <div className="w-16 h-1 bg-indigo-600 absolute -bottom-2  " />
-        </Typography>
-        <Typography variant="p" className="mb-10">
+        </h2>
+        <p className="mb-10">
           Below explains my education to date; through University and High
           School.
-        </Typography>
+        </p>
         {educations.map((education) => (
           <Education key={education.name} education={education} />
         ))}
-      </Section>
+      </div>
     </motion.div>
   );
 }

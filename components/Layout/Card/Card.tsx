@@ -37,7 +37,7 @@ const Card = ({
     >
       <div
         className={classNames(
-          "h-full border-2 border-gray-200  dark:border-gray-800 rounded-lg overflow-hidden flex flex-col sm:w-1/2 lg:w-1/3 xl:w-1/4 w-full m-4",
+          "h-full border-2 border-gray-200  dark:border-gray-800 rounded-lg overflow-hidden flex flex-col sm:w-1/2 lg:w-1/3 xl:w-1/4 w-full m-4 prose dark:prose-invert max-w-none",
           {
             "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800": href,
           }
@@ -50,12 +50,8 @@ const Card = ({
             bodyJSX
           ) : (
             <>
-              <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
-                {topText}
-              </h2>
-              <h1 className="title-font text-lg font-medium dark:text-white text-black mb-3">
-                {title}
-              </h1>
+              <p className="tracking-widest my-1">{topText}</p>
+              <h2 className="mt-0 mb-2">{title}</h2>
               <div className="mb-1 -mt-1 flex flex-row flex-wrap">
                 {tags &&
                   tags.map((tag) => (

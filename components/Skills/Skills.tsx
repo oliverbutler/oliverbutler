@@ -1,11 +1,10 @@
 import { Heading } from "components/Typography/Heading/Heading";
-import Section from "components/Layout/Section/Section";
 import React from "react";
 import { motion } from "framer-motion";
 
 const Skills = () => {
   return (
-    <Section>
+    <div>
       <Heading title="Skills" subtitle="Below you can see the skills" />
 
       <div className="flex flex-col">
@@ -25,7 +24,7 @@ const Skills = () => {
           </motion.div>
         ))}
       </div>
-    </Section>
+    </div>
   );
 };
 
