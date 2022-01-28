@@ -1,0 +1,143 @@
+import Post from "components/Post/Post";
+import { Image } from "components/Image/Image";
+import thumbnail from "public/architecting-a-modern-monorepo/monorepo-art.png";
+import xeoStructure from "public/architecting-a-modern-monorepo/xeo-structure.png";
+
+export const meta = {
+  id: 3,
+  title: "Architecting a Modern Monorepo",
+  description:
+    "This is my 2022 guide for desiging and maintaining a modern monorepo for a JavaScript or TypeScript project. I will cover NPM Modules, NX, and TurboRepo, and ultimetely explain which tools are best for your project.",
+  image: thumbnail,
+  date: "February 01, 2021",
+  tags: ["typescript", "javascript"],
+  slug: "architecting-a-modern-monorepo",
+  readTime: 10,
+  draft: true,
+};
+
+export default ({ children }) => <Post meta={meta}>{children}</Post>;
+
+# What is a Monorepo?
+
+A monorepo is a consolidated repository containing the source code of multiple projects, which are commonly managed by independent teams and also often share common packages.
+
+## Proliferation of full-stack JavaScript
+
+Recently a common software development practise is to have a full stack JavaScript application, with tools such as React, Vue, Electron, or React Native on the front end and Express, Nest.js, or Koa on the backend - the benefits of such a stack in a Monorepo can come from the ability to share common modules between your backend and front end code
+
+## Example Monorepo structure
+
+Below is a diagram of a typical monorepo structure, in this case from an NX project called [Xeo](https://xeo.sh/) - This structure is very similar to a typical small Monorepo.
+
+- **Apps** - contains the front end code, and the backend code, and any other services such as the documentation server.
+- **Libs/Packages** - contains the shared packages, such as UI design components, or common utilities:
+
+<Image
+  src={xeoStructure}
+  className="mt-10 mx-auto"
+  layout="responsive"
+  style={{ width: "50%" }}
+/>
+
+## Benefits of a Monorepo
+
+There a a number of important benefits to using a Monorepo:
+
+- **Consistency** - It's possible to share UI modules, documentation and other such shared packages
+- **Visibility** - Everyone in the organisation can see all the code, improving cross-team collaborations and communication
+- **Single source of truth** - As all changes to the repo are atomic, there won't be a situation where one team is working with outdated legacy code
+- **A single CI/CD pipeline** - There is no need for multiple pipelines in each application as we can handle it in one centralized place
+- **Deduplication of node modules** - Node modules are the computational equivalent of a black hole as it is, so any deduplication or help here is always appreciated
+
+## Downsides of a Monorepo
+
+As with everything, there are some drawbacks, many of which are addressed with
+
+- **Slower performance** - Having so much code in one place can bring IDEs and editors such as VSCode to a halt
+- **Learning Curve** - Some tools to manage a Monorepo add technical complexity, especially during the setup
+
+<hr />
+
+# How do I make a Monorepo?
+
+Making a Monorepo for a fullstack JavaScript code base is easier than ever, the easiest solution with no additional dependencies are [NPM Workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces), and the other two solutions we will cover are [NX](https://nx.dev/) and [TurboRepo](https://turborepo.org/).
+
+## Workspaces - Keep It Simple Stupid
+
+Workspace is a generic term that refers to a set of features in the NPM cli which adds support for managing multiple packages from the root of the repository, NPM workspaces allow you to deduplicate node modules and run commands against multiple projects at the same time.
+
+Below is an example structure of a repository using NPM workspaces
+
+```bash
+├── package.json
+└── packages
+    ├── package-a
+    │   └── package.json
+    └── package-b
+        └── package.json
+```
+
+```bash
+# ./package.json
+{
+  ...
+  "workspaces": ["./packages/*"]
+}
+```
+
+Workspaces provides two basic features
+
+- Running commands against multiple packages from the top level repository, e.g. `npm run test --workspaces`
+- Deduplication of node modules
+
+### Ideal for 💡
+
+- Small projects
+- You don't want advanced build features
+- You want something that works straight out of the box
+
+## NX - Advanced and Powerful
+
+NX is one of the most advanced build systems available and offers some incredibly powerful features to take your repository to the next level.
+
+Some of the most acclaimed features of NX are as follows:
+
+- Integrations and plugins for many platforms (including a VSCode Plugin)
+- Rich plugin ecosystem 🚀
+- Ability to build and test only what you need to
+- Automatic project dependency management
+- Vastly faster builds with NX Cloud
+- Distributed task execution
+- Code generation tools
+
+Starting an NX project can be more overwhelming than that of Workspaces, and requires some tuning to get working as you want it for your project,
+
+... WIP 🏗️
+
+Ideal for 💡
+
+- Medium to massive projects
+- You want _all_ of the fancy modern features you can get
+- You don't mind dealing with some complicated looking `nx.json` files and tuning them to your liking
+- You want a battle hardened, community supported platform with industry backing
+
+## Turborepo - The New Kid on the Block
+
+Turborepo is a recently open sourced project acquired by Vercel, the company which brought us Next.js 🤩.
+
+Turborepo's goal is to take what's great about other build systems such as Lerna, Workspaces, and NX, package it up into a small simple package, and do it while staying out of your way.
+
+- dependency tree
+- cache files
+- paralleise jobs
+- remote caching
+- quicker to setup and use
+- Great for small projects
+- Recently acquired by Vercel
+
+## "So What Should I Do?" I hear you ask
+
+Don't worry dear reader, to be honest, you couldn't go wrong with NX or Turborepo for small to medium projects, both offer fantastic features and very tangible improvements over Workspaces.
+
+I'd recommend giving them both a shot, but due to the ease of setup and simplicity, start with Turborepo.

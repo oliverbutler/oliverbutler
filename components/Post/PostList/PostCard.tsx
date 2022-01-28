@@ -19,6 +19,19 @@ const PostCard: React.FunctionComponent<Props> = ({ post }) => {
             objectFit="cover"
             alt="post thumbnail"
           />
+          {post.meta.draft && (
+            <div
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+                width: 0,
+                height: 0,
+                borderTop: "50px solid red",
+                borderLeft: " 50px solid transparent",
+              }}
+            />
+          )}
         </div>
       }
       href={`/blog/${post.path}`}

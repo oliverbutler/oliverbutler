@@ -1,5 +1,4 @@
 import Post from "components/Post/Post";
-import Section from "components/Layout/Section/Section";
 import thumbnail from "public/nextjs-gradient.png";
 
 export const meta = {
@@ -12,6 +11,7 @@ export const meta = {
   tags: ["next", "typescript", "react"],
   slug: "0-to-ssg-with-next",
   readTime: 10,
+  draft: true,
 };
 
 export default ({ children }) => <Post meta={meta}>{children}</Post>;

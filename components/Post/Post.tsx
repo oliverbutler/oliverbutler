@@ -14,6 +14,7 @@ export interface PostMeta {
   tags: string[];
   slug: string;
   readTime: number;
+  draft: boolean;
 }
 interface PostProps {
   meta: PostMeta;

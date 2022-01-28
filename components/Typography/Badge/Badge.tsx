@@ -38,7 +38,7 @@ export const RenderBadge = ({ name }: RenderBadgeProps) => {
 export const Badge = ({ tag, bg, text }) => {
   return (
     <div
-      className={`px-2  ${bg} ${text} bg-opacity-90 rounded-lg w-min font-semibold  `}
+      className={`px-2 ${bg} ${text} bg-opacity-90 rounded-lg w-min font-semibold text-sm `}
     >
       {tag}
     </div>

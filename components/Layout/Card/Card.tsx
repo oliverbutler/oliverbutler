@@ -50,8 +50,8 @@ const Card = ({
             bodyJSX
           ) : (
             <>
-              <p className="tracking-widest my-1">{topText}</p>
-              <h2 className="mt-0 mb-2">{title}</h2>
+              <p className="tracking-widest my-1 text-sm">{topText}</p>
+              <h3 className="mt-0 mb-2">{title}</h3>
               <div className="mb-1 -mt-1 flex flex-row flex-wrap">
                 {tags &&
                   tags.map((tag) => (
