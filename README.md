@@ -2,4 +2,4 @@
 
 - 👨‍💻 Full Stack Web Developer @ TheodoUK
 - ❤️ **Loves** Open Source
-- 🌱 Currently learning Go!
+- 🌱 Currently building Xeo and Xeo SCRUM
