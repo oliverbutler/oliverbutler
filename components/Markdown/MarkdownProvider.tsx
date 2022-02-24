@@ -1,5 +1,6 @@
 import React from "react";
-import { MDXProvider, MDXProviderComponentsProp } from "@mdx-js/react";
+import { MDXProvider } from "@mdx-js/react";
+import { MDXComponents } from "mdx/types";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
@@ -21,7 +22,7 @@ export const slugify = (str: string) => {
   return str;
 };
 
-const components: MDXProviderComponentsProp = {
+const components: MDXComponents = {
   link: (props) => (
     <a
       className="text-indigo-600 dark:text-indigo-400 underline"
@@ -52,12 +53,24 @@ const components: MDXProviderComponentsProp = {
       {props.children}
     </SyntaxHighlighter>
   ),
-  h1: (props) => <h1 id={slugify(props.children)}>{props.children}</h1>,
-  h2: (props) => <h2 id={slugify(props.children)}>{props.children}</h2>,
-  h3: (props) => <h3 id={slugify(props.children)}>{props.children}</h3>,
-  h4: (props) => <h4 id={slugify(props.children)}>{props.children}</h4>,
-  h5: (props) => <h5 id={slugify(props.children)}>{props.children}</h5>,
-  h6: (props) => <h6 id={slugify(props.children)}>{props.children}</h6>,
+  h1: (props) => (
+    <h1 id={slugify(props.children as string)}>{props.children}</h1>
+  ),
+  h2: (props) => (
+    <h2 id={slugify(props.children as string)}>{props.children}</h2>
+  ),
+  h3: (props) => (
+    <h3 id={slugify(props.children as string)}>{props.children}</h3>
+  ),
+  h4: (props) => (
+    <h4 id={slugify(props.children as string)}>{props.children}</h4>
+  ),
+  h5: (props) => (
+    <h5 id={slugify(props.children as string)}>{props.children}</h5>
+  ),
+  h6: (props) => (
+    <h6 id={slugify(props.children as string)}>{props.children}</h6>
+  ),
 };
 
 export const MarkdownProvider: React.FunctionComponent = (props) => {

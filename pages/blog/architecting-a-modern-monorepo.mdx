@@ -2,6 +2,16 @@ import Post from "components/Post/Post";
 import { Image } from "components/Image/Image";
 import thumbnail from "public/architecting-a-modern-monorepo/monorepo-art.png";
 import xeoStructure from "public/architecting-a-modern-monorepo/xeo-structure.png";
+import nxInstall from "public/architecting-a-modern-monorepo/nx-install.png";
+import nxCreateReactLib from "public/architecting-a-modern-monorepo/nx-create-react-lib.png";
+import nxCreateReactLibUseComponent from "public/architecting-a-modern-monorepo/nx-create-react-lib-use-component.png";
+import nxDepGraph from "public/architecting-a-modern-monorepo/nx-dep-graph.png";
+import nxAffected1 from "public/architecting-a-modern-monorepo/nx-affected-1.png";
+import nxAffected1Graph from "public/architecting-a-modern-monorepo/nx-affected-1-graph.png";
+import nxAffected2 from "public/architecting-a-modern-monorepo/nx-affected-2.png";
+import nxAffected2Graph from "public/architecting-a-modern-monorepo/nx-affected-2-graph.png";
+
+import turboStructure from "public/architecting-a-modern-monorepo/turbo-structure.png";
 
 export const meta = {
   id: 3,
@@ -13,7 +23,7 @@ export const meta = {
   tags: ["typescript", "javascript"],
   slug: "architecting-a-modern-monorepo",
   readTime: 10,
-  draft: true,
+  draft: false,
 };
 
 export default ({ children }) => <Post meta={meta}>{children}</Post>;
@@ -97,6 +107,48 @@ Workspaces provides two basic features
 - You don't want advanced build features
 - You want something that works straight out of the box
 
+## Turborepo - The New Kid on the Block
+
+Turborepo is a recently open sourced project acquired by Vercel, the company which brought us Next.js 🤩.
+
+Turborepo's goal is to take what's great about other build systems such as Lerna, Workspaces, and NX, package it up into a small simple package, and do it while staying out of your way.
+
+### Setup
+
+Setting up Turborepo is as easy as it gets, just run `npx create-turbo@latest`.
+
+This sets up an example project, with a `web` and `docs` apps, and a shared `ui` package. Unlike NX there is a lot less boilerplate and this resembles a typical project structure you'd see with a "normal" Monorepo, this makes Turborepo much more approachable to a monorepo newcomer.
+
+<Image
+  src={turboStructure}
+  className="mt-10 mx-auto"
+  layout="responsive"
+  style={{ width: "100%" }}
+  alt="Turborepo structure"
+/>
+
+### Affected
+
+Turborepo has it's own flavour of `affected` from NX, both work very similarly however Turbo repo doesn't produce an interactive graph like NX does, Turborepo has a basic graphviz image export.
+
+### Other Features
+
+Turborepo has a few other features:
+
+- Cloud caching
+- Parallel execution
+- Profile in the browser
+
+### Continue Reading
+
+If you want to learn some more Turborepo, I strongly reccomend you take a look at the [Turborepo Docs](https://turborepo.org/docs).
+
+### Ideal for 💡
+
+- Vercel users, Remote Caching works great
+- Small to medium projects
+- You don't mind loosing some features of NX
+
 ## NX - Advanced and Powerful
 
 NX is one of the most advanced build systems available and offers some incredibly powerful features to take your repository to the next level.
@@ -113,31 +165,117 @@ Some of the most acclaimed features of NX are as follows:
 
 Starting an NX project can be more overwhelming than that of Workspaces, and requires some tuning to get working as you want it for your project,
 
-... WIP 🏗️
+### Create an a Next.js NX project
 
-Ideal for 💡
+Create a new NX project, with a Next.js application
+
+```bash
+npx create-nx-workspace@latest
+```
+
+The NX CLI will then prompt you for what template to use to create this new application, for our case let's choose "Next.js".
+
+<Image
+  src={nxInstall}
+  className="mt-10 mx-auto"
+  layout="responsive"
+  style={{ width: "100%" }}
+  alt="NX Install"
+/>
+
+### Create a shared React library
+
+One benefitial usage of NX is to create a shared library, which can be used by multiple apps. Shared libs are found in the `libs` directory.
+
+```bash
+nx g @nrwl/react:lib ui-shared
+```
+
+Running this command generates a new "ui-shared" library, which can be used by multiple apps, the beauty of this pattern is changes to your "ui-shared
+will rebuild other apps that use it, where as, if you make a change in "next-app" NX wont rebuild "ui-shared"
+
+<Image
+  src={nxCreateReactLib}
+  className="mt-10 mx-auto"
+  layout="responsive"
+  style={{ width: "100%" }}
+  alt="NX Create React Lib"
+/>
+
+Here you can see importing our new shared library, and using it in our Next.js app.
+
+<Image
+  src={nxCreateReactLibUseComponent}
+  className="mt-10 mx-auto"
+  layout="responsive"
+  style={{ width: "100%" }}
+  alt="NX Use Component"
+/>
+
+### Affected Builds
+
+When you run `nx test next-app`, you are telling Nx to run the `next-app:test` task plus all the tasks it depends on.
+
+For a small project this is okay, however, for a large project you really only want to run the tests for the files and changes you've made to the app.
+To handle this NX has the `affected` command, for example `nx affected --target=next-app` will figure out which tasks to run, and only run those tasks.
+
+To visualize this use the `nx affected:graph` command, in this example below we've added a `second-shared` lib which is also used in `next-app`
+
+<Image
+  src={nxAffected1}
+  className="mt-10 mx-auto"
+  layout="responsive"
+  style={{ width: "100%" }}
+  alt="NX Affected Files"
+/>
+
+<Image
+  src={nxAffected1Graph}
+  className="mt-10 mx-auto"
+  layout="responsive"
+  style={{ width: "100%" }}
+  alt="NX Affected Graph"
+/>
+
+Now we're going to make a change to `second-shared`, as this is used by `next-app`, and `next-app-e2e` you should expect that they should both be re-built.
+
+<Image
+  src={nxAffected2}
+  className="mt-10 mx-auto"
+  layout="responsive"
+  style={{ width: "100%" }}
+  alt="NX Affected Files 2"
+/>
+
+<Image
+  src={nxAffected2Graph}
+  className="mt-10 mx-auto"
+  layout="responsive"
+  style={{ width: "100%" }}
+  alt="NX Affected Graph 2"
+/>
+
+As epected you can see that the `next-app` and `next-app-e2e` projects are affected, but the `ui-shared` lib is not 🤩
+
+### Continue Reading
+
+If you want to learn some more NX, I strongly reccomend you take a look at the [NX Documentation](https://nx.dev/docs/).
+
+### Ideal for 💡
 
 - Medium to massive projects
 - You want _all_ of the fancy modern features you can get
 - You don't mind dealing with some complicated looking `nx.json` files and tuning them to your liking
 - You want a battle hardened, community supported platform with industry backing
 
-## Turborepo - The New Kid on the Block
+## Conclusion
 
-Turborepo is a recently open sourced project acquired by Vercel, the company which brought us Next.js 🤩.
+As much as I'd recommend giving them both a shot, if you don't have time to experiment with both, **I recommend trying NX**.
 
-Turborepo's goal is to take what's great about other build systems such as Lerna, Workspaces, and NX, package it up into a small simple package, and do it while staying out of your way.
+Turborepo has most of the features that NX has, but NX does that, and more in a more performant package. NX is slightly harder to setup, however, I'd rather have an over-engineered Monorepo to support future growth rather than an under-engineered one that doesn't scale.
 
-- dependency tree
-- cache files
-- paralleise jobs
-- remote caching
-- quicker to setup and use
-- Great for small projects
-- Recently acquired by Vercel
+## References and Reading Materials
 
-## "So What Should I Do?" I hear you ask
-
-Don't worry dear reader, to be honest, you couldn't go wrong with NX or Turborepo for small to medium projects, both offer fantastic features and very tangible improvements over Workspaces.
-
-I'd recommend giving them both a shot, but due to the ease of setup and simplicity, start with Turborepo.
+- [NX Documentation](https://nx.dev/docs/)
+- [Turborepo Docs](https://turborepo.org/docs)
+- [NX and Turborepo comparison](https://nx.dev/guides/turbo-and-nx?utm_source=twitter&utm_medium=ads&utm_campaign=dec2021) (From NX)
