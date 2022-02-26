@@ -17,32 +17,32 @@ A monorepo is a consolidated repository containing the source code of multiple p
 
 ## Proliferation of full-stack JavaScript
 
-Recently a common software development practise is to have a full stack JavaScript application, with tools such as React, Vue, Electron, or React Native on the front end and Express, Nest.js, or Koa on the backend - the benefits of such a stack in a Monorepo can come from the ability to share common modules between your backend and front end code
+Recently a common software development practice is to have a full stack JavaScript application, with tools such as React, Vue, Electron, or React Native on the front-end and Express, Nest.js, or Koa on the back-end - the benefits of such a stack in a Monorepo can come from the ability to share common modules between your back-end and front-end code.
 
 ## Example Monorepo structure
 
-Below is a diagram of a typical monorepo structure, in this case from an NX project called [Xeo](https://xeo.sh/) - This structure is very similar to a typical small Monorepo.
+Below is a diagram of a typical monorepo structure, in this case from an NX project called [Xeo](https://xeo.sh/) - this structure is very similar to a typical small Monorepo.
 
-- **Apps** - contains the front end code, and the backend code, and any other services such as the documentation server.
+- **Apps** - contains the front-end code, and the back-end code, and any other services such as the documentation server.
 - **Libs/Packages** - contains the shared packages, such as UI design components, or common utilities:
 
 ![xeo-structure](/static/images/architecting-a-modern-monorepo/xeo-structure.png)
 
 ## Benefits of a Monorepo
 
-There a a number of important benefits to using a Monorepo:
+There are a number of important benefits to using a Monorepo:
 
 - **Consistency** - It's possible to share UI modules, documentation and other such shared packages
 - **Visibility** - Everyone in the organisation can see all the code, improving cross-team collaborations and communication
 - **Single source of truth** - As all changes to the repo are atomic, there won't be a situation where one team is working with outdated legacy code
 - **A single CI/CD pipeline** - There is no need for multiple pipelines in each application as we can handle it in one centralized place
-- **Deduplication of node modules** - Node modules are the computational equivalent of a black hole as it is, so any deduplication or help here is always appreciated
+- **Deduplication of node modules** - Node modules are the computational equivalent of a black hole already, so any deduplication or help here is always appreciated
 
 ## Downsides of a Monorepo
 
 As with everything, there are some drawbacks, many of which are addressed with
 
-- **Slower performance** - Having so much code in one place can bring IDEs and editors such as VSCode to a halt
+- **Slower IDE Performance** - Having so much code in one place can bring IDEs and editors such as VSCode to a halt
 - **Learning Curve** - Some tools to manage a Monorepo add technical complexity, especially during the setup
 
 <hr />
@@ -89,7 +89,7 @@ Workspaces provides two basic features
 
 Turborepo is a recently open sourced project acquired by Vercel, the company which brought us Next.js 🤩.
 
-Turborepo's goal is to take what's great about other build systems such as Lerna, Workspaces, and NX, package it up into a small simple package, and do it while staying out of your way.
+Turborepo's goal is to take what's great about other build systems such as Lerna, Workspaces, and NX, whilst shipping it in a small simple package, which works hard to stay out of your way.
 
 ### Setup
 
@@ -111,15 +111,11 @@ Turborepo has a few other features:
 - Parallel execution
 - Profile in the browser
 
-### Continue Reading
-
-If you want to learn some more Turborepo, I strongly reccomend you take a look at the [Turborepo Docs](https://turborepo.org/docs).
-
 ### Ideal for 💡
 
 - Vercel users, Remote Caching works great
 - Small to medium projects
-- You don't mind loosing some features of NX
+- You don't mind losing some features of NX
 
 ## NX - Advanced and Powerful
 
@@ -137,7 +133,7 @@ Some of the most acclaimed features of NX are as follows:
 
 Starting an NX project can be more overwhelming than that of Workspaces, and requires some tuning to get working as you want it for your project,
 
-### Create an a Next.js NX project
+### Create a Next.js NX project
 
 Create a new NX project, with a Next.js application
 
@@ -145,24 +141,23 @@ Create a new NX project, with a Next.js application
 npx create-nx-workspace@latest
 ```
 
-The NX CLI will then prompt you for what template to use to create this new application, for our case let's choose "Next.js".
+The NX CLI will then prompt you for what template to use to create this new application, for our case lets choose "Next.js".
 
 ![nx-install](/static/images/architecting-a-modern-monorepo/nx-install.png)
 
 ### Create a shared React library
 
-One benefitial usage of NX is to create a shared library, which can be used by multiple apps. Shared libs are found in the `libs` directory.
+One benefitial usage of NX is to create a shared library, which can be used by multiple apps. Shared libraries are found in the `libs` directory.
 
 ```bash
 nx g @nrwl/react:lib ui-shared
 ```
 
-Running this command generates a new "ui-shared" library, which can be used by multiple apps, the beauty of this pattern is changes to your "ui-shared
-will rebuild other apps that use it, where as, if you make a change in "next-app" NX wont rebuild "ui-shared"
+Running this command generates a new `ui-shared` library, which can be used by multiple apps, the beauty of this pattern is that if you change `ui-shared`, it will rebuild other apps that use it, where as, if you make a change in `next-app` NX won't rebuild `ui-shared`.
 
 ![nx-create-react-lib](/static/images/architecting-a-modern-monorepo/nx-create-react-lib.png)
 
-Here you can see importing our new shared library, and using it in our Next.js app.
+Here you can see the process of importing our new shared library, and using it in our Next.js app.
 
 ![nx-create-react-lib-use-component](/static/images/architecting-a-modern-monorepo/nx-create-react-lib-use-component.png)
 
@@ -171,9 +166,9 @@ Here you can see importing our new shared library, and using it in our Next.js a
 When you run `nx test next-app`, you are telling Nx to run the `next-app:test` task plus all the tasks it depends on.
 
 For a small project this is okay, however, for a large project you really only want to run the tests for the files and changes you've made to the app.
-To handle this NX has the `affected` command, for example `nx affected --target=next-app` will figure out which tasks to run, and only run those tasks.
+To handle this, NX has the `affected` command. `nx affected --target=next-app` will figure out which tasks to run, and only run those tasks.
 
-To visualize this use the `nx affected:graph` command, in this example below we've added a `second-shared` lib which is also used in `next-app`
+To visualize these "affected libraries", use the `nx affected:graph` command, in this example below we've added a `second-shared` lib which is also used in `next-app`.
 
 ![nx-affected-1](/static/images/architecting-a-modern-monorepo/nx-affected-1.png)
 
@@ -187,9 +182,17 @@ Now we're going to make a change to `second-shared`, as this is used by `next-ap
 
 As epected you can see that the `next-app` and `next-app-e2e` projects are affected, but the `ui-shared` lib is not 🤩
 
-### Continue Reading
+### Incremental Builds
 
-If you want to learn some more NX, I strongly reccomend you take a look at the [NX Documentation](https://nx.dev/docs/).
+Once you've got an established NX Monorepo, you will likely have many applications, and many libraries. It is common that you will only be editing a small subset of these applications at once, Incremental builds allows NX to only rebuild a small subset of the libraries, which results in much better performance.
+
+This then works closely with NX Cloud. With NX Cloud you and your team mates share the same cache, allowing you all to benefit from improved performance.
+
+![nx-incremental-builds](/static/images/architecting-a-modern-monorepo/nx-incremental.png)
+
+The above chart is [from NX](https://nx.dev/ci/incremental-builds) and highlights the performance differences between normal builds, and incremental builds (both cold and warm).
+
+> Running the Nx incremental build having already cached results from a previous run or from some other coworker that executed the build before. In a real world scenario, we expect always some kind of cached results either of the entire workspace or part of it. This is where the teams really get the value and speed improvements.
 
 ### Ideal for 💡
 
@@ -202,14 +205,13 @@ If you want to learn some more NX, I strongly reccomend you take a look at the [
 
 As much as I'd recommend giving them both a shot, if you don't have time to experiment with both, **I recommend trying NX**.
 
-Turborepo has most of the features that NX has, but NX does that, and more in a more performant package. NX is slightly harder to setup, however, I'd rather have an over-engineered Monorepo to support future growth rather than an under-engineered one that doesn't scale.
+Turborepo has most of the features that NX has, but NX does that and more, in a more performant package. NX is slightly harder to setup, however, I'd rather have an over-engineered Monorepo to support future growth rather than an under-engineered one that doesn't scale.
 
-<Gif url="https://media.giphy.com/media/g9582DNuQppxC/source.gif" caption="Congratulations 🎉" />
-
-Congrats! If you got this far, and followed along, you should now have a solid foundation to start building your own Monorepo.
+<Gif url="https://c.tenor.com/UMHdiHRwRAsAAAAC/thanks-thank-you.gif" caption="That's all folks!" />
 
 ## References and Reading Materials
 
 - [NX Documentation](https://nx.dev/docs/)
 - [Turborepo Docs](https://turborepo.org/docs)
-- [NX and Turborepo comparison](https://nx.dev/guides/turbo-and-nx?utm_source=twitter&utm_medium=ads&utm_campaign=dec2021) (From NX)
+- [NX and Turborepo comparison](https://nx.dev/guides/turbo-and-nx?utm_source=twitter&utm_medium=ads&utm_campaign=dec2021) (Disclaimer, it's from NX)
+- [monorepo.tools](https://monorepo.tools/) Fantastic Resource! 🔥
