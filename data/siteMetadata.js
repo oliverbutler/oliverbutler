@@ -17,7 +17,7 @@ const siteMetadata = {
   linkedin: 'https://www.linkedin.com/in/oliver-butler',
   locale: 'en-GB',
   analytics: {
-    googleAnalyticsId: 'G-385N1M2KM5',
+    googleAnalyticsId: 'G-G146XRC7V0',
   },
   newsletter: {
     provider: 'mailchimp',
