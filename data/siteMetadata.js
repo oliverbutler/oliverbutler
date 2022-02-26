@@ -7,20 +7,17 @@ const siteMetadata = {
   language: 'en-bg',
   theme: 'system', // system, dark or light
   siteUrl: 'https://oliverbutler.uk',
-  siteRepo: 'https://github.com/oliverbutler/blog',
+  siteRepo: 'https://github.com/oliverbutler/oliverbutler',
   siteLogo: '/static/images/avatar.png',
   image: '/static/images/avatar.png',
   socialBanner: '/static/images/twitter-card.png',
   email: 'dev@oliverbutler.uk',
-  github: 'https://github.com',
-  twitter: 'https://twitter.com/Twitter',
-  linkedin: 'https://www.linkedin.com',
+  github: 'https://github.com/oliverbutler',
+  twitter: 'https://twitter.com/_oliverbutler',
+  linkedin: 'https://www.linkedin.com/in/oliver-butler',
   locale: 'en-GB',
   analytics: {
-    plausibleDataDomain: '',
-    simpleAnalytics: false, // true or false
-    umamiWebsiteId: '', // e.g. 123e4567-e89b-12d3-a456-426614174000
-    googleAnalyticsId: 'G-385N1M2KM5', // e.g. UA-000000-2 or G-XXXXXXX
+    googleAnalyticsId: 'G-385N1M2KM5',
   },
   newsletter: {
     provider: 'mailchimp',
