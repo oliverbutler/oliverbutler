@@ -1,81 +1,32 @@
-import "../styles/globals.css";
-import Head from "next/head";
-import { ThemeProvider, useTheme } from "next-themes";
-import { Footer } from "components/Footer/Footer";
-import { Navbar } from "components/Navbar/Navbar";
-import React, { useEffect, useState } from "react";
-import { MarkdownProvider } from "components/Markdown/MarkdownProvider";
-import { useRouter } from "next/dist/client/router";
-import { initGA, logPageView } from "utils/analytics/analytics";
+import '@/css/tailwind.css'
+import '@/css/prism.css'
+import 'katex/dist/katex.css'
 
-declare global {
-  interface Window {
-    GA_INITIALIZED: any;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      "ion-icon";
-    }
-  }
-}
+import '@fontsource/inter/variable-full.css'
 
-if (typeof window !== "undefined" && process.env.NODE_ENV === "production")
-  console.log(
-    "%cHey there! ❤️ \nLook at you being all adventurous, have fun! https://github.com/oliverbutler ",
-    "font-size: 1.2rem; font-family: monospace; padding: 1rem; color: rgb(105, 99, 224); "
-  );
+import { ThemeProvider } from 'next-themes'
+import type { AppProps } from 'next/app'
+import Head from 'next/head'
 
-const Wrapper = ({ children }) => {
-  const { theme, setTheme } = useTheme();
-  const [isMounted, setIsMounted] = useState(false);
+import siteMetadata from '@/data/siteMetadata'
+import Analytics from '@/components/analytics'
+import LayoutWrapper from '@/components/LayoutWrapper'
+import { ClientReload } from '@/components/ClientReload'
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+const isDevelopment = process.env.NODE_ENV === 'development'
+const isSocket = process.env.SOCKET
 
-  const switchTheme = () => {
-    if (isMounted) {
-      setTheme(theme === "light" ? "dark" : "light");
-    }
-  };
-
-  const { pathname } = useRouter();
-
-  useEffect(() => {
-    if (!window.GA_INITIALIZED) {
-      initGA();
-      window.GA_INITIALIZED = true;
-    }
-    logPageView();
-  }, [pathname]);
-
+export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div id="App" className="flex flex-col">
+    <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
       <Head>
-        <title>Oliver Butler</title>
-        <link rel="icon" href="/favicon.ico" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
-
-      <Navbar switchTheme={switchTheme} />
-
-      <div id="Content" className="flex-grow ">
-        {children}
-      </div>
-      <Footer />
-    </div>
-  );
-};
-
-const MyApp = ({ Component, pageProps }) => {
-  return (
-    <ThemeProvider attribute="class">
-      <MarkdownProvider>
-        <Wrapper>
-          <Component {...pageProps} />
-        </Wrapper>
-      </MarkdownProvider>
+      {isDevelopment && isSocket && <ClientReload />}
+      <Analytics />
+      <LayoutWrapper>
+        <Component {...pageProps} />
+      </LayoutWrapper>
     </ThemeProvider>
-  );
-};
-
-export default MyApp;
+  )
+}
