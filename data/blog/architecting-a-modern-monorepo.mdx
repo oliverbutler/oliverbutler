@@ -5,6 +5,7 @@ tags: ['nx', 'turborepo', 'monorepo']
 draft: false
 summary: 'This is my 2022 guide for desiging and maintaining a modern monorepo for a JavaScript or TypeScript project. I will cover NPM Modules, NX, and TurboRepo, and ultimetely explain which tools are best for your project.'
 authors: ['default']
+thumbnail: '/static/images/architecting-a-modern-monorepo/thumbnail.jpeg'
 ---
 
 ## Overview
@@ -79,7 +80,7 @@ Workspaces provides two basic features
 - Running commands against multiple packages from the top level repository, e.g. `npm run test --workspaces`
 - Deduplication of node modules
 
-### Ideal for 💡
+**Ideal for 💡**
 
 - Small projects
 - You don't want advanced build features
@@ -111,7 +112,7 @@ Turborepo has a few other features:
 - Parallel execution
 - Profile in the browser
 
-### Ideal for 💡
+**Ideal for 💡**
 
 - Vercel users, Remote Caching works great
 - Small to medium projects
@@ -194,7 +195,7 @@ The above chart is [from NX](https://nx.dev/ci/incremental-builds) and highlight
 
 > Running the Nx incremental build having already cached results from a previous run or from some other coworker that executed the build before. In a real world scenario, we expect always some kind of cached results either of the entire workspace or part of it. This is where the teams really get the value and speed improvements.
 
-### Ideal for 💡
+**Ideal for 💡**
 
 - Medium to massive projects
 - You want _all_ of the fancy modern features you can get

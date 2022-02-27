@@ -3,7 +3,7 @@ const siteMetadata = {
   author: 'Oliver Butler',
   headerTitle: 'Oliver Butler',
   description:
-    'Hey there! 👋 I hope you enjoy some of my latest posts, if you really love it give it a like, comment, and sign up to my mailing list!',
+    'I hope you enjoy some of my latest posts, if you really love it give it a like, comment, and sign up to my mailing list!',
   language: 'en-bg',
   theme: 'system', // system, dark or light
   siteUrl: 'https://oliverbutler.uk',
@@ -20,7 +20,7 @@ const siteMetadata = {
     googleAnalyticsId: 'G-G146XRC7V0',
   },
   newsletter: {
-    provider: 'mailchimp',
+    provider: '',
   },
   comment: {
     provider: 'giscus',

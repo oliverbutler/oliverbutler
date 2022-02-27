@@ -17,7 +17,7 @@ const discussUrl = (slug) =>
 const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
 export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
-  const { slug, fileName, date, title, tags } = frontMatter
+  const { slug, fileName, date, title, tags, thumbnail } = frontMatter
 
   return (
     <SectionContainer>
@@ -44,6 +44,18 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
               <div>
                 <PageTitle>{title}</PageTitle>
               </div>
+              {thumbnail !== undefined ? (
+                <div className="relative py-6">
+                  <Image
+                    src={thumbnail}
+                    layout="responsive"
+                    objectFit="cover"
+                    width={400}
+                    height={150}
+                    alt="post thumbnail"
+                  />
+                </div>
+              ) : null}
             </div>
           </header>
           <div
