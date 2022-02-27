@@ -3,14 +3,14 @@ const siteMetadata = {
   author: 'Oliver Butler',
   headerTitle: 'Oliver Butler',
   description:
-    'I hope you enjoy some of my latest posts, if you really love it give it a like, comment, and sign up to my mailing list!',
+    "I'm a full stack software engineer working at Theodo UK. I also blog about JavaScript, React, and other tech stuff.",
   language: 'en-bg',
   theme: 'system', // system, dark or light
   siteUrl: 'https://oliverbutler.uk',
   siteRepo: 'https://github.com/oliverbutler/oliverbutler',
   siteLogo: '/static/images/avatar.png',
   image: '/static/images/avatar.png',
-  socialBanner: '/static/images/twitter-card.png',
+  socialBanner: '/static/images/seo-card.png',
   email: 'dev@oliverbutler.uk',
   github: 'https://github.com/oliverbutler',
   twitter: 'https://twitter.com/_oliverbutler',
