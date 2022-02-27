@@ -48,7 +48,7 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
           {!filteredBlogPosts.length && 'No posts found.'}
           {displayPosts.map((frontMatter) => (
             <li key={frontMatter.slug} className="py-4">
-              <PostListItem frontMatter={frontMatter} />
+              <PostListItem frontMatter={frontMatter} showThumbnail />
             </li>
           ))}
         </ul>
