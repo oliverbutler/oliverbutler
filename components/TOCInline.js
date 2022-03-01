@@ -48,7 +48,7 @@ const TOCInline = ({
   )
 
   return (
-    <>
+    <div className="mb-12">
       {asDisclosure ? (
         <details open>
           <summary className="ml-6 pt-2 pb-2 text-xl font-bold">Table of Contents</summary>
@@ -57,7 +57,7 @@ const TOCInline = ({
       ) : (
         tocList
       )}
-    </>
+    </div>
   )
 }
 
