@@ -16,22 +16,15 @@ thumbnail: '/static/images/architecting-a-modern-monorepo/thumbnail.jpg'
 
 A monorepo is a consolidated repository containing the source code of multiple projects, which are commonly managed by independent teams and also often share common packages.
 
-## Proliferation of full-stack JavaScript
+## Not just Code Collocation
 
-Recently a common software development practice is to have a full stack JavaScript application - the benefits of such a stack in a Monorepo is the ability to have shared libraries which can be used in the both front and back-end.
+Recently a common software development practice is to have a full stack JavaScript application, this leads to many developer teams believing they have a Monorepo "Because all of my code is in the same repository".
 
-## Example Monorepo structure
-
-Below is a diagram of a typical monorepo structure, in this case from a NX project ([Xeo](https://github.com/oliverbutler/xeo)) - this structure is very similar to a typical small Monorepo.
-
-- **Apps** - contains the front-end code, and the back-end code, and any other services such as the documentation server.
-- **Libs/Packages** - contains the shared packages, such as UI design components, or common utilities:
-
-![xeo-structure](/static/images/architecting-a-modern-monorepo/xeo-structure.png)
+A monorepo is far more than just code collocation, we'll address the benefits, drawbacks and showcase two industry leading Smart Build Systems.
 
 ## Benefits of a Monorepo
 
-There are a number of important benefits to using a Monorepo:
+There are a number of important benefits to using a Monorepo (with a Smart Build System).
 
 - **Consistency** - It's possible to share UI modules, documentation and other such shared packages
 - **Visibility** - Everyone in the organisation can see all the code, improving cross-team collaborations and communication
@@ -76,7 +69,7 @@ Below is an example structure of a repository using NPM workspaces
 }
 ```
 
-Workspaces provides two basic features
+Workspaces provides two basic features, as for the most part Workspaces are just code collocation with the ability to run projects from one terminal in conjunction.
 
 - Running commands against multiple packages from the top level repository, e.g. `npm run test --workspaces`
 - Deduplication of node modules
@@ -84,12 +77,12 @@ Workspaces provides two basic features
 **Ideal for 💡**
 
 - Small projects
-- You don't need advanced build features
-- You want something that works straight out of the box
+- You don't need a smart build system
+- You don't want to add additional dependencies
 
 ## NX - Advanced and Powerful
 
-NX is one of the most advanced build systems available and offers some incredibly powerful features to take your code base to the next level.
+NX is one of the most advanced build systems available and offers some incredibly powerful features to take your codebase to the next level.
 
 Some of the most acclaimed features of NX are as follows:
 
@@ -101,7 +94,7 @@ Some of the most acclaimed features of NX are as follows:
 - Distributed task execution
 - Code generation tools
 
-Starting an NX project can be more overwhelming than that of Workspaces, and requires some tuning to get working as you want it for your project,
+Maintaining a NX monorepo can be considerably harder than that of Workspaces, simply due to the added complexity and learning curve a new technology brings.
 
 ### Create a Next.js NX project
 
@@ -205,9 +198,11 @@ Turborepo has a few other features:
 
 ## Conclusion
 
-As much as I'd recommend giving them both a shot, if you don't have time to experiment with both, **I recommend trying NX**.
+Hopefully you now appreciate the importance of a Smart Build System within a monorepo. As much as I'd recommend giving both NX and Turborepo a shot, if you don't have time to experiment with both, **I recommend trying NX**.
 
-Turborepo has most of the features that NX has, but NX does that and more, in a more performant package. NX is slightly harder to setup, however, I'd rather have an over-engineered Monorepo to support future growth rather than an under-engineered one that doesn't scale.
+Turborepo has most of the features that NX has, but NX does that and more, in a more performant package. Given the current state of turborepo due to it's recent inception, I'd rather have a slightly more complex, battle hardeneded, codebase with NX.
+
+However, please note that with the recent backing of Vercel, I expect NX to face some serious competition in 2022, and as you all know, competition brings innovation.
 
 ## References and Reading Materials
 
