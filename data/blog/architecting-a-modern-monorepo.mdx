@@ -94,8 +94,6 @@ Some of the most acclaimed features of NX are as follows:
 - Distributed task execution
 - Code generation tools
 
-Maintaining a NX monorepo can be considerably harder than that of Workspaces, simply due to the added complexity and learning curve a new technology brings.
-
 ### Create a Next.js NX project
 
 Create a new NX project, with a Next.js application
@@ -104,7 +102,7 @@ Create a new NX project, with a Next.js application
 npx create-nx-workspace@latest
 ```
 
-The NX CLI will then prompt you for what template to use to create this new application, for our case we will choose "Next.js".
+The NX CLI will then ask you which template you would like to use to create this new application, for our case we will choose "Next.js".
 
 ![nx-install](/static/images/architecting-a-modern-monorepo/nx-install.png)
 
@@ -116,7 +114,7 @@ One common usage of NX is to create a shared library which can be used by multip
 nx g @nrwl/react:lib ui-shared
 ```
 
-Running this command generates a new `ui-shared` library, which can be used by multiple apps, the beauty of this pattern is that if you change `ui-shared`, it will rebuild other apps that use it, where as, if you make a change in `next-app` NX won't rebuild `ui-shared`.
+Running this command generates a new `ui-shared` library, which can be used by multiple apps. The beauty of this pattern is that if you change `ui-shared`, it will rebuild other apps that use it, whereas, if you make a change in `next-app` NX won't rebuild `ui-shared`.
 
 ![nx-create-react-lib](/static/images/architecting-a-modern-monorepo/nx-create-react-lib.png)
 
@@ -128,7 +126,7 @@ Here you can see the process of importing our new shared library, and using it i
 
 When you run `nx test next-app`, you are telling Nx to run the `next-app:test` task plus all the tasks it depends on.
 
-For a small project this is okay, however, for a large project you really only want to run the tests for the files and changes you've made to the app.
+For a small project this is okay, however for a large project you really only want to run the tests for the files and changes you've made to the app.
 To handle this, NX has the `affected` command. `nx affected --target=next-app` will figure out which tasks to run, and only run those tasks.
 
 To visualize these "affected libraries", use the `nx affected:graph` command, in this example below we've added a `second-shared` lib which is also used in `next-app`.
@@ -180,7 +178,7 @@ This sets up an example project, with a `web` and `docs` apps, and a shared `ui`
 
 ### Affected
 
-Turborepo has it's own flavour of `affected` from NX, both work very similarly however Turbo repo doesn't produce an interactive graph like NX does, Turborepo has a basic graphviz image export.
+Turborepo has its own flavour of `affected` from NX, both work very similarly, however Turbo repo doesn't produce an interactive graph like NX does, Turborepo has a basic graphviz image export.
 
 ### Other Features
 
@@ -198,7 +196,7 @@ Turborepo has a few other features:
 
 ## Feature Comparison
 
-Heres a straight and to the point feature comparison for Workspaces, NX, and Turborepo.
+Below is a feature comparison for Workspaces, NX, and Turborepo.
 
 | Feature                      | Workspaces | NX  | Turborepo            |
 | ---------------------------- | ---------- | --- | -------------------- |
@@ -216,9 +214,9 @@ Heres a straight and to the point feature comparison for Workspaces, NX, and Tur
 
 Hopefully you now appreciate the importance of a Smart Build System within a monorepo. As much as I'd recommend giving both NX and Turborepo a shot, if you don't have time to experiment with both, **I recommend trying NX**.
 
-Turborepo has most of the features that NX has, but NX does that and more, in a more performant package. Given the current state of turborepo due to it's recent inception, I'd rather have a slightly more complex, battle hardeneded, codebase with NX.
+Turborepo has most of the features that NX has, but NX does that and more, in a more performant package. Given the current state of turborepo due to it's recent inception, I'd rather have a NX monorepo that has been battle hardened which you know won't let you down.
 
-However, please note that with the recent backing of Vercel, I expect NX to face some serious competition in 2022, and as you all know, competition brings innovation.
+However, with Turborepo's recent backing of Vercel, I expect NX to face some strong competition in 2022, and as you all know, competition brings innovation.
 
 ## References and Reading Materials
 
