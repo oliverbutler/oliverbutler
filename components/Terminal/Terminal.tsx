@@ -90,11 +90,11 @@ export const Terminal = ({
           {fullProgram ? fullProgram.name + '.app' : null}
         </span>
       </div>
-      <div className="h-80 overflow-y-auto p-3">
+      <div className="h-80 overflow-y-auto">
         {fullProgram ? (
           fullProgram.component({ closeFullscreen: () => setFullProgram(null) })
         ) : (
-          <>
+          <div className="p-3">
             {rows.map((row, index) => (
               <RowRenderer key={index} row={row} />
             ))}
@@ -109,7 +109,7 @@ export const Terminal = ({
                 onChange={(e) => setInputText(e.currentTarget.value)}
               />
             </pre>
-          </>
+          </div>
         )}
       </div>
     </div>
