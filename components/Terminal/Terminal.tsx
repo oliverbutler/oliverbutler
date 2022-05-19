@@ -98,6 +98,22 @@ export const Terminal = ({ spotify }: { spotify: Spotify | null }) => {
 
       setInputText('')
     }
+
+    if (e.key === 'ArrowUp') {
+      const commands = rows.filter((row) => row.type === 'command')
+
+      const lastCommand = commands[commands.length - 1]
+
+      if (lastCommand) {
+        setInputText(lastCommand.type === 'command' ? lastCommand.text : '')
+
+        setTimeout(function () {
+          if (inputRef.current) {
+            inputRef.current.selectionStart = inputRef.current.selectionEnd = 10000
+          }
+        }, 0)
+      }
+    }
   }
 
   return (
