@@ -1,3 +1,3 @@
 export const RowSnake = () => {
-  return <pre>I'm working on it 🐍</pre>
+  return <pre className="mb-4">I'm working on it 🐍</pre>
 }

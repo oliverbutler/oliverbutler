@@ -14,7 +14,7 @@ export const RowInfo = ({ spotify }: { spotify: Spotify | null }) => {
  \\___/|_|_|\\_, | 
            |__/   `}
       </pre>
-      <div className="mt-4">
+      <div className="mt-2">
         <pre>OS: React 17.0.2</pre>
         <pre>Host: oliverbutler.uk</pre>
         <pre>Spotify: {spotifyText}</pre>

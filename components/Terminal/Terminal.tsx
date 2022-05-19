@@ -61,6 +61,12 @@ export const Terminal = ({ spotify }: { spotify: Spotify | null }) => {
 
   useEffect(() => {
     if (inputRef.current) {
+      inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+  }, [rows])
+
+  useEffect(() => {
+    if (inputRef.current) {
       inputRef.current.focus()
     }
   }, [hasFinishedInitialAnimation])
