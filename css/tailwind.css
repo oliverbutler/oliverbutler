@@ -24,6 +24,20 @@ input:-webkit-autofill:focus {
   transition: background-color 600000s 0s, color 600000s 0s;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  @apply !decoration-primary-400;
+}
+
+::selection {
+  @apply bg-primary-600/20;
+}
+
 /* hamburger menu button: https://css-tricks.com/line-animated-hamburger-menu/ */
 .line {
   fill: none;

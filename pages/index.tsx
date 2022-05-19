@@ -44,7 +44,7 @@ export default function Home({ posts, spotify }: InferGetStaticPropsType<typeof 
     <>
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
       <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-        <div className="flex flex-col xl:flex-row">
+        <div className="mb-12 flex flex-col xl:mb-24 xl:flex-row ">
           <div className="flex items-center xl:w-1/2">
             <div className="mb-12 space-y-2 ">
               <h1 className="text-4xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl sm:leading-10 md:text-6xl md:leading-14">
@@ -66,7 +66,9 @@ export default function Home({ posts, spotify }: InferGetStaticPropsType<typeof 
             <Terminal spotify={spotify} posts={posts} />
           </div>
         </div>
-
+        <h3 className="pt-4 pb-2 text-4xl font-bold leading-8 tracking-tight text-black underline underline-offset-4  dark:text-white">
+          Latest Posts
+        </h3>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && 'No posts found.'}
           {posts.slice(0, MAX_DISPLAY).map((frontMatter) => (

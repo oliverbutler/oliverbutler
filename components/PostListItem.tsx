@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import formatDate from '@/lib/utils/formatDate'
 import Link from 'next/link'
-import Tag from './Tag'
+import Tag from './Tag/Tag'
 import React from 'react'
 import { PostFrontMatter } from 'types/PostFrontMatter'
 
@@ -28,7 +28,7 @@ export const PostListItem = ({
           </h3>
           <div className="flex flex-wrap">
             {tags.map((tag) => (
-              <Tag key={tag} text={tag} />
+              <Tag key={tag} text={tag} highlightIfActive={false} />
             ))}
           </div>
           <dt className="sr-only">Published on</dt>

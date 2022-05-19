@@ -1,28 +1,13 @@
 import { RowCommand } from './Rows/RowCommand'
 import { TerminalRow } from './useTerminal'
 
-export const RowRenderer = ({
-  row,
-  animateText,
-  handleAnimationComplete,
-}: {
-  row: TerminalRow
-  animateText: boolean
-  handleAnimationComplete: () => void
-}) => {
+export const RowRenderer = ({ row }: { row: TerminalRow }) => {
   switch (row.type) {
     case 'program':
       return <>{row.program.component}</>
     case 'command':
     case 'unknown-command':
-      return (
-        <RowCommand
-          animateText={animateText}
-          text={row.text}
-          unknown={row.type === 'unknown-command'}
-          handleAnimationComplete={handleAnimationComplete}
-        />
-      )
+      return <RowCommand text={row.text} unknown={row.type === 'unknown-command'} />
     default:
       return null
   }

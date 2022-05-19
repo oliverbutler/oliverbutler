@@ -59,15 +59,7 @@ export const Terminal = ({
     [spotify, posts]
   )
 
-  const {
-    rows,
-    handleClickEnter,
-    hasFinishedInitialAnimation,
-    handleAnimationComplete,
-    inputRef,
-    inputText,
-    setInputText,
-  } = useTerminal(CLI_PROGRAMS)
+  const { rows, handleClickEnter, inputRef, inputText, setInputText } = useTerminal(CLI_PROGRAMS)
 
   return (
     <div className="border-2 border-gray-300/25 bg-gray-400/5 font-mono dark:border-gray-800/25 dark:bg-gray-800/20">
@@ -80,26 +72,19 @@ export const Terminal = ({
       </div>
       <div className="h-72 overflow-y-auto p-3">
         {rows.map((row, index) => (
-          <RowRenderer
-            key={index}
-            row={row}
-            animateText={!hasFinishedInitialAnimation && index === 0}
-            handleAnimationComplete={handleAnimationComplete}
-          />
+          <RowRenderer key={index} row={row} />
         ))}
-        {hasFinishedInitialAnimation ? (
-          <pre>
-            <span className="text-primary-400">olly</span>
-            <span className="text-sky-400"> $ </span>
-            <input
-              className="bg-transparent outline-none"
-              onKeyDown={handleClickEnter}
-              ref={inputRef}
-              value={inputText}
-              onChange={(e) => setInputText(e.currentTarget.value)}
-            />
-          </pre>
-        ) : null}
+        <pre>
+          <span className="text-primary-400">olly</span>
+          <span className="text-sky-400"> $ </span>
+          <input
+            className="bg-transparent outline-none"
+            onKeyDown={handleClickEnter}
+            ref={inputRef}
+            value={inputText}
+            onChange={(e) => setInputText(e.currentTarget.value)}
+          />
+        </pre>
       </div>
     </div>
   )

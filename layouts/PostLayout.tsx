@@ -3,7 +3,7 @@ import PageTitle from '@/components/PageTitle'
 import { SectionContainer } from '@/components/SectionContainer'
 import { BlogSEO } from '@/components/SEO'
 import Image from '@/components/Image'
-import Tag from '@/components/Tag'
+import Tag from '@/components/Tag/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import Comments from '@/components/comments'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
@@ -122,7 +122,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                     </h2>
                     <div className="flex flex-wrap">
                       {tags.map((tag) => (
-                        <Tag key={tag} text={tag} />
+                        <Tag key={tag} text={tag} highlightIfActive={false} />
                       ))}
                     </div>
                   </div>

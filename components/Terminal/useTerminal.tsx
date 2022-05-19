@@ -21,11 +21,11 @@ export type CliProgram = {
 export const useTerminal = (programs: CliProgram[]) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [inputText, setInputText] = useState('')
-  const [rows, setRows] = useState<TerminalRow[]>([{ type: 'command', text: 'info' }])
-
-  const [hasFinishedInitialAnimation, setHasFinishedInitialAnimation] = useState(false)
+  const [rows, setRows] = useState<TerminalRow[]>([{ type: 'program', program: programs[0] }])
 
   const handleClickEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const text = inputText.trim().toLowerCase()
+
     // Handle ctl+l clear
     if ((e.key === 'l' && e.ctrlKey) || (e.key === 'Enter' && inputText === 'clear')) {
       setRows([])
@@ -34,18 +34,18 @@ export const useTerminal = (programs: CliProgram[]) => {
 
     // Handle on click enter
     if (e.key === 'Enter') {
-      if (inputText === '') {
+      if (text === '') {
         return
       }
 
-      const program = programs.find((program) => program.commands.includes(inputText))
+      const program = programs.find((program) => program.commands.includes(text))
 
       if (program) {
         // Inject the help component (avoid dependency cycle)
         if (program.name === 'help') program.component = <RowHelp programs={programs} />
-        setRows([...rows, { type: 'command', text: inputText }, { type: 'program', program }])
+        setRows([...rows, { type: 'command', text }, { type: 'program', program }])
       } else {
-        appendRowWithCommand({ type: 'unknown-command', text: inputText }, inputText)
+        setRows([...rows, { type: 'unknown-command', text }])
       }
       setInputText('')
     }
@@ -68,13 +68,6 @@ export const useTerminal = (programs: CliProgram[]) => {
     }
   }
 
-  const handleAnimationComplete = () => {
-    if (!hasFinishedInitialAnimation) {
-      setHasFinishedInitialAnimation(true)
-      setRows([...rows, { type: 'program', program: programs[0] }])
-    }
-  }
-
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
@@ -82,24 +75,14 @@ export const useTerminal = (programs: CliProgram[]) => {
   }, [rows])
 
   useEffect(() => {
-    handleFocusInput()
-  }, [hasFinishedInitialAnimation])
-
-  const appendRowWithCommand = (row: TerminalRow, inputText: string) => {
-    setRows([...rows, { type: 'command', text: inputText }, row])
-  }
-
-  const handleFocusInput = () => {
     if (inputRef.current) {
       inputRef.current.focus()
     }
-  }
+  }, [])
 
   return {
     handleClickEnter,
     rows,
-    hasFinishedInitialAnimation,
-    handleAnimationComplete,
     inputRef,
     inputText,
     setInputText,
