@@ -14,14 +14,16 @@ export type TerminalRow =
 export type CliProgram = {
   name: string
   commands: string[]
-  component: React.ReactNode
+  component: ({ closeFullscreen: close }: { closeFullscreen: () => void }) => React.ReactNode
   description?: string
+  fullscreen?: boolean
 }
 
 export const useTerminal = (programs: CliProgram[]) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [inputText, setInputText] = useState('')
   const [rows, setRows] = useState<TerminalRow[]>([{ type: 'program', program: programs[0] }])
+  const [fullProgram, setFullProgram] = useState<CliProgram | null>(null)
 
   const handleClickEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const text = inputText.trim().toLowerCase()
@@ -42,8 +44,14 @@ export const useTerminal = (programs: CliProgram[]) => {
 
       if (program) {
         // Inject the help component (avoid dependency cycle)
-        if (program.name === 'help') program.component = <RowHelp programs={programs} />
-        setRows([...rows, { type: 'command', text }, { type: 'program', program }])
+        if (program.name === 'help') program.component = () => <RowHelp programs={programs} />
+
+        if (program.fullscreen) {
+          setFullProgram(program)
+          setRows([...rows, { type: 'command', text }])
+        } else {
+          setRows([...rows, { type: 'command', text }, { type: 'program', program }])
+        }
       } else {
         setRows([...rows, { type: 'unknown-command', text }])
       }
@@ -88,5 +96,7 @@ export const useTerminal = (programs: CliProgram[]) => {
     inputRef,
     inputText,
     setInputText,
+    fullProgram,
+    setFullProgram,
   }
 }

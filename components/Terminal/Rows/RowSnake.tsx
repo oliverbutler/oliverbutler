@@ -1,3 +1,8 @@
-export const RowSnake = () => {
-  return <pre className="mb-4">I'm working on it 🐍</pre>
+export const RowSnake = ({ closeFullscreen }: { closeFullscreen: () => void }) => {
+  return (
+    <div>
+      <pre className="">I'm working on it 🐍</pre>
+      <button onClick={closeFullscreen}>close</button>
+    </div>
+  )
 }
