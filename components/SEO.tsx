@@ -177,7 +177,7 @@ export const BlogSEO = ({
     <>
       <CommonSEO
         title={title}
-        description={summary}
+        description={summary ?? ''}
         ogType="article"
         ogImage={featuredImages}
         twImage={twImageUrl}

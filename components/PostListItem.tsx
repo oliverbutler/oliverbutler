@@ -16,7 +16,7 @@ export const PostListItem = ({
 
   return (
     <article className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-      {showThumbnail ? (
+      {showThumbnail && thumbnail ? (
         <div className="col-span-1 grid w-full sm:block">
           <Image src={thumbnail} height={150} width={250} objectFit="cover" alt="thumbnail" />
         </div>
