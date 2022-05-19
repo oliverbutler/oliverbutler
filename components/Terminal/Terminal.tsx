@@ -35,6 +35,15 @@ export const Terminal = ({
         description: 'Play Snake 🐍',
       },
       {
+        name: 'vim',
+        commands: ['vim'],
+        component: (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img alt="rick roll" src="https://i.giphy.com/media/g7GKcSzwQfugw/giphy.webp" />
+        ),
+        description: 'A super cool editor',
+      },
+      {
         name: 'tree',
         commands: ['tree', 't', 'posts', 'blog'],
         component: <RowTree posts={posts} />,
