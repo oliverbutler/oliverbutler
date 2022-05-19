@@ -52,12 +52,14 @@ export const useTerminal = (programs: CliProgram[]) => {
 
     // Handle go back a command
     if (e.key === 'ArrowUp') {
-      const commands = rows.filter((row) => row.type === 'command')
+      const commands = rows.filter(
+        (row) => row.type === 'command' || row.type === 'unknown-command'
+      )
 
       const lastCommand = commands[commands.length - 1]
 
       if (lastCommand) {
-        setInputText(lastCommand.type === 'command' ? lastCommand.text : '')
+        setInputText((lastCommand as { text: string }).text)
 
         setTimeout(function () {
           if (inputRef.current) {
