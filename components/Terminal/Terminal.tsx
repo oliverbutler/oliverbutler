@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
+import { PostFrontMatter } from 'types/PostFrontMatter'
 import { Spotify } from 'types/Spotify'
 import { RowCommand } from './Rows/RowCommand'
 import { RowHelp } from './Rows/RowHelp'
 import { RowInfo } from './Rows/RowInfo'
+import { RowJohn } from './Rows/RowJohn'
 import { RowSnake } from './Rows/RowSnake'
+import { RowTree } from './Rows/RowTree'
 
 type TerminalRow =
   | {
-      type: 'info' | 'help' | 'snake'
+      type: 'info' | 'help' | 'snake' | 'tree' | 'john'
     }
   | {
       type: 'command' | 'unknown-command'
@@ -19,11 +22,13 @@ const RowRenderer = ({
   spotify,
   animateText,
   handleAnimationComplete,
+  posts,
 }: {
   row: TerminalRow
   spotify: Spotify | null
   animateText: boolean
   handleAnimationComplete: () => void
+  posts: PostFrontMatter[]
 }) => {
   switch (row.type) {
     case 'info':
@@ -32,6 +37,10 @@ const RowRenderer = ({
       return <RowHelp />
     case 'snake':
       return <RowSnake />
+    case 'tree':
+      return <RowTree posts={posts} />
+    case 'john':
+      return <RowJohn />
     case 'command':
     case 'unknown-command':
       return (
@@ -42,10 +51,18 @@ const RowRenderer = ({
           handleAnimationComplete={handleAnimationComplete}
         />
       )
+    default:
+      return null
   }
 }
 
-export const Terminal = ({ spotify }: { spotify: Spotify | null }) => {
+export const Terminal = ({
+  spotify,
+  posts,
+}: {
+  spotify: Spotify | null
+  posts: PostFrontMatter[]
+}) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [inputText, setInputText] = useState('')
   const [rows, setRows] = useState<TerminalRow[]>([{ type: 'command', text: 'info' }])
@@ -66,13 +83,17 @@ export const Terminal = ({ spotify }: { spotify: Spotify | null }) => {
   }, [rows])
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus()
-    }
+    handleFocusInput()
   }, [hasFinishedInitialAnimation])
 
   const appendRowWithCommand = (row: TerminalRow, inputText: string) => {
     setRows([...rows, { type: 'command', text: inputText }, row])
+  }
+
+  const handleFocusInput = () => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
   }
 
   const handleClickEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -92,6 +113,10 @@ export const Terminal = ({ spotify }: { spotify: Spotify | null }) => {
         appendRowWithCommand({ type: 'info' }, inputText)
       } else if (inputText === 'snake') {
         appendRowWithCommand({ type: 'snake' }, inputText)
+      } else if (inputText === 'tree') {
+        appendRowWithCommand({ type: 'tree' }, inputText)
+      } else if (inputText === 'john') {
+        appendRowWithCommand({ type: 'john' }, inputText)
       } else {
         rows.push({ type: 'unknown-command', text: inputText })
       }
@@ -133,6 +158,7 @@ export const Terminal = ({ spotify }: { spotify: Spotify | null }) => {
             spotify={spotify}
             animateText={!hasFinishedInitialAnimation && index === 0}
             handleAnimationComplete={handleAnimationComplete}
+            posts={posts}
           />
         ))}
         {hasFinishedInitialAnimation ? (

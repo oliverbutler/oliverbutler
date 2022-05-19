@@ -36,8 +36,6 @@ export const getStaticProps: GetStaticProps<{
     })
     .catch(() => null)
 
-  console.log(spotify)
-
   return { props: { posts, spotify }, revalidate: 10 }
 }
 
@@ -65,7 +63,7 @@ export default function Home({ posts, spotify }: InferGetStaticPropsType<typeof 
             </div>
           </div>
           <div className="xl:ml-6 xl:w-1/2">
-            <Terminal spotify={spotify} />
+            <Terminal spotify={spotify} posts={posts} />
           </div>
         </div>
 
