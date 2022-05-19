@@ -17,8 +17,6 @@ export default function Footer() {
         <div>{siteMetadata.author}</div>
         <div>{` • `}</div>
         <div>{`© ${new Date().getFullYear()}`}</div>
-        <div>{` • `}</div>
-        <Link href="/">{siteMetadata.title}</Link>
       </div>
     </footer>
   )

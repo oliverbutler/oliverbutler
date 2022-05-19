@@ -23,7 +23,7 @@ export const PostListItem = ({
       ) : null}
       <div className={'space-y-2 ' + showThumbnail ? 'col-span-3' : 'col-span-4'}>
         <div>
-          <h3 className="text-2xl font-bold leading-8 tracking-tight">
+          <h3 className="text-2xl font-bold leading-8 tracking-tight text-black dark:text-white">
             <Link href={`/blog/${slug}`}>{title}</Link>
           </h3>
           <div className="flex flex-wrap">

@@ -2,8 +2,7 @@ const siteMetadata = {
   title: 'Oliver Butler',
   author: 'Oliver Butler',
   headerTitle: 'Oliver Butler',
-  description:
-    "I'm a full stack software engineer working at Theodo UK. I also blog about JavaScript, React, and other tech stuff.",
+  description: "I'm a software engineer who blogs about JavaScript, React, and other tech stuff.",
   language: 'en-bg',
   theme: 'system', // system, dark or light
   siteUrl: 'https://oliverbutler.uk',
@@ -18,9 +17,6 @@ const siteMetadata = {
   locale: 'en-GB',
   analytics: {
     googleAnalyticsId: 'G-G146XRC7V0',
-  },
-  newsletter: {
-    provider: '',
   },
   comment: {
     provider: 'giscus',
