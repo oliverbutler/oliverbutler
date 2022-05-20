@@ -132,7 +132,7 @@ export const RowSnake = ({ closeFullscreen }: { closeFullscreen: () => void }) =
     setDir('right')
   }
 
-  const delayMs = Math.min(300 - snake.length * 10, 150)
+  const delayMs = Math.max(250 - snake.length * 10, 125)
 
   useInterval(() => gameLoop(), delayMs)
 
