@@ -3,7 +3,8 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
-/** @type {import("tailwindcss/tailwind-config").TailwindConfig } */
+
+
 module.exports = {
   experimental: {
     optimizeUniversalDefaults: true,
@@ -31,6 +32,7 @@ module.exports = {
         sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
       },
       colors: {
+        ...colors,
         primary: colors.pink,
         gray: colors.neutral,
       },
