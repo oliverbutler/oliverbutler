@@ -141,6 +141,8 @@ export const RowSnake = ({ closeFullscreen }: { closeFullscreen: () => void }) =
       e.preventDefault()
     }
 
+    console.log(state)
+
     switch (e.key) {
       case 'ArrowLeft':
         setDir('left')
@@ -157,6 +159,7 @@ export const RowSnake = ({ closeFullscreen }: { closeFullscreen: () => void }) =
       case 'q':
         closeFullscreen()
         break
+      case 'r':
       default:
         setState('paused')
         break

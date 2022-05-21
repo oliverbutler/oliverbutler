@@ -15,8 +15,8 @@ export type CliProgram = {
   name: string
   commands: string[]
   component: ({ closeFullscreen: close }: { closeFullscreen: () => void }) => React.ReactNode
-  description?: string
   fullscreen?: boolean
+  onLaunch?: () => void
 }
 
 export const useTerminal = (programs: CliProgram[]) => {
@@ -45,6 +45,10 @@ export const useTerminal = (programs: CliProgram[]) => {
       if (program) {
         // Inject the help component (avoid dependency cycle)
         if (program.name === 'help') program.component = () => <RowHelp programs={programs} />
+
+        if (program.onLaunch) {
+          program.onLaunch()
+        }
 
         if (program.fullscreen) {
           setFullProgram(program)
