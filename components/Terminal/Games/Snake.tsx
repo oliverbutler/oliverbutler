@@ -161,6 +161,7 @@ export const Snake = ({
     addApple()
     addApple()
     setDir('right')
+    setScore(0)
   }
 
   useEffect(() => {
