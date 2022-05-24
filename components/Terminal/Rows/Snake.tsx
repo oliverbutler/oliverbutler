@@ -86,7 +86,7 @@ export const Snake = ({
   const addApple = () =>
     setApples((apples) => [
       ...apples,
-      [Math.floor(Math.random() * scaledWidth - 1), Math.floor(Math.random() * scaledHeight - 1)],
+      [Math.floor(Math.random() * scaledWidth), Math.floor(Math.random() * scaledHeight)],
     ])
 
   const removeApple = (apple: Pos) =>
