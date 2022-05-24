@@ -187,7 +187,7 @@ export const Snake = ({
   }, [wrapperRef.current])
 
   return (
-    <div ref={wrapperRef} className="relative h-full w-full">
+    <div ref={wrapperRef} className="relative h-full w-full bg-gray-200/40 dark:bg-gray-900/70">
       <div ref={wrapperRef}>
         <canvas
           ref={canvasRef}
