@@ -1,11 +1,14 @@
+import { signIn, signOut, useSession } from 'next-auth/react'
 import { useMemo } from 'react'
 import { PostFrontMatter } from 'types/PostFrontMatter'
-import { Spotify } from 'types/Spotify'
 import { RowCommand } from './Rows/RowCommand'
+import { RowHelp } from './Rows/RowHelp'
 import { RowInfo } from './Rows/RowInfo'
-import { RowSnake } from './Rows/RowSnake'
+import { RowLeaderBoard } from './Rows/RowLeaderBoard'
+import { Snake } from './Rows/Snake'
 import { RowTree } from './Rows/RowTree'
 import { CliProgram, TerminalRow, useTerminal } from './useTerminal'
+import { GameWrapper } from './GameWrapper/GameWrapper'
 
 export const RowRenderer = ({ row }: { row: TerminalRow }) => {
   switch (row.type) {
@@ -19,32 +22,28 @@ export const RowRenderer = ({ row }: { row: TerminalRow }) => {
   }
 }
 
-export const Terminal = ({
-  spotify,
-  posts,
-}: {
-  spotify: Spotify | null
-  posts: PostFrontMatter[]
-}) => {
+export const Terminal = ({ posts }: { posts: PostFrontMatter[] }) => {
+  const { data } = useSession()
+  const user = data?.user
+
   const CLI_PROGRAMS = useMemo(
     (): CliProgram[] => [
       {
         name: 'info',
         commands: ['info', 'i'],
-        component: () => <RowInfo spotify={spotify} />,
-        description: 'Show some info',
+        component: () => <RowInfo />,
       },
       {
         name: 'help',
         commands: ['help', 'h'],
-        component: () => null,
-        description: 'Show this help message',
+        component: () => <RowHelp />,
       },
       {
         name: 'snake',
         commands: ['snake', 's'],
-        component: ({ closeFullscreen }) => <RowSnake closeFullscreen={closeFullscreen} />,
-        description: 'Play Snake 🐍',
+        component: ({ closeFullscreen }) => (
+          <GameWrapper game="SNAKE" closeFullscreen={closeFullscreen} />
+        ),
         fullscreen: true,
       },
       {
@@ -54,13 +53,28 @@ export const Terminal = ({
           // eslint-disable-next-line @next/next/no-img-element
           <img alt="rick roll" src="https://i.giphy.com/media/g7GKcSzwQfugw/giphy.webp" />
         ),
-        description: 'A super cool editor',
       },
       {
         name: 'tree',
         commands: ['tree', 't', 'posts', 'blog'],
         component: () => <RowTree posts={posts} />,
-        description: 'Show the blog tree',
+      },
+      {
+        name: 'logout',
+        commands: ['logout'],
+        component: () => null,
+        onLaunch: () => signOut(),
+      },
+      {
+        name: 'login',
+        commands: ['login'],
+        component: () => null,
+        onLaunch: () => signIn(),
+      },
+      {
+        name: 'leaderboard',
+        commands: ['leaderboard', 'lb'],
+        component: () => <RowLeaderBoard />,
       },
       // Having a bit of fun
       ...['angus', 'john', 'spencer'].map((name) => ({
@@ -69,14 +83,14 @@ export const Terminal = ({
         component: () => <p>{name} is super cool 😎</p>,
       })),
     ],
-    [spotify, posts]
+    [posts]
   )
 
   const { rows, handleClickEnter, inputRef, inputText, setInputText, fullProgram, setFullProgram } =
     useTerminal(CLI_PROGRAMS)
 
   return (
-    <div className="border-2 border-gray-300/25 bg-gray-400/5 font-mono dark:border-gray-800/25 dark:bg-gray-800/20">
+    <div className="border-2 border-gray-300/25 bg-gray-500/5 font-mono text-sm dark:border-gray-800/25 dark:bg-gray-800/20">
       <div className="flex flex-row items-center p-2 dark:bg-gray-800/20">
         <div className="mr-3 flex flex-row space-x-1.5">
           <button
@@ -86,7 +100,7 @@ export const Terminal = ({
           <button className="h-3 w-3 rounded-full bg-yellow-500/80 hover:bg-yellow-600/80" />
           <button className="h-3 w-3 rounded-full bg-green-500/80 hover:bg-green-600/80" />
         </div>
-        <span className=" text-sm text-gray-400">
+        <span className=" text-sm text-gray-500">
           {fullProgram ? fullProgram.name + '.app' : null}
         </span>
       </div>
@@ -99,8 +113,8 @@ export const Terminal = ({
               <RowRenderer key={index} row={row} />
             ))}
             <pre>
-              <span className="text-primary-400">olly</span>
-              <span className="text-sky-400"> $ </span>
+              <span className="text-primary-500">{user ? user.email : 'guest'}</span>
+              <span className="text-sky-500"> $ </span>
               <input
                 className="bg-transparent outline-none"
                 onKeyDown={handleClickEnter}

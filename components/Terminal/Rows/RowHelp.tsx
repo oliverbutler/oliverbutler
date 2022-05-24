@@ -1,13 +1,32 @@
-import { CliProgram } from '../useTerminal'
+const info = {
+  info: 'Show some info',
+  help: 'Show this help message',
+  login: 'Login (via GitHub)',
+  logout: 'Logout',
+}
 
-export const RowHelp = ({ programs }: { programs: CliProgram[] }) => (
+const games = {
+  leaderboard: 'Show the leader board',
+  snake: 'Play Snake 🐍',
+}
+
+export const RowHelp = () => (
   <pre className="mb-3 flex flex-col text-sm">
-    {programs
-      .filter((p) => p.description)
-      .map((program) => (
-        <span key={program.name}>
-          <span className="text-primary-500">{program.name}</span> - {program.description}
+    <div className="flex flex-col">
+      <p>{`===> General <===`}</p>
+      {Object.keys(info).map((program) => (
+        <span key={program}>
+          <span className="text-primary-500">{program}</span> - {info[program]}
         </span>
       ))}
+    </div>
+    <div className="mt-2 flex flex-col">
+      <p>{`===> Games <===`}</p>
+      {Object.keys(games).map((program) => (
+        <span key={program}>
+          <span className="text-primary-500">{program}</span> - {games[program]}
+        </span>
+      ))}
+    </div>
   </pre>
 )

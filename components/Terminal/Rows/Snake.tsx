@@ -3,10 +3,11 @@ import { theme } from '../../../tailwind.config'
 import { useInterval } from '@/lib/utils/useInterval'
 import { useEffect, useRef, useState } from 'react'
 import { useLocalStorage } from '@/lib/utils/useLocalStorage'
+import { GameState } from '../GameWrapper/GameWrapper'
 
 type Pos = number[]
 
-const SCALE = 20
+const SCALE = 15
 const INITIAL_LENGTH = 3
 
 const dirToVec: Record<'left' | 'right' | 'up' | 'down', number[]> = {
@@ -16,19 +17,37 @@ const dirToVec: Record<'left' | 'right' | 'up' | 'down', number[]> = {
   down: [0, 1],
 }
 
-export const RowSnake = ({ closeFullscreen }: { closeFullscreen: () => void }) => {
+export const Snake = ({
+  gameState,
+  endGame,
+  restartGame,
+  setScore,
+  gameHeight,
+  gameWidth,
+}: {
+  gameState: GameState
+  endGame: () => void
+  restartGame: () => void
+  setScore: (score: number) => void
+  gameHeight: number
+  gameWidth: number
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+
   const wrapperRef = useRef<HTMLDivElement>(null)
+
   const [snake, setSnake] = useState<Pos[]>([])
   const [apples, setApples] = useState<Pos[]>([])
   const [dir, setDir] = useState<'left' | 'right' | 'up' | 'down'>('right')
-  const [state, setState] = useState<'running' | 'paused' | 'dead'>('running')
 
-  const [highScore, setHighScore] = useLocalStorage('snake.high_score', 0)
   const score = snake.length - INITIAL_LENGTH
 
-  const scaledHeight = (wrapperRef.current?.offsetHeight ?? 0) / SCALE
-  const scaledWidth = (wrapperRef.current?.offsetWidth ?? 0) / SCALE
+  useEffect(() => {
+    setScore(score)
+  }, [score])
+
+  const scaledHeight = Math.round(gameHeight / SCALE)
+  const scaledWidth = Math.round(gameWidth / SCALE)
 
   useEffect(() => {
     const context = canvasRef.current?.getContext('2d')
@@ -62,7 +81,7 @@ export const RowSnake = ({ closeFullscreen }: { closeFullscreen: () => void }) =
     drawSnake(snake)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [snake, apples, state])
+  }, [snake, apples])
 
   const addApple = () =>
     setApples((apples) => [
@@ -72,11 +91,6 @@ export const RowSnake = ({ closeFullscreen }: { closeFullscreen: () => void }) =
 
   const removeApple = (apple: Pos) =>
     setApples((apples) => apples.filter((a) => !(a[0] === apple[0] && a[1] === apple[1])))
-
-  const endGame = () => {
-    setState('dead')
-    setHighScore(Math.max(score, highScore))
-  }
 
   const checkAppleCollision = (pos: Pos): boolean => {
     return apples.reduce((acc, apple) => {
@@ -88,7 +102,7 @@ export const RowSnake = ({ closeFullscreen }: { closeFullscreen: () => void }) =
   }
 
   const gameLoop = () => {
-    if (state !== 'running') {
+    if (snake.length === 0) {
       return
     }
     const [x, y] = dirToVec[dir]
@@ -119,11 +133,10 @@ export const RowSnake = ({ closeFullscreen }: { closeFullscreen: () => void }) =
   }
 
   const startGame = () => {
-    setState('running')
     setSnake([
-      [scaledWidth / 2 - 0, scaledHeight / 2 - 0],
-      [scaledWidth / 2 - 0, scaledHeight / 2 - 1],
-      [scaledWidth / 2 - 0, scaledHeight / 2 - 2],
+      [Math.round(scaledWidth / 2 - 0), Math.round(scaledHeight / 2 - 0)],
+      [Math.round(scaledWidth / 2 - 1), Math.round(scaledHeight / 2 - 0)],
+      [Math.round(scaledWidth / 2 - 2), Math.round(scaledHeight / 2 - 0)],
     ])
     setApples([])
     addApple()
@@ -132,15 +145,22 @@ export const RowSnake = ({ closeFullscreen }: { closeFullscreen: () => void }) =
     setDir('right')
   }
 
-  const delayMs = Math.max(250 - snake.length * 10, 125)
-
-  useInterval(() => gameLoop(), delayMs)
-
-  const handleOnKeyDown = (e) => {
-    if (state === 'running') {
-      e.preventDefault()
+  useEffect(() => {
+    if (gameState === GameState.RUNNING && snake.length === 0) {
+      startGame()
     }
 
+    if (gameState === GameState.RESTART) {
+      startGame()
+      restartGame()
+    }
+  }, [gameState])
+
+  const delayMs = Math.max(250 - snake.length * 10, 125)
+
+  useInterval(() => gameLoop(), gameState === GameState.RUNNING ? delayMs : null)
+
+  const handleOnKeyDown = (e) => {
     switch (e.key) {
       case 'ArrowLeft':
         setDir('left')
@@ -154,59 +174,25 @@ export const RowSnake = ({ closeFullscreen }: { closeFullscreen: () => void }) =
       case 'ArrowDown':
         setDir('down')
         break
-      case 'q':
-        closeFullscreen()
-        break
-      default:
-        setState('paused')
-        break
     }
   }
 
   useEffect(() => {
     if (wrapperRef.current) {
-      startGame()
-
       window.addEventListener('keydown', handleOnKeyDown)
       return () => {
         window.removeEventListener('keydown', handleOnKeyDown)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wrapperRef.current])
 
   return (
-    <div className="h-full w-full">
-      <div className="relative h-full w-full" ref={wrapperRef}>
-        {state === 'running' ? (
-          <div className="absolute top-2 left-2">
-            {score} ({highScore} high)
-          </div>
-        ) : null}
-        {state === 'dead' || state === 'paused' ? (
-          <div
-            className="absolute z-50 rounded-md bg-white/90 p-4 text-center dark:bg-gray-900/90"
-            style={{ left: '50%', top: '30%', transform: 'translateX(-50%)' }}
-          >
-            <h2 className="mb-2 text-3xl font-bold">
-              {state === 'dead' ? `You scored ${score} 🎉` : 'Paused'}
-            </h2>
-            <button
-              className="rounded-md bg-primary-400 p-2 text-white"
-              onClick={() => (state === 'dead' ? startGame() : setState('running'))}
-            >
-              {state === 'dead' ? 'Restart' : 'Resume'}
-            </button>
-            <button className="bg-dark-400 rounded-md p-2" onClick={() => closeFullscreen()}>
-              Quit (<kbd>q</kbd>)
-            </button>
-          </div>
-        ) : null}
+    <div ref={wrapperRef} className="relative h-full w-full">
+      <div ref={wrapperRef}>
         <canvas
-          className="opacity-70"
           ref={canvasRef}
-          width={wrapperRef.current?.offsetWidth}
-          height={wrapperRef.current?.offsetHeight}
+          width={wrapperRef.current?.offsetWidth ?? 0}
+          height={wrapperRef.current?.offsetHeight ?? 0}
         />
       </div>
     </div>

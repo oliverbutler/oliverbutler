@@ -1,27 +1,15 @@
-import { Spotify } from 'types/Spotify'
+import { useSession } from 'next-auth/react'
 
-export const RowInfo = ({ spotify }: { spotify: Spotify | null }) => {
-  const spotifyText = spotify
-    ? `${spotify?.item.name} by ${spotify?.item.artists[0].name}`
-    : 'No song playing'
+export const RowInfo = () => {
+  const { data } = useSession()
+  const user = data?.user
 
   return (
-    <pre className="flex flex-row pb-3 text-sm">
-      <pre>
-        {`  ___  _ _      
- / _ \\| | |_  _    
-| (_) | | | || |   
- \\___/|_|_|\\_, | 
-           |__/   `}
+    <pre className="pb-3 text-sm">
+      <pre className="mt-2">
+        Welcome {user ? user.name : 'guest'}! Type{' '}
+        <code className="italic text-primary-400">help</code> to get started
       </pre>
-      <div className="mt-2">
-        <pre>OS: React 17.0.2</pre>
-        <pre>Host: oliverbutler.uk</pre>
-        <pre>Spotify: {spotifyText}</pre>
-        <pre className="mt-2">
-          Type <code className="italic text-primary-400">help</code> to get started
-        </pre>
-      </div>
     </pre>
   )
 }

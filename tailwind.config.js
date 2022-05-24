@@ -3,12 +3,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
-
-
 module.exports = {
-  experimental: {
-    optimizeUniversalDefaults: true,
-  },
   content: [
     './pages/**/*.tsx',
     './components/**/*.tsx',
@@ -170,5 +165,5 @@ module.exports = {
       }),
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/typography')],
 }
