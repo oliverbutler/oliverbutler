@@ -2,7 +2,6 @@
 import { theme } from '../../../tailwind.config'
 import { useInterval } from '@/lib/utils/useInterval'
 import { useEffect, useRef, useState } from 'react'
-import { useLocalStorage } from '@/lib/utils/useLocalStorage'
 import { GameState } from '../GameWrapper/GameWrapper'
 
 type Pos = number[]
@@ -83,11 +82,20 @@ export const Snake = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [snake, apples])
 
-  const addApple = () =>
-    setApples((apples) => [
-      ...apples,
-      [Math.floor(Math.random() * scaledWidth), Math.floor(Math.random() * scaledHeight)],
-    ])
+  const addApple = () => {
+    const newApple = [
+      Math.floor(Math.random() * scaledWidth),
+      Math.floor(Math.random() * scaledHeight),
+    ]
+
+    const isInsideSnake = snake.some(([x, y]) => x === newApple[0] && y === newApple[1])
+
+    if (!isInsideSnake) {
+      setApples((apples) => [...apples, newApple])
+    } else {
+      addApple()
+    }
+  }
 
   const removeApple = (apple: Pos) =>
     setApples((apples) => apples.filter((a) => !(a[0] === apple[0] && a[1] === apple[1])))
