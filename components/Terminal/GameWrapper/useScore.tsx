@@ -11,7 +11,7 @@ export const useScore = (game: Game) => {
   })
 
   const addNewScore = async (score: number) => {
-    if (!isNotAuthed) {
+    if (isNotAuthed) {
       return
     }
     const { data } = await apiRequest<AddNewScore>('post', ApiRoute.SCORE_MY, {
