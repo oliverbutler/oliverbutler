@@ -1,5 +1,5 @@
 import { Game } from '@prisma/client'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
 import { getAwardEmoji } from '../Rows/RowLeaderBoard'
 import { Snake } from '../Rows/Snake'
@@ -26,6 +26,10 @@ export const GameWrapper = ({
   const [gameState, setGameState] = useState<GameState>(GameState.PAUSED)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [score, setScore] = useState(0)
+
+  const { data } = useSession()
+
+  const isLoggedIn = Boolean(data?.user)
 
   const { highScores, addNewScore, globalHighScores } = useScore(game)
 
@@ -70,7 +74,9 @@ export const GameWrapper = ({
         restartGame={() => setGameState(GameState.RUNNING)}
       />
       {gameState === GameState.RUNNING ? (
-        <div className="absolute right-2 top-2">{score}</div>
+        <div className="absolute right-2 top-2">
+          {score} <span className="text-red-400">{isLoggedIn ? null : 'Not Logged In'}</span>
+        </div>
       ) : null}
       {gameState !== GameState.RUNNING ? (
         <div className="absolute top-0 left-0 flex h-full w-full flex-col items-center bg-gray-50/60 p-4  backdrop-blur-sm dark:bg-gray-900/60 ">
