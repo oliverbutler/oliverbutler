@@ -58,7 +58,12 @@ export const Snake = ({
     context.setTransform(SCALE, 0, 0, SCALE, 0, 0)
 
     const drawApple = (apple: Pos) => {
-      context.fillStyle = theme.extend.colors.red[400]
+      const numberOfApplesInPosition = apples.filter((a) => a[0] === apple[0] && a[1] === apple[1])
+
+      context.fillStyle =
+        numberOfApplesInPosition.length > 1
+          ? theme.extend.colors.yellow[400]
+          : theme.extend.colors.red[400]
       context.fillRect(apple[0], apple[1], 1, 1)
     }
 
