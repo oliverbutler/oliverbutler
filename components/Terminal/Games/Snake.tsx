@@ -32,18 +32,17 @@ export const Snake = ({
   gameWidth: number
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   const [snake, setSnake] = useState<Pos[]>([])
   const [apples, setApples] = useState<Pos[]>([])
   const [dir, setDir] = useState<'left' | 'right' | 'up' | 'down'>('right')
 
-  const score = snake.length - INITIAL_LENGTH
+  const [currScore, setCurrScore] = useState(0)
 
   useEffect(() => {
-    setScore(score)
-  }, [score])
+    setScore(currScore)
+  }, [currScore])
 
   const scaledHeight = Math.round(gameHeight / SCALE)
   const scaledWidth = Math.round(gameWidth / SCALE)
@@ -105,13 +104,13 @@ export const Snake = ({
   const removeApple = (apple: Pos) =>
     setApples((apples) => apples.filter((a) => !(a[0] === apple[0] && a[1] === apple[1])))
 
-  const checkAppleCollision = (pos: Pos): boolean => {
+  const checkAppleCollision = (pos: Pos): number => {
     return apples.reduce((acc, apple) => {
       if (apple[0] === pos[0] && apple[1] === pos[1]) {
-        return true
+        return acc + 1
       }
       return acc
-    }, false)
+    }, 0)
   }
 
   const gameLoop = () => {
@@ -136,9 +135,15 @@ export const Snake = ({
       endGame()
     }
 
-    if (checkAppleCollision(newHead)) {
+    const numberOfCollisions = checkAppleCollision(newHead)
+
+    if (numberOfCollisions > 0) {
+      setCurrScore((curr) => curr + numberOfCollisions)
+
       removeApple(newHead)
-      addApple()
+
+      Array.from(Array(numberOfCollisions)).forEach(addApple)
+
       setSnake((snake) => [newHead, ...snake])
     } else {
       setSnake((snake) => [newHead, ...snake.slice(0, -1)])

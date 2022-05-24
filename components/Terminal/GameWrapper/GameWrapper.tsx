@@ -2,7 +2,7 @@ import { Game } from '@prisma/client'
 import { signIn, useSession } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
 import { getAwardEmoji } from '../Rows/RowLeaderBoard'
-import { Snake } from '../Rows/Snake'
+import { Snake } from '../Games/Snake'
 import { useScore } from './useScore'
 
 const gameToName: Record<Game, string> = {
