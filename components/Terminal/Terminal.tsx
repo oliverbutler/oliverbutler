@@ -1,13 +1,14 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useMemo } from 'react'
 import { PostFrontMatter } from 'types/PostFrontMatter'
-import { Spotify } from 'types/Spotify'
 import { RowCommand } from './Rows/RowCommand'
+import { RowHelp } from './Rows/RowHelp'
 import { RowInfo } from './Rows/RowInfo'
-import { RowLeaderBoard } from './Rows/RowLeaderboard'
-import { RowSnake } from './Rows/RowSnake'
+import { RowLeaderBoard } from './Rows/RowLeaderBoard'
+import { Snake } from './Rows/Snake'
 import { RowTree } from './Rows/RowTree'
 import { CliProgram, TerminalRow, useTerminal } from './useTerminal'
+import { GameWrapper } from './GameWrapper/GameWrapper'
 
 export const RowRenderer = ({ row }: { row: TerminalRow }) => {
   switch (row.type) {
@@ -21,13 +22,7 @@ export const RowRenderer = ({ row }: { row: TerminalRow }) => {
   }
 }
 
-export const Terminal = ({
-  spotify,
-  posts,
-}: {
-  spotify: Spotify | null
-  posts: PostFrontMatter[]
-}) => {
+export const Terminal = ({ posts }: { posts: PostFrontMatter[] }) => {
   const { data } = useSession()
   const user = data?.user
 
@@ -36,17 +31,19 @@ export const Terminal = ({
       {
         name: 'info',
         commands: ['info', 'i'],
-        component: () => <RowInfo spotify={spotify} />,
+        component: () => <RowInfo />,
       },
       {
         name: 'help',
         commands: ['help', 'h'],
-        component: () => null,
+        component: () => <RowHelp />,
       },
       {
         name: 'snake',
         commands: ['snake', 's'],
-        component: ({ closeFullscreen }) => <RowSnake closeFullscreen={closeFullscreen} />,
+        component: ({ closeFullscreen }) => (
+          <GameWrapper game="SNAKE" closeFullscreen={closeFullscreen} />
+        ),
         fullscreen: true,
       },
       {
@@ -76,7 +73,7 @@ export const Terminal = ({
       },
       {
         name: 'leaderboard',
-        commands: ['leaderboard'],
+        commands: ['leaderboard', 'lb'],
         component: () => <RowLeaderBoard />,
       },
       // Having a bit of fun
@@ -86,7 +83,7 @@ export const Terminal = ({
         component: () => <p>{name} is super cool 😎</p>,
       })),
     ],
-    [spotify, posts]
+    [posts]
   )
 
   const { rows, handleClickEnter, inputRef, inputText, setInputText, fullProgram, setFullProgram } =

@@ -1,7 +1,6 @@
 import { useSession } from 'next-auth/react'
-import { Spotify } from 'types/Spotify'
 
-export const RowInfo = ({ spotify }: { spotify: Spotify | null }) => {
+export const RowInfo = () => {
   const { data } = useSession()
   const user = data?.user
 

@@ -1,5 +1,3 @@
-import { CliProgram } from '../useTerminal'
-
 const info = {
   info: 'Show some info',
   help: 'Show this help message',
@@ -12,7 +10,7 @@ const games = {
   snake: 'Play Snake 🐍',
 }
 
-export const RowHelp = ({ programs }: { programs: CliProgram[] }) => (
+export const RowHelp = () => (
   <pre className="mb-3 flex flex-col text-sm">
     <div className="flex flex-col">
       <p>{`===> General <===`}</p>
