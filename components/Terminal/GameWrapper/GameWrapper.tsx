@@ -1,4 +1,5 @@
 import { Game } from '@prisma/client'
+import { signIn } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
 import { getAwardEmoji } from '../Rows/RowLeaderBoard'
 import { Snake } from '../Rows/Snake'
@@ -87,7 +88,9 @@ export const GameWrapper = ({
             <div>
               <p className="font-bold">Personal Board</p>
               {!highScores ? (
-                <p className="text-red-500">Login!</p>
+                <a className="cursor-pointer text-primary-500 underline" onClick={() => signIn()}>
+                  Click to login!
+                </a>
               ) : (
                 highScores?.map((score) => <p key={score.id}>{`${score.score}`}</p>)
               )}
