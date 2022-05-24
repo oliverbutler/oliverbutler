@@ -6,40 +6,18 @@ import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { PostFrontMatter } from 'types/PostFrontMatter'
 import { PostListItem } from '@/components/PostListItem'
 import { Terminal } from '@/components/Terminal/Terminal'
-import { Spotify } from 'types/Spotify'
 
 const MAX_DISPLAY = 5
 
 export const getStaticProps: GetStaticProps<{
   posts: PostFrontMatter[]
-  spotify: Spotify | null
 }> = async () => {
   const posts = await getAllFilesFrontMatter('blog')
 
-  const spotify = await fetch(`https://api.spotify.com/v1/me/player/currently-playing`, {
-    headers: {
-      Authorization:
-        'Bearer BQCQjxJ9KUrWDRdz8MJeJrcsrrJPwgFQSYgsG6HIGORDuJfudDB1Cf4j4vtvRXIpX_JwfH8Wr_nZHv4JFPa7NUzH71QIwB9QuCaSW8u1iFrPqcW_RK_MOjkQ3pjcS11hEQPmOQGn9-EeD-KzOg',
-      'Content-Type': 'application/json',
-    },
-    method: 'GET',
-  })
-    .then(async (res): Promise<Spotify | null> => {
-      const json = await res.json()
-
-      if (!json.item) {
-        console.error(json)
-        return null
-      }
-
-      return json
-    })
-    .catch(() => null)
-
-  return { props: { posts, spotify }, revalidate: 10 }
+  return { props: { posts }, revalidate: 10 }
 }
 
-export default function Home({ posts, spotify }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Home({ posts }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
@@ -63,7 +41,7 @@ export default function Home({ posts, spotify }: InferGetStaticPropsType<typeof 
             </div>
           </div>
           <div className="xl:ml-6 xl:w-1/2">
-            <Terminal spotify={spotify} posts={posts} />
+            <Terminal posts={posts} />
           </div>
         </div>
         <h3 className="pt-4 pb-2 text-4xl font-bold leading-8 tracking-tight text-black underline underline-offset-4  dark:text-white">
