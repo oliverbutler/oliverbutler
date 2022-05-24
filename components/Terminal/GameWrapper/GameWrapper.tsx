@@ -49,8 +49,6 @@ export const GameWrapper = ({
     }
   }
 
-  console.log(highScores)
-
   useEffect(() => {
     if (wrapperRef.current) {
       window.addEventListener('keydown', handleOnKeyDown)

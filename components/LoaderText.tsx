@@ -30,7 +30,5 @@ export const LoaderText = () => {
 
   const curr = frames[frame]
 
-  console.log(curr.length)
-
   return <pre>Loading... {curr}</pre>
 }
