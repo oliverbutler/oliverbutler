@@ -44,6 +44,8 @@ export const GameWrapper = ({
     }
   }
 
+  console.log(highScores)
+
   useEffect(() => {
     if (wrapperRef.current) {
       window.addEventListener('keydown', handleOnKeyDown)
@@ -52,8 +54,6 @@ export const GameWrapper = ({
       }
     }
   }, [wrapperRef.current, gameState])
-
-  console.log(highScores)
 
   return (
     <div className="relative flex h-full flex-col items-center justify-center" ref={wrapperRef}>
@@ -86,10 +86,10 @@ export const GameWrapper = ({
           <div className="mt-4 flex flex-row space-x-6">
             <div>
               <p className="font-bold">Personal Board</p>
-              {!highScores?.data ? (
+              {!highScores ? (
                 <p className="text-red-500">Login!</p>
               ) : (
-                highScores?.data?.map((score) => <p key={score.id}>{`${score.score}`}</p>)
+                highScores?.map((score) => <p key={score.id}>{`${score.score}`}</p>)
               )}
             </div>
             <div>

@@ -11,6 +11,9 @@ export const useScore = (game: Game) => {
   })
 
   const addNewScore = async (score: number) => {
+    if (!isNotAuthed) {
+      return
+    }
     const { data } = await apiRequest<AddNewScore>('post', ApiRoute.SCORE_MY, {
       game,
       score,
@@ -21,7 +24,11 @@ export const useScore = (game: Game) => {
     return data
   }
 
-  const highScores = currentHighScore
+  //@ts-ignore
+  const isNotAuthed = currentHighScore?.data?.name === 'Unauthorized'
+
+  const highScores = isNotAuthed ? null : currentHighScore.data
+
   const globalHighScores = gameGlobalHighScore?.data ?? undefined
 
   return {
