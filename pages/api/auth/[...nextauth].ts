@@ -6,12 +6,12 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-if (!process.env.GITHUB_ID || !process.env.GITHUB_SECRET) {
-  throw new Error('GITHUB_ID and GITHUB_SECRET must be set in .env');
+if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
+  throw new Error('GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET must be set in .env')
 }
 
 if (!process.env.GOOGLE_ID || !process.env.GOOGLE_SECRET) {
-  throw new Error('GITHUB_ID and GITHUB_SECRET must be set in .env');
+  throw new Error('GITHUB_ID and GITHUB_SECRET must be set in .env')
 }
 
 declare module 'next-auth' {
