@@ -27,7 +27,7 @@ export const Snake = ({
   gameState: GameState
   endGame: () => void
   restartGame: () => void
-  setScore: (score: number) => void
+  setScore: React.Dispatch<React.SetStateAction<number>>
   gameHeight: number
   gameWidth: number
 }) => {
@@ -37,12 +37,6 @@ export const Snake = ({
   const [snake, setSnake] = useState<Pos[]>([])
   const [apples, setApples] = useState<Pos[]>([])
   const [dir, setDir] = useState<'left' | 'right' | 'up' | 'down'>('right')
-
-  const [currScore, setCurrScore] = useState(0)
-
-  useEffect(() => {
-    setScore(currScore)
-  }, [currScore])
 
   const scaledHeight = Math.round(gameHeight / SCALE)
   const scaledWidth = Math.round(gameWidth / SCALE)
@@ -138,7 +132,7 @@ export const Snake = ({
     const numberOfCollisions = checkAppleCollision(newHead)
 
     if (numberOfCollisions > 0) {
-      setCurrScore((curr) => curr + numberOfCollisions)
+      setScore((curr) => curr + numberOfCollisions)
 
       removeApple(newHead)
 
@@ -151,6 +145,7 @@ export const Snake = ({
   }
 
   const startGame = () => {
+    setScore(0)
     setSnake([
       [Math.round(scaledWidth / 2 - 0), Math.round(scaledHeight / 2 - 0)],
       [Math.round(scaledWidth / 2 - 1), Math.round(scaledHeight / 2 - 0)],
@@ -161,7 +156,6 @@ export const Snake = ({
     addApple()
     addApple()
     setDir('right')
-    setScore(0)
   }
 
   useEffect(() => {
