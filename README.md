@@ -1,6 +1,5 @@
 ## Hi, I'm Olly.
 
+- Software Engineer @ Collective Benefits 
 - Founder of Xeo (xeo.sh)
-- Builder of things
-- Advocate for writing quality code
-- Full Stack Web Developer @ TheodoUK
+- Software Craftsmanship Advocate
