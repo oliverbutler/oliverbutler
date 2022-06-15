@@ -7,7 +7,6 @@ import { GameState } from '../GameWrapper/GameWrapper'
 type Pos = number[]
 
 const SCALE = 15
-const INITIAL_LENGTH = 3
 
 const dirToVec: Record<'left' | 'right' | 'up' | 'down', number[]> = {
   left: [-1, 0],

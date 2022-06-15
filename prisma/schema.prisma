@@ -57,6 +57,7 @@ model VerificationToken {
 
 enum Game {
   SNAKE
+  FLAPPY_BIRD
 }
 
 model Score {

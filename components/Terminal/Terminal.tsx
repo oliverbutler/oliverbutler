@@ -46,6 +46,14 @@ export const Terminal = ({ posts }: { posts: PostFrontMatter[] }) => {
         fullscreen: true,
       },
       {
+        name: 'flappy-bird',
+        commands: ['flappy-bird', 'fb'],
+        component: ({ closeFullscreen }) => (
+          <GameWrapper game="FLAPPY_BIRD" closeFullscreen={closeFullscreen} />
+        ),
+        fullscreen: true,
+      },
+      {
         name: 'vim',
         commands: ['vim'],
         component: () => (

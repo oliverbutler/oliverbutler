@@ -4,16 +4,18 @@ import { useEffect, useRef, useState } from 'react'
 import { getAwardEmoji } from '../Rows/RowLeaderBoard'
 import { Snake } from '../Games/Snake'
 import { useScore } from './useScore'
+import { FlappyBird } from '../Games/FlappyBird'
 
 const gameToName: Record<Game, string> = {
   [Game.SNAKE]: 'Snake 🐍',
+  [Game.FLAPPY_BIRD]: 'Flappy Bird 🦆',
 }
 
 export enum GameState {
-  RUNNING,
-  PAUSED,
-  FINISH,
-  RESTART, // When resume move to FINISH
+  RUNNING = 'RUNNING',
+  PAUSED = 'PAUSED',
+  FINISH = 'FINISH',
+  RESTART = 'RESTART',
 }
 
 export const GameWrapper = ({
@@ -60,17 +62,31 @@ export const GameWrapper = ({
 
   return (
     <div className="relative flex h-full flex-col items-center justify-center" ref={wrapperRef}>
-      <Snake
-        gameState={gameState}
-        gameWidth={wrapperRef.current?.offsetWidth ?? 0}
-        gameHeight={wrapperRef.current?.offsetHeight ?? 0}
-        endGame={() => {
-          addNewScore(score)
-          setGameState(GameState.FINISH)
-        }}
-        setScore={setScore}
-        restartGame={() => setGameState(GameState.RUNNING)}
-      />
+      {game === Game.SNAKE ? (
+        <Snake
+          gameState={gameState}
+          gameWidth={wrapperRef.current?.offsetWidth ?? 0}
+          gameHeight={wrapperRef.current?.offsetHeight ?? 0}
+          endGame={() => {
+            addNewScore(score)
+            setGameState(GameState.FINISH)
+          }}
+          setScore={setScore}
+          restartGame={() => setGameState(GameState.RUNNING)}
+        />
+      ) : (
+        <FlappyBird
+          gameState={gameState}
+          gameWidth={wrapperRef.current?.offsetWidth ?? 0}
+          gameHeight={wrapperRef.current?.offsetHeight ?? 0}
+          endGame={() => {
+            addNewScore(score)
+            setGameState(GameState.FINISH)
+          }}
+          setScore={setScore}
+          restartGame={() => setGameState(GameState.RUNNING)}
+        />
+      )}
       {gameState === GameState.RUNNING ? (
         <div className="absolute right-2 top-2">
           {score} <span className="text-red-400">{isLoggedIn ? null : 'Not Logged In'}</span>
