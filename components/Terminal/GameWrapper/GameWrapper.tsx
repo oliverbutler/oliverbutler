@@ -3,10 +3,12 @@ import { signIn, useSession } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
 import { getAwardEmoji } from '../Rows/RowLeaderBoard'
 import { Snake } from '../Games/Snake'
-import { useScore } from './useScore'
+import { apiClient } from 'pages/_app'
+import { LoaderText } from '@/components/LoaderText'
 
 const gameToName: Record<Game, string> = {
   [Game.SNAKE]: 'Snake 🐍',
+  [Game.FLAPPY_BIRD]: 'Flappy Bird 🐦',
 }
 
 export enum GameState {
@@ -27,11 +29,31 @@ export const GameWrapper = ({
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [score, setScore] = useState(0)
 
-  const { data } = useSession()
+  const { data: userData } = useSession()
 
-  const isLoggedIn = Boolean(data?.user)
+  const isLoggedIn = Boolean(userData?.user)
 
-  const { highScores, addNewScore, globalHighScores } = useScore(game)
+  const myHighScoresData = apiClient.score.getMyScores.useQuery(
+    [`my-scores-${game}`],
+    {
+      query: { game },
+    },
+    { enabled: isLoggedIn }
+  )
+
+  const globalHighScoresData = apiClient.score.getHighScores.useQuery([`global-scores-${game}`], {
+    query: { game },
+  })
+
+  const myHighScores = myHighScoresData.data?.body.scores
+  const globalHighScores = globalHighScoresData.data?.body.scores
+
+  const addNewScore = apiClient.score.addNewScore.useMutation({
+    onSuccess: () => {
+      myHighScoresData.refetch()
+      globalHighScoresData.refetch()
+    },
+  })
 
   const handleOnKeyDown = (e) => {
     if (gameState === GameState.RUNNING) {
@@ -65,7 +87,7 @@ export const GameWrapper = ({
         gameWidth={wrapperRef.current?.offsetWidth ?? 0}
         gameHeight={wrapperRef.current?.offsetHeight ?? 0}
         endGame={() => {
-          addNewScore(score)
+          addNewScore.mutate({ body: { score, game } })
           setGameState(GameState.FINISH)
         }}
         setScore={setScore}
@@ -91,21 +113,27 @@ export const GameWrapper = ({
           <div className="mt-4 flex flex-row space-x-6">
             <div>
               <p className="font-bold">Personal Board</p>
-              {!highScores ? (
+              {!isLoggedIn ? (
                 <a className="cursor-pointer text-primary-500 underline" onClick={() => signIn()}>
                   Click to login!
                 </a>
+              ) : myHighScores ? (
+                myHighScores.map((score) => <p key={score.id}>{`${score.score}`}</p>)
               ) : (
-                highScores?.map((score) => <p key={score.id}>{`${score.score}`}</p>)
+                <LoaderText />
               )}
             </div>
             <div>
               <p className="font-bold">Global Board</p>
-              {globalHighScores?.map((score, index) => (
-                <p key={score.score}>{`${getAwardEmoji(index)} ${score.score} ${
-                  score.user.name
-                }`}</p>
-              ))}
+              {globalHighScores ? (
+                globalHighScores.map((score, index) => (
+                  <p key={score.score}>{`${getAwardEmoji(index)} ${score.score} ${
+                    score.user.name
+                  }`}</p>
+                ))
+              ) : (
+                <LoaderText />
+              )}
             </div>
           </div>
           <div className="mt-6 flex flex-row">

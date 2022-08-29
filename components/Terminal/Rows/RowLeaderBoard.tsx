@@ -1,6 +1,6 @@
 import { LoaderText } from '@/components/LoaderText'
-import { ApiRoute, useQuery } from '@/lib/utils/useApi'
-import { GetHighScores } from 'pages/api/score/high'
+import { Game } from '@prisma/client'
+import { apiClient } from 'pages/_app'
 
 export const getAwardEmoji = (index: number) => {
   switch (index) {
@@ -16,14 +16,18 @@ export const getAwardEmoji = (index: number) => {
 }
 
 export const RowLeaderBoard = () => {
-  const { data } = useQuery<GetHighScores>(ApiRoute.SCORE_HIGH, { query: { game: 'all' } })
+  const globalHighScores = apiClient.score.getHighScores.useQuery([`global-scores-${Game.SNAKE}`], {
+    query: { game: Game.SNAKE },
+  })
+
+  const highScores = globalHighScores.data?.body.scores
 
   return (
     <div className="mb-3">
-      {data ? (
+      {highScores ? (
         <ul>
           <div>{'===> Snake 🐍 <==='}</div>
-          {data.map((score, index) => (
+          {highScores.map((score, index) => (
             <li key={score.score}>
               {getAwardEmoji(index) + ' '}
               {score.score} {score.user.name}

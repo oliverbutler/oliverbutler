@@ -12,9 +12,19 @@ import Head from 'next/head'
 import siteMetadata from '@/data/siteMetadata'
 import LayoutWrapper from '@/components/LayoutWrapper'
 import { ClientReload } from '@/components/ClientReload'
+import { initQueryClient } from '@ts-rest/react-query'
+import { api } from 'server/api'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 const isSocket = process.env.SOCKET
+
+export const apiClient = initQueryClient(api, {
+  baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api`,
+  baseHeaders: {},
+})
+
+export const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
@@ -40,9 +50,11 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
           />
         </Head>
         {isDevelopment && isSocket && <ClientReload />}
-        <LayoutWrapper>
-          <Component {...pageProps} />
-        </LayoutWrapper>
+        <QueryClientProvider client={queryClient}>
+          <LayoutWrapper>
+            <Component {...pageProps} />
+          </LayoutWrapper>
+        </QueryClientProvider>
       </ThemeProvider>
     </SessionProvider>
   )
