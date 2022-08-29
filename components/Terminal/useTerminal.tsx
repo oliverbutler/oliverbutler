@@ -14,7 +14,7 @@ export type TerminalRow =
 export type CliProgram = {
   name: string
   commands: string[]
-  component: ({ closeFullscreen: close }: { closeFullscreen: () => void }) => React.ReactNode
+  component: ({ closeFullscreen }: { closeFullscreen: () => void }) => React.ReactNode
   fullscreen?: boolean
   onLaunch?: () => void
 }
