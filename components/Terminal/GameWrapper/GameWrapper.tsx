@@ -6,7 +6,7 @@ import { Snake } from '../Games/Snake'
 import { apiClient } from 'pages/_app'
 import { LoaderText } from '@/components/LoaderText'
 
-const gameToName: Record<Game, string> = {
+const gameToName = {
   [Game.SNAKE]: 'Snake 🐍',
   [Game.FLAPPY_BIRD]: 'Flappy Bird 🐦',
 }
