@@ -1,8 +1,6 @@
 import { MutableRefObject, useRef, useState } from 'react'
 
-export const useStateRef = <T extends any>(
-  initialValue: T
-): [T, (value: T) => void, MutableRefObject<T>] => {
+export function useStateRef<T>(initialValue: T): [T, (value: T) => void, MutableRefObject<T>] {
   const [value, _setValue] = useState<T>(initialValue)
   const valueRef = useRef<T>(value)
 

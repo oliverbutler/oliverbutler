@@ -114,9 +114,12 @@ export const GameWrapper = ({
             <div>
               <p className="font-bold">Personal Board</p>
               {!isLoggedIn ? (
-                <a className="cursor-pointer text-primary-500 underline" onClick={() => signIn()}>
+                <button
+                  className="cursor-pointer text-primary-500 underline"
+                  onClick={() => signIn()}
+                >
                   Click to login!
-                </a>
+                </button>
               ) : myHighScores ? (
                 myHighScores.map((score) => <p key={score.id}>{`${score.score}`}</p>)
               ) : (
