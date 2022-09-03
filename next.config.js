@@ -56,7 +56,7 @@ const securityHeaders = [
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
 module.exports = withBundleAnalyzer({
-  reactStrictMode: true,
+  reactStrictMode: false,
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   eslint: {
     dirs: ['pages', 'components', 'lib', 'layouts', 'scripts'],
