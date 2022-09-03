@@ -1,0 +1,46 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
+import { getPostsByDate } from "../posts";
+
+const posts = await getPostsByDate();
+---
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section>
+        <ul>
+          {
+            posts.map((post) => (
+              <li>
+                <img src={post.frontmatter.heroImage} />
+                <time datetime={post.frontmatter.pubDate}>
+                  {new Date(post.frontmatter.pubDate).toLocaleDateString(
+                    "en-gb",
+                    {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    }
+                  )}
+                </time>
+                <a class="text-primary-400 " href={post.url}>
+                  {post.frontmatter.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
