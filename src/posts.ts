@@ -1,5 +1,6 @@
 export interface Post {
   url: string;
+  image: any;
   frontmatter: {
     title: string;
     pubDate: string;
@@ -9,16 +10,38 @@ export interface Post {
   };
 }
 
+const getAllImages = (): Record<string, () => Promise<unknown>> => {
+  const images = import.meta.glob("./images/**/*.{png,jpg,jpeg}");
+
+  return images;
+};
+
 export const getPosts = async (): Promise<Record<string, Post>> => {
   const globPosts = import.meta.glob("./pages/blog/*.{md,mdx}", {
     eager: true,
   });
 
-  return Object.keys(globPosts).reduce((posts, postPath) => {
+  let newPosts = {} as Record<string, Post>;
+
+  const images = getAllImages();
+
+  for (const postPath in globPosts) {
     const post = globPosts[postPath] as Post;
-    posts[postPath.replace("./pages/blog/", "")] = post;
-    return posts;
-  }, {} as Record<string, Post>);
+
+    const foundImage = images[post.frontmatter.heroImage.replace("../..", ".")];
+
+    if (!foundImage) {
+      throw new Error(`Image not found for ${post.frontmatter.title}`);
+    }
+
+    const resolvedImg = ((await foundImage()) as any).default;
+
+    const postWithImage = Object.assign({ image: resolvedImg }, post);
+
+    newPosts[postPath.replace("./pages/blog/", "")] = postWithImage;
+  }
+
+  return newPosts;
 };
 
 export const getPostsByDate = async (): Promise<Post[]> => {

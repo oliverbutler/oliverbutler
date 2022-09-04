@@ -2,7 +2,6 @@
 import type { Highlight as IHighlight } from "../highlight";
 import Link from "./Link.astro";
 import { Image } from "@astrojs/image/components";
-import BlogHeroImage from "./BlogHeroImage.astro";
 
 export interface Props {
   highlight: IHighlight;
@@ -14,7 +13,7 @@ const { highlight } = Astro.props;
 {
   highlight.type === "post" && (
     <div class:list={[highlight.class]}>
-      <BlogHeroImage src={highlight.post.frontmatter.heroImage} />
+      <Image src={highlight.post.image} alt="hero image" />
 
       <h3>
         <Link href={highlight.post.url}>
