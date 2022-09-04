@@ -11,7 +11,7 @@ export type Highlight =
       class?: string;
       title: string;
       content: string;
-      img: string;
+      img: any;
       href?: string;
       github?: string;
       npm?: string;

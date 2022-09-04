@@ -1,18 +1,28 @@
 ---
 import type { Highlight as IHighlight } from "../highlight";
 import Link from "./Link.astro";
+import { Image } from "@astrojs/image/components";
 
 export interface Props {
   highlight: IHighlight;
 }
 
 const { highlight } = Astro.props;
+
+// FIXME: I'm not sure how frontmatter imports works, but this fixes it :see-no-evil:
+const newPostPath =
+  highlight.type === "post"
+    ? highlight.post.frontmatter.heroImage.replace("src", "../")
+    : "../images/steggy.png";
+
+const newPostImage = import(newPostPath);
 ---
 
 {
   highlight.type === "post" && (
     <div class:list={[highlight.class]}>
-      <img src={highlight.post.frontmatter.heroImage} />
+      <Image src={newPostImage} alt="thumbnail" />
+
       <h3>
         <Link href={highlight.post.url}>
           {highlight.post.frontmatter.title}
@@ -42,7 +52,7 @@ const { highlight } = Astro.props;
 {
   highlight.type === "custom" && (
     <div class={highlight.class}>
-      <img src={highlight.img} />
+      <Image src={highlight.img} alt="thumbnail" />
       <h3>{highlight.title}</h3>
       <p class="text-dark-300 text-sm">{highlight.content}</p>
       {highlight.github ? (
