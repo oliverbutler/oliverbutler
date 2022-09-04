@@ -9,7 +9,12 @@ const isActive = href === Astro.url.pathname;
 
 <a
   href={href}
-  class:list={["flex flex-row items-center", className, { active: isActive }]}
+  class:list={[
+    "flex flex-row items-center underline-offset-2	",
+    className,
+    { underline: isActive },
+    { "no-underline": !isActive },
+  ]}
   {...props}
 >
   <slot />

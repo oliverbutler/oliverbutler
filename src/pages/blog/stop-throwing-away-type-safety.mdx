@@ -6,6 +6,8 @@ pubDate: "August 30 2022"
 heroImage: "/images/stop-throwing-away-type-safety/stop-throwing-errors.jpg"
 ---
 
+import Gif from "../../components/Gif.astro"
+
 ## Overview
 
 This post covers my views on methodologies for error handling in modern software engineering, with later examples primarily targeted at Typescript engineers.
@@ -241,3 +243,8 @@ If you made it this far, you _probably_ care at least a little about Typescript,
 Hopefully, your main takeaway here is to take a moment to consider if throwing that error was the best course of action, was it possible that that information would be better to be passed back to the user, or can I just throw an error with a descriptive string?
 
 > Encode failure into your programs, rather than trying to avoid it by throwing away problems.
+
+<Gif
+  url="https://i.giphy.com/media/bKBM7H63PIykM/giphy.webp"
+  caption="Go forth and make the world a safer place."
+/>
