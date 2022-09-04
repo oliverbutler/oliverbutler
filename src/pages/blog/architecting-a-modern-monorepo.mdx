@@ -100,7 +100,7 @@ npx create-nx-workspace@latest
 
 The NX CLI will then ask you which template you would like to use to create this new application, for our case we will choose "Next.js".
 
-![nx-install](/static/images/architecting-a-modern-monorepo/nx-install.png)
+![nx-install](/images/architecting-a-modern-monorepo/nx-install.png)
 
 ### Create a shared React library
 
@@ -112,11 +112,11 @@ nx g @nrwl/react:lib ui-shared
 
 Running this command generates a new `ui-shared` library, which can be used by multiple apps. The beauty of this pattern is that if you change `ui-shared`, it will rebuild other apps that use it, whereas, if you make a change in `next-app` NX won't rebuild `ui-shared`.
 
-![nx-create-react-lib](/static/images/architecting-a-modern-monorepo/nx-create-react-lib.png)
+![nx-create-react-lib](/images/architecting-a-modern-monorepo/nx-create-react-lib.png)
 
 Here you can see the process of importing our new shared library, and using it in our Next.js app.
 
-![nx-create-react-lib-use-component](/static/images/architecting-a-modern-monorepo/nx-create-react-lib-use-component.png)
+![nx-create-react-lib-use-component](/images/architecting-a-modern-monorepo/nx-create-react-lib-use-component.png)
 
 ### Affected Builds
 
@@ -127,15 +127,15 @@ To handle this, NX has the `affected` command. `nx affected --target=next-app` w
 
 To visualize these "affected libraries", use the `nx affected:graph` command, in this example below we've added a `second-shared` lib which is also used in `next-app`.
 
-![nx-affected-1](/static/images/architecting-a-modern-monorepo/nx-affected-1.png)
+![nx-affected-1](/images/architecting-a-modern-monorepo/nx-affected-1.png)
 
-![nx-affected-1-graph](/static/images/architecting-a-modern-monorepo/nx-affected-1-graph.png)
+![nx-affected-1-graph](/images/architecting-a-modern-monorepo/nx-affected-1-graph.png)
 
 Now we're going to make a change to `second-shared`, as this is used by `next-app`, and `next-app-e2e` you should expect that they should both be re-built.
 
-![nx-affected-2](/static/images/architecting-a-modern-monorepo/nx-affected-2.png)
+![nx-affected-2](/images/architecting-a-modern-monorepo/nx-affected-2.png)
 
-![nx-affected-2-graph](/static/images/architecting-a-modern-monorepo/nx-affected-2-graph.png)
+![nx-affected-2-graph](/images/architecting-a-modern-monorepo/nx-affected-2-graph.png)
 
 As epected you can see that the `next-app` and `next-app-e2e` projects are affected, but the `ui-shared` lib is not.
 
@@ -145,7 +145,7 @@ Once you've got an established NX Monorepo, you will likely have many applicatio
 
 This then works closely with NX Cloud. With NX Cloud you and your team mates share the same cache, allowing you all to benefit from improved performance.
 
-![nx-incremental-builds](/static/images/architecting-a-modern-monorepo/nx-incremental.png)
+![nx-incremental-builds](/images/architecting-a-modern-monorepo/nx-incremental.png)
 
 The above chart is [from NX](https://nx.dev/ci/incremental-builds) and highlights the performance differences between normal builds, and incremental builds (both cold and warm).
 
@@ -170,7 +170,7 @@ Setting up Turborepo is as easy as it gets, just run `npx create-turbo@latest`.
 
 This sets up an example project, with a `web` and `docs` apps, and a shared `ui` package. Unlike NX there is a lot less boilerplate and this resembles a typical project structure you'd see with a "normal" Monorepo, this makes Turborepo much more approachable to a monorepo newcomer.
 
-![turbo-structure](/static/images/architecting-a-modern-monorepo/turbo-structure.png)
+![turbo-structure](/images/architecting-a-modern-monorepo/turbo-structure.png)
 
 ### Affected
 

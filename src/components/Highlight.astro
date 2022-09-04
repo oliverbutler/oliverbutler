@@ -11,23 +11,37 @@ const { highlight } = Astro.props;
 
 {
   highlight.type === "post" && (
-    <div>
+    <div class:list={[highlight.class]}>
       <img src={highlight.post.frontmatter.heroImage} />
       <h3>
         <Link href={highlight.post.url}>
           {highlight.post.frontmatter.title}
         </Link>
       </h3>
+
       <p class="text-dark-300 text-sm">
         {highlight.post.frontmatter.description}
       </p>
+      <time
+        datetime={highlight.post.frontmatter.pubDate}
+        class="text-xs text-dark-300 m-0 p-0"
+      >
+        {new Date(highlight.post.frontmatter.pubDate).toLocaleDateString(
+          "en-gb",
+          {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          }
+        )}
+      </time>
     </div>
   )
 }
 
 {
   highlight.type === "custom" && (
-    <div>
+    <div class={highlight.class}>
       <img src={highlight.img} />
       <h3>{highlight.title}</h3>
       <p class="text-dark-300 text-sm">{highlight.content}</p>

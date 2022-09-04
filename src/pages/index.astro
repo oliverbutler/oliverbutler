@@ -19,7 +19,7 @@ const HIGHLIGHTS: IHighlight[] = [
     title: "ts-rest",
     content:
       "RPC-like client and server helpers for a magical end to end typed experience",
-    img: "/images/tREST-logo.png",
+    img: "/images/trpc-card.jpg",
     github: "ts-rest/ts-rest",
     href: "https://ts-rest.com",
   },
@@ -73,9 +73,7 @@ const HIGHLIGHTS: IHighlight[] = [
   <body>
     <Header title={SITE_TITLE} />
     <main>
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-      >
+      <div class="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 gap-6">
         {HIGHLIGHTS.map((highlight) => <Highlight highlight={highlight} />)}
       </div>
     </main>

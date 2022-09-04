@@ -4,6 +4,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
 import { getPostsByDate } from "../posts";
+import Link from "../components/Link.astro";
 
 const posts = await getPostsByDate();
 ---
@@ -16,30 +17,35 @@ const posts = await getPostsByDate();
   <body>
     <Header />
     <main>
-      <section>
-        <ul>
-          {
-            posts.map((post) => (
-              <li>
-                <img src={post.frontmatter.heroImage} />
-                <time datetime={post.frontmatter.pubDate}>
-                  {new Date(post.frontmatter.pubDate).toLocaleDateString(
-                    "en-gb",
-                    {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    }
-                  )}
-                </time>
-                <a class="text-primary-400 " href={post.url}>
-                  {post.frontmatter.title}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
+      <div class="grid grid-cols-2 gap-4">
+        {
+          posts.map((post) => (
+            <div>
+              <img src={post.frontmatter.heroImage} />
+              <h3>
+                <Link href={post.url}>{post.frontmatter.title}</Link>
+              </h3>
+
+              <p class="text-dark-300 text-sm">
+                {post.frontmatter.description}
+              </p>
+              <time
+                datetime={post.frontmatter.pubDate}
+                class="text-xs text-dark-300 m-0 p-0"
+              >
+                {new Date(post.frontmatter.pubDate).toLocaleDateString(
+                  "en-gb",
+                  {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  }
+                )}
+              </time>
+            </div>
+          ))
+        }
+      </div>
     </main>
     <Footer />
   </body>
