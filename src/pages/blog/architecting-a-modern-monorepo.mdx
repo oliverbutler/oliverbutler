@@ -105,6 +105,7 @@ The NX CLI will then ask you which template you would like to use to create this
 <Image
   src={import("../../images/architecting-a-modern-monorepo/nx-install.png")}
   alt="nx-install"
+  loading="lazy"
 />
 
 ### Create a shared React library
@@ -122,6 +123,7 @@ Running this command generates a new `ui-shared` library, which can be used by m
     "../../images/architecting-a-modern-monorepo/nx-create-react-lib.png"
   )}
   alt="nx-create-react-lib"
+  loading="lazy"
 />
 
 Here you can see the process of importing our new shared library, and using it in our Next.js app.
@@ -131,6 +133,7 @@ Here you can see the process of importing our new shared library, and using it i
     "../../images/architecting-a-modern-monorepo/nx-create-react-lib-use-component.png"
   )}
   alt="nx-create-react-lib-use-component"
+  loading="lazy"
 />
 
 ### Affected Builds
@@ -145,6 +148,7 @@ To visualize these "affected libraries", use the `nx affected:graph` command, in
 <Image
   src={import("../../images/architecting-a-modern-monorepo/nx-affected-1.png")}
   alt="nx-affected-1"
+  loading="lazy"
 />
 
 <Image
@@ -152,6 +156,7 @@ To visualize these "affected libraries", use the `nx affected:graph` command, in
     "../../images/architecting-a-modern-monorepo/nx-affected-1-graph.png"
   )}
   alt="nx-affected-1-graph"
+  loading="lazy"
 />
 
 Now we're going to make a change to `second-shared`, as this is used by `next-app`, and `next-app-e2e` you should expect that they should both be re-built.
@@ -159,6 +164,7 @@ Now we're going to make a change to `second-shared`, as this is used by `next-ap
 <Image
   src={import("../../images/architecting-a-modern-monorepo/nx-affected-2.png")}
   alt="nx-affected-2"
+  loading="lazy"
 />
 
 <Image
@@ -166,6 +172,7 @@ Now we're going to make a change to `second-shared`, as this is used by `next-ap
     "../../images/architecting-a-modern-monorepo/nx-affected-2-graph.png"
   )}
   alt="nx-affected-2-graph"
+  loading="lazy"
 />
 
 As epected you can see that the `next-app` and `next-app-e2e` projects are affected, but the `ui-shared` lib is not.
@@ -179,6 +186,7 @@ This then works closely with NX Cloud. With NX Cloud you and your team mates sha
 <Image
   src={import("../../images/architecting-a-modern-monorepo/nx-incremental.png")}
   alt="nx-incremental"
+  loading="lazy"
 />
 
 The above chart is [from NX](https://nx.dev/ci/incremental-builds) and highlights the performance differences between normal builds, and incremental builds (both cold and warm).
@@ -209,6 +217,7 @@ This sets up an example project, with a `web` and `docs` apps, and a shared `ui`
     "../../images/architecting-a-modern-monorepo/turbo-structure.png"
   )}
   alt="turbo-structure"
+  loading="lazy"
 />
 
 ### Affected
