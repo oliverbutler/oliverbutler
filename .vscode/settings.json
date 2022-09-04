@@ -1,9 +1,3 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "grammarly.selectors": [
-    {
-      "language": "mdx",
-      "scheme": "file"
-    }
-  ]
+  "prettier.documentSelectors": ["**/*.astro"]
 }

@@ -1,0 +1,250 @@
+---
+layout: "../../layouts/BlogPost.astro"
+title: "Stop Throwing Away Type Safety!"
+description: "Throwing isn't always the answer, let's highlight some safer alternatives!"
+pubDate: "August 30 2022"
+heroImage: "/images/stop-throwing-away-type-safety/stop-throwing-errors.jpg"
+---
+
+import Gif from "../../components/Gif.astro"
+
+## Overview
+
+This post covers my views on methodologies for error handling in modern software engineering, with later examples primarily targeted at Typescript engineers.
+
+### Throwing Errors
+
+It's unlikely everything works, all the time, I mean... come on, nothing is perfect.
+
+When faced with a piece of code that could potentially result in a response you don't want it's common for many software engineers to reach into their toolbelt and pull out a "new Throw" to let them keep working without _"all of these pesky warnings in my Code"_, and why wouldn't you? - It's normal, you throw errors, they're caught somewhere, no harm no fowl and whatnot!
+
+This, in practice, sounds great however, in reality, what often happens is you throw away potentially useful information, especially something which could be fixed by adjusting a user input or action somewhere.
+
+A common example could be deleting a post, the request could fail because there are non-deleted comments on the post (assuming no cascades here). Often this will be surrounded by a try/catch or the error will be propagated up the stack to your API, throwing a generic 500 - this provides very little beneficial feedback to a user.
+
+### Encode Failure Into Your Programs
+
+With Javascript (and many other dynamically typed languages) commonly, this way of thinking is commonplace in your code bases. The proposal is to encode failure into your programs, rather than trying to avoid it by throwing away problems.
+
+There are many ways to do this, I'm going to cover a few of them primarily; application-level code in Typescript, GraphQL responses and REST API responses.
+
+### Exceptions Should Be Truly Exceptional
+
+Part of this mindset is to treat exceptions as what they say on the tin, _exceptional_. This effectively means if an exception happens in your code, this is a code path the developer hasn't considered and is a genuine error that should be propagated up the stack resulting in a 500 for the calling user - all while hopefully lighting up your monitoring like a Christmas tree (as this is something to investigate and handle gracefully).
+
+Some common examples of truly exceptional exceptions could be network failures, database failures, or a function returning a response it wasn't meant to (and wasn't handled by your type system of choice)
+
+### Code Re-use and Refactoring
+
+Another major benefit to fully encoding errors into your program is the ease of refactoring, the purer your code is, generally speaking, the easier it will be to handle refactors, let's do a little roleplay of an example situation.
+
+1. Bob comes along and writes a great function to send a slack notification
+2. Bob adds a conditional that can throw an error in the notification
+3. Alice decides to implement the same feature in their team, Alice copies the function call
+4. Alice provides the function with the parameters it asks for, and Typescript is happy, with no red squigglies!
+5. Alice pushes the code to production, and the function throws an error, Alice never wrapped it with a try-catch so the endpoint breaks for thousands of users, all because a slack message failed to send.
+
+What went wrong? Who was at fault here, all that matters is their users aren't very happy that they weren't able to use their application for a couple of hours.
+
+In step 2, where bob added a conditional to the function is where I would say this issue originated - this step is perfectly fine for Bob. He understands the whole function, how it works, what it throws and when it throws, so he knows exactly where (and whether) to wrap the function call in a catch.
+
+The irresponsible thing here is assuming that all other engineers will know how this function works, whether it will throw and where it will throw. The best strategy is to assume the person implementing something will know nothing, and that they shouldn't need to understand _how_ a function works to use it (necessarily), there is, however, one entity in the developer team you **should** trust to know everything, all the time, the compiler - give the compiler the best tools possible, in this case, a well-typed response, to allow it to deal with talking to Alice about how to handle the error gracefully.
+
+## Fixing It
+
+### Typescript
+
+With Typescript it's now possible to use a union type in the return type of a function to contain the error, and then handle it in the caller, entirely type safely.
+
+```typescript
+interface ErrorResponse {
+  type: "error";
+  error: string;
+}
+
+interface SuccessResponse {
+  type: "success";
+  message: string;
+}
+
+function getData(): ErrorResponse | SuccessResponse {
+  return {
+    error: "Something went wrong",
+  };
+}
+
+const data = getData();
+
+if (data.type === "error") {
+  // ...
+}
+```
+
+This approach is OK, but it isn't great. It required us to add a `type` or to define a type guard to identify whether the response was an error or not. Plus the implementation of this error isn't going to be consistent across a code base as there is no clear pattern to the error response.
+
+### NeverThrow
+
+I stumbled upon this library while looking for a solution to this problem. It provides a common structure for your code base to effectively type and handle errors in Typescript.
+
+```typescript
+interface ErrorResponse {
+  error: string;
+}
+
+interface SuccessResponse {
+  message: string;
+}
+
+function getData(): Result<SuccessResponse, ErrorResponse> {
+  return err({
+    error: "Something went wrong",
+  });
+}
+
+const data = getData();
+
+if (data.isErr()) {
+  // ...
+}
+```
+
+NeverThrow provides a handful of handy abilities to your functions, and some optional eslint plugins to truly force you to gracefully handle errors at the application level.
+
+NeverThrow is entirely optional to this way of thinking, you can still write functions that behave this way, it may just require a bit more creative thinking to get the best out of it.
+
+### APIs
+
+APIs are another source of lost type safety, more often than not your framework of choice will not effectively provide a type-safe error response.
+
+#### GraphQL
+
+GraphQL has a great error handling system, where a "errors" array is returned in the response, but it isn't typed like the general success responses.
+
+As a result, it's common to see some teams encoding errors into the "success" response as a union type, forcing the caller to handle the error effectively.
+
+```graphql
+interface Error {
+  message: String!
+}
+
+type Entity {
+  id: ID!
+  name: String!
+}
+
+union EntityResult = Entity | Error
+
+type Query {
+  entity(id: ID!, userId: ID!): EntityResult!
+}
+```
+
+This is a little bit frustrating, looking at the API call in an inspector you wouldn't know if the error was an actual error or not unless you inspected the response body. This also means your client library has no way of knowing that this request did in fact fail, and will treat it as being a success.
+
+#### REST - OpenAPI
+
+REST APIs generally give you a little more flexibility and the benefits of being able to utilize HTTP status codes to indicate errors. The only difficulty comes from effectively passing this information into the API.
+
+OpenAPI definitions allow you to define the response types from an endpoint, allowing your client to generate the correct type for the response.
+
+```yaml
+paths:
+  /users/{id}:
+    get:
+      summary: Get User
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request. User ID must be an integer and larger than 0.
+        "401":
+          description: Authorization information is missing or invalid.
+        "404":
+          description: A user with the specified ID was not found.
+        "5XX":
+          description: Unexpected error.
+```
+
+Unfortunately, this method requires you to define the OpenAPI schema manually and rely on code generation to generate the correct type for the response, most don't mind this too badly, but in this era of Typescript full stack development, there is a better way...
+
+#### REST - ts-rest
+
+ts-rest [ts-rest.com](https://ts-rest.com) (made by me @oliverbutler) provides a great way to define the response types for your REST APIs in a Typescript contract which is shared between your client and server without any code-gen.
+
+This pattern improves developer experience allowing you to build your APIs in a way to design for failure from day 1, whilst forcing your server to obey the contract and restricting your clients to only utilize data they _definitely_ have access to - improving developer experience, shortening feedback loops, and improving stability.
+
+```typescript
+export const contract = c.router({
+  updateUser: {
+    method: "PUT",
+    path: `/users/:id`,
+    response: {
+      200: c.response<User>(),
+      400: c.response<{ message: string }>(),
+      404: c.response<null>(),
+    },
+    summary: "Update a user",
+    body: z.object({
+      name: z.string(),
+      email: z.string(),
+    }),
+  },
+});
+```
+
+In this case, you can force your server to respond in the correct format, and you can force your client to deal with the error cases of a response.
+
+```typescript
+const { status, body } = await client.updateUser({
+  params: { id: "1" },
+  body: {
+    name: "John Doe",
+    email: "",
+  },
+});
+
+if (status === 200) {
+  console.log(body.email);
+} else if (status === 404) {
+  console.log("Not found");
+} else if (status === 400) {
+  console.log(`Issue with body: ${body.message}`);
+} else {
+  console.log("Something bad went wrong");
+}
+```
+
+Above we're using the fetch client to make the API call, with a typed response from the contract,
+
+```typescript
+const updatedUser: {
+    status: 200;
+    body: User
+} | {
+    status: 400;
+    body: {
+        message: string;
+    }
+} | {
+    status: 404;
+    body: null
+} | {
+    status: 100 | 101 | 102 | 201 | 202 | 203 | ... 47 more ... | 511;
+    body: unknown;
+}
+```
+
+The above response is how the response is typed from the API, et voila! You now have a fully type-safe client in three simple steps - if this intrigues you please check out the quickstart guide at https://ts-rest.com/docs/quickstart.
+
+## Conclusion
+
+If you made it this far, you _probably_ care at least a little about Typescript, if that's you, give some of those tools I mentioned a go, and attempt to truly embrace errors, rather than throwing them away.
+
+Hopefully, your main takeaway here is to take a moment to consider if throwing that error was the best course of action, was it possible that that information would be better to be passed back to the user, or can I just throw an error with a descriptive string?
+
+> Encode failure into your programs, rather than trying to avoid it by throwing away problems.
+
+<Gif
+  url="https://i.giphy.com/media/bKBM7H63PIykM/giphy.webp"
+  caption="Go forth and make the world a safer place."
+/>

@@ -1,0 +1,18 @@
+---
+export interface Props {
+  href?: string | undefined;
+  newPage?: boolean;
+}
+
+const { href, newPage } = Astro.props;
+---
+
+{
+  href ? (
+    <a href={href} target={newPage ? "_blank" : undefined}>
+      <slot />
+    </a>
+  ) : (
+    <slot />
+  )
+}
