@@ -1,0 +1,15 @@
+---
+import { Image } from "@astrojs/image/components";
+
+export interface Props {
+  src: string;
+}
+
+const { src } = Astro.props;
+
+const newPostPath = src.replace("src", "../");
+
+const newPostImage = import(newPostPath);
+---
+
+<Image src={newPostImage} alt="hero image" />
