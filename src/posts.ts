@@ -16,6 +16,20 @@ const getAllImages = (): Record<string, () => Promise<unknown>> => {
   return images;
 };
 
+export const getImageFromHeroImage = async (heroImage: string) => {
+  const images = getAllImages();
+
+  const foundImage = images[heroImage.replace("../..", ".")];
+
+  if (!foundImage) {
+    throw new Error(`Image not found for ${heroImage}`);
+  }
+
+  const resolvedImg = ((await foundImage()) as any).default;
+
+  return resolvedImg;
+};
+
 export const getPosts = async (): Promise<Record<string, Post>> => {
   const globPosts = import.meta.glob("./pages/blog/*.{md,mdx}", {
     eager: true,
@@ -23,20 +37,12 @@ export const getPosts = async (): Promise<Record<string, Post>> => {
 
   let newPosts = {} as Record<string, Post>;
 
-  const images = getAllImages();
-
   for (const postPath in globPosts) {
     const post = globPosts[postPath] as Post;
 
-    const foundImage = images[post.frontmatter.heroImage.replace("../..", ".")];
+    const image = await getImageFromHeroImage(post.frontmatter.heroImage);
 
-    if (!foundImage) {
-      throw new Error(`Image not found for ${post.frontmatter.title}`);
-    }
-
-    const resolvedImg = ((await foundImage()) as any).default;
-
-    const postWithImage = Object.assign({ image: resolvedImg }, post);
+    const postWithImage = Object.assign({ image }, post);
 
     newPosts[postPath.replace("./pages/blog/", "")] = postWithImage;
   }

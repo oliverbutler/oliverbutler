@@ -3,6 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { Image } from "@astrojs/image/components";
+import { getImageFromHeroImage } from "../posts";
 
 export interface Props {
   content: {
@@ -17,6 +18,8 @@ export interface Props {
 const {
   content: { title, description, pubDate, updatedDate, heroImage },
 } = Astro.props;
+
+const resolvedHeroImage = await getImageFromHeroImage(heroImage);
 ---
 
 <html lang="en" class="dark">
@@ -33,7 +36,7 @@ const {
             <Image
               width={720}
               height={360}
-              src={heroImage}
+              src={resolvedHeroImage}
               alt="hero image"
               class="mx-auto"
             />
