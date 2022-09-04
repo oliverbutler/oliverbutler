@@ -4,7 +4,7 @@
 
 @layer base {
   html {
-    @apply prose max-w-4xl px-2 mx-auto dark:bg-black dark:prose-invert selection:bg-primary-700/50;
+    @apply prose max-w-4xl px-2 mx-auto bg-black prose-invert selection:bg-primary-700/50;
   }
 
   a {
