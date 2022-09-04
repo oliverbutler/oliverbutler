@@ -1,7 +1,7 @@
 ---
 import type { Highlight as IHighlight } from "../highlight";
 import Link from "./Link.astro";
-import { Image } from "@astrojs/image/components";
+import { Picture } from "@astrojs/image/components";
 
 export interface Props {
   highlight: IHighlight;
@@ -13,7 +13,13 @@ const { highlight } = Astro.props;
 {
   highlight.type === "post" && (
     <div class:list={[highlight.class]}>
-      <Image src={highlight.post.image} alt="hero image" />
+      <Picture
+        src={highlight.post.image}
+        alt="hero image"
+        widths={[200, 400, 800]}
+        sizes="(max-width: 800px) 100vw, 800px"
+        formats={["avif", "jpeg", "png", "webp"]}
+      />
 
       <h3>
         <Link href={highlight.post.url}>
@@ -44,7 +50,13 @@ const { highlight } = Astro.props;
 {
   highlight.type === "custom" && (
     <div class={highlight.class}>
-      <Image src={highlight.img} alt="thumbnail" />
+      <Picture
+        src={highlight.img}
+        alt="thumbnail"
+        widths={[200, 400, 800]}
+        sizes="(max-width: 800px) 100vw, 800px"
+        formats={["avif", "jpeg", "png", "webp"]}
+      />
       <h3>{highlight.title}</h3>
       <p class="text-dark-300 text-sm">{highlight.content}</p>
       {highlight.github ? (

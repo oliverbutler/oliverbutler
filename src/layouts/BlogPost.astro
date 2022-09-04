@@ -2,7 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { Image } from "@astrojs/image/components";
+import { Picture } from "@astrojs/image/components";
 import { getImageFromHeroImage } from "../posts";
 
 export interface Props {
@@ -33,12 +33,13 @@ const resolvedHeroImage = await getImageFromHeroImage(heroImage);
       <article>
         {
           heroImage && (
-            <Image
-              width={720}
-              height={360}
+            <Picture
               src={resolvedHeroImage}
               alt="hero image"
               class="mx-auto"
+              widths={[200, 400, 800]}
+              sizes="(max-width: 800px) 100vw, 800px"
+              formats={["avif", "jpeg", "png", "webp"]}
             />
           )
         }
