@@ -8,8 +8,6 @@ heroImage: "../../images/useffect-post.jpg"
 
 import Gif from "../../components/Gif.astro";
 
-# When not to useEffect
-
 React's useEffect hook is a powerful tool for managing side effects in functional components. It allows you to perform tasks that would normally be done in a component's lifecycle methods, such as making network requests or subscribing to events.
 
 However, it is important to understand when not to use useEffect, as it can be overused and is often a footgun in the sense that it can cause problems if used improperly. It is important to carefully consider the consequences of using useEffect and to use it with caution to avoid potential problems.
@@ -82,7 +80,7 @@ const PostList = ({ posts, postName }) => {
 
 This approach avoids the unnecessary re-renders caused by useEffect and keeps the component simpler and more maintainable.
 
-However, sometimes opperations may be expensive (require async calls, complex filtering etc). Using an inline constant with `useMemo` allows us to perform the calculation only when the `posts` or `postName` props change, avoiding unnecessary computation whilst still keeping the component simple and maintainable.
+However, sometimes opperations may be expensive. Using an inline constant with `useMemo` allows us to perform the calculation only when the `posts` or `postName` props change, avoiding unnecessary computation whilst still keeping the component simple and maintainable.
 
 ```typescript
 import { useState, useEffect, useMemo } from "react";
@@ -105,6 +103,8 @@ const PostList = ({ posts, postName }) => {
   );
 };
 ```
+
+ℹ️ Note useMemo is not suitable for async operations such as data fetching, as it blocks the main thread, for these use cases (side effects) useEffect and a useState is a very valid combination, or I'd also reccomend utilizing [@tanstack/react-query](https://tanstack.com/query/v4) for this!
 
 ## Conclusion
 
