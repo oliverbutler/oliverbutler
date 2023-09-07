@@ -5,7 +5,7 @@ import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
 import { getPostsByDate } from "../posts";
 import Link from "../components/Link.astro";
-import { Picture } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 
 const posts = await getPostsByDate();
 ---
@@ -22,7 +22,7 @@ const posts = await getPostsByDate();
         {
           posts.map((post) => (
             <div>
-              <Picture
+              <Image
                 src={post.image}
                 alt="hero image"
                 widths={[200, 400, 800]}
