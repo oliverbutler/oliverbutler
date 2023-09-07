@@ -12,6 +12,10 @@ const posts = await getPosts();
 const HIGHLIGHTS: IHighlight[] = [
   {
     type: "post",
+    post: posts["drizzle-with-ts-rest.mdx"] as Post,
+  },
+  {
+    type: "post",
     post: posts["dont-use-effect.mdx"] as Post,
   },
   {
