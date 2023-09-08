@@ -38,6 +38,7 @@ const resolvedHeroImage = await getImageFromHeroImage(heroImage);
         {
           heroImage && (
             <Image
+              transition:name={title.replace(/\s/g, "-")}
               src={resolvedHeroImage}
               alt="hero image"
               class="mx-auto"

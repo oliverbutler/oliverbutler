@@ -13,7 +13,9 @@ const { highlight } = Astro.props;
 {
   highlight.type === "post" && (
     <div class:list={[highlight.class]}>
+      <Link href={highlight.post.url}>
       <Image
+        transition:name={highlight.post.frontmatter.title.replace(/\s/g, "-")}
         src={highlight.post.image}
         alt="hero image"
         widths={[200, 400, 800]}
@@ -44,6 +46,7 @@ const { highlight } = Astro.props;
           }
         )}
       </time>
+      </Link>
     </div>
   )
 }
@@ -52,6 +55,7 @@ const { highlight } = Astro.props;
   highlight.type === "custom" && (
     <div class={highlight.class}>
       <Image
+        transition:name={highlight.title.replace(/\s/g, "-")}
         src={highlight.img}
         alt="thumbnail"
         widths={[200, 400, 800]}

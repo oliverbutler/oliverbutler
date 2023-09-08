@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import { ViewTransitions } from 'astro:transitions';
+
 
 export interface Props {
   title: string;
@@ -38,3 +40,4 @@ const imgUrl = new URL(image, Astro.url);
 <meta property="twitter:image" content={imgUrl} />
 
 
+<ViewTransitions />

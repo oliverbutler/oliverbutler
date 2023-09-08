@@ -22,7 +22,9 @@ const posts = await getPostsByDate();
         {
           posts.map((post) => (
             <div>
+            <Link href={post.url}>
               <Image
+                transition:name={post.frontmatter.title.replace(/\s/g, "-")}
                 src={post.image}
                 alt="hero image"
                 widths={[200, 400, 800]}
@@ -49,6 +51,7 @@ const posts = await getPostsByDate();
                   }
                 )}
               </time>
+            </Link>
             </div>
           ))
         }
