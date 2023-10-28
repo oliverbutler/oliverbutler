@@ -1,6 +1,6 @@
 ## Hi, I'm Olly.
 
-I'm Olly! I'm currently working as a SWE @ Collective Benefits striving to help the lives of people though the way I best know how; delivering quality, stable and beautiful software.
+I'm Olly! I'm currently working as a SWE @ Collective Benefits striving to help the lives of people through the way I best know how; delivering quality, stable and beautiful software.
 
 Founded [ts-rest](https://ts-rest.com) to help deliver type safe APIs to teams across the world, helping them focus on what matters most.
 
