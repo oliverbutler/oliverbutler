@@ -1,4 +1,4 @@
-module oliverbutler.uk/oliverbutler
+module oliverbutler
 
 go 1.22
 

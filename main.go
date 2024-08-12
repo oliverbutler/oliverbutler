@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"oliverbutler/templates"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -11,10 +12,11 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
-	component := Hello("Olly")
+	fileServer := http.FileServer(http.Dir("./static"))
+	r.Handle("/static/*", http.StripPrefix("/static/", fileServer))
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		component.Render(r.Context(), w)
+		templates.Index().Render(r.Context(), w)
 	})
 
 	http.ListenAndServe("localhost:3000", r)
