@@ -9,6 +9,8 @@ templ Map(title string, geoJSONData string) {
 			<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 			<script src="https://api.mapbox.com/mapbox-gl-js/v3.5.2/mapbox-gl.js"></script>
 			<link href="https://api.mapbox.com/mapbox-gl-js/v3.5.2/mapbox-gl.css" rel="stylesheet"/>
+			<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 			<style>
     body {
       margin: 0;
@@ -21,14 +23,44 @@ templ Map(title string, geoJSONData string) {
       bottom: 0;
       width: 100%;
     }
+
+    #layer-switcher {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1;
+      background: white;
+      padding: 10px;
+      border-radius: 3px;
+    }
+
+    #elevation-graph {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 3px;
+      height: 200px;
+    }
   </style>
 		</head>
 		<body>
 			<div id="map"></div>
+			<div id="layer-switcher">
+				<button id="map-button">Map</button>
+				<button id="satellite-button">Satellite</button>
+			</div>
+			<div id="elevation-graph">
+				<canvas id="elevation-chart"></canvas>
+			</div>
 			<script>
-    mapboxgl.accessToken = 'pk.eyJ1Ijoib2xpdmVyYnV0bGVyIiwiYSI6ImNsZ3NpZmlvazAxb2Mzc281dXJvb20weGgifQ.yov1u2Efo_v7ImCH2o9pGg';
+
 
     const geoJSONData = JSON.parse(JSON.parse(document.getElementById('jsonData').textContent))
+    mapboxgl.accessToken = 'pk.eyJ1Ijoib2xpdmVyYnV0bGVyIiwiYSI6ImNsZ3NpZmlvazAxb2Mzc281dXJvb20weGgifQ.yov1u2Efo_v7ImCH2o9pGg';
 
     const map = new mapboxgl.Map({
       container: 'map',
@@ -57,6 +89,18 @@ templ Map(title string, geoJSONData string) {
         }
       });
 
+      // Add start and end markers
+      const coordinates = geoJSONData.features[0].geometry.coordinates;
+      const start = coordinates[0];
+      const end = coordinates[coordinates.length - 1];
+
+      new mapboxgl.Marker({color: '#008000'})
+        .setLngLat(start)
+        .addTo(map);
+
+      new mapboxgl.Marker({color: '#FF0000'})
+        .setLngLat(end)
+        .addTo(map);
 
       // Fit the map to the bounds of the GeoJSON data
       const bounds = new mapboxgl.LngLatBounds();
@@ -68,6 +112,79 @@ templ Map(title string, geoJSONData string) {
         }
       });
       map.fitBounds(bounds, {padding: 50});
+
+      // Layer switcher functionality
+      document.getElementById('map-button').addEventListener('click', () => {
+        map.setStyle('mapbox://styles/oliverbutler/cllz4ea1c00n701pbbqah10qo');
+      });
+
+      document.getElementById('satellite-button').addEventListener('click', () => {
+        map.setStyle('mapbox://styles/mapbox/satellite-v9');
+      });
+
+      map.on('style.load', () => {
+        // Re-add the GPX track layer after style change
+        map.addSource('gpx-tracks', {
+          type: 'geojson',
+          data: geoJSONData
+        });
+
+        map.addLayer({
+          id: 'gpx-tracks',
+          type: 'line',
+          source: 'gpx-tracks',
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#ff0000',
+            'line-width': 3
+          }
+        });
+      });
+
+      const line = turf.lineString(coordinates);
+      const elevationData = coordinates.map((coord, index) => {
+        return {
+          distance: turf.length(turf.lineSlice(turf.point(coordinates[0]), turf.point(coord), line)) * 1000, // Convert to meters
+          elevation: coord[2] || 0 // Use 0 if elevation is not available
+        }
+      });
+
+
+      // Create elevation chart
+      const ctx = document.getElementById('elevation-chart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: elevationData.map(d => d.distance.toFixed(0)),
+          datasets: [{
+            label: 'Elevation',
+            data: elevationData.map(d => d.elevation),
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Distance (m)'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Elevation (m)'
+              }
+            }
+          }
+        }
+      });
     });
   </script>
 		</body>

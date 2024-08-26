@@ -63,7 +63,13 @@ func convertGPXToGeoJSON() (*geojson.FeatureCollection, error) {
 				for _, segment := range track.Segments {
 					var coordinates [][]float64
 					for _, point := range segment.Points {
-						coordinates = append(coordinates, []float64{point.Longitude, point.Latitude})
+						var elevation float64 = 0
+
+						if point.Elevation.NotNull() {
+							elevation = point.Elevation.Value()
+						}
+
+						coordinates = append(coordinates, []float64{point.Longitude, point.Latitude, elevation})
 					}
 
 					lineString := geojson.NewLineStringFeature(coordinates)
