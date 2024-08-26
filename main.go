@@ -19,5 +19,9 @@ func main() {
 		templates.Index().Render(r.Context(), w)
 	})
 
+	r.Get("/maps", func(w http.ResponseWriter, r *http.Request) {
+		templates.Map("Place fell").Render(r.Context(), w)
+	})
+
 	http.ListenAndServe("localhost:3000", r)
 }
