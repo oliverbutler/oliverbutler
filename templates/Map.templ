@@ -9,7 +9,6 @@ templ Map(title string, geoJSONData string) {
 			<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 			<script src="https://api.mapbox.com/mapbox-gl-js/v3.5.2/mapbox-gl.js"></script>
 			<link href="https://api.mapbox.com/mapbox-gl-js/v3.5.2/mapbox-gl.css" rel="stylesheet"/>
-			<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 			<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 			<style>
     body {
@@ -144,11 +143,13 @@ templ Map(title string, geoJSONData string) {
         });
       });
 
-      const line = turf.lineString(coordinates);
       const elevationData = coordinates.map((coord, index) => {
+
+
         return {
-          distance: turf.length(turf.lineSlice(turf.point(coordinates[0]), turf.point(coord), line)) * 1000, // Convert to meters
-          elevation: coord[2] || 0 // Use 0 if elevation is not available
+          distance: index,
+          elevation: coord[2],
+
         }
       });
 
