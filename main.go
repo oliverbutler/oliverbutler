@@ -2,16 +2,43 @@ package main
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"io/ioutil"
+	"math"
 	"net/http"
 	"oliverbutler/templates"
 	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/paulmach/go.geojson"
-	"github.com/tkrajina/gpxgo/gpx"
 )
+
+type GPX struct {
+	XMLName xml.Name `xml:"gpx"`
+	Tracks  []Track  `xml:"trk"`
+}
+
+type Track struct {
+	Name     string    `xml:"name"`
+	Segments []Segment `xml:"trkseg"`
+}
+
+type Segment struct {
+	Points []Point `xml:"trkpt"`
+}
+
+type Point struct {
+	Latitude  float64 `xml:"lat,attr"`
+	Longitude float64 `xml:"lon,attr"`
+	Elevation float64 `xml:"ele"`
+}
+
+type TrackPoint struct {
+	Latitude           float64 `json:"lat"`
+	Longitude          float64 `json:"lon"`
+	Elevation          float64 `json:"ele"`
+	CumulativeDistance float64 `json:"cumDistance"`
+}
 
 func main() {
 	r := chi.NewRouter()
@@ -25,60 +52,90 @@ func main() {
 	})
 
 	r.Get("/maps", func(w http.ResponseWriter, r *http.Request) {
-		geoJSON, err := convertGPXToGeoJSON()
+		trackPoints, err := readGPXFiles()
 		if err != nil {
-			http.Error(w, "Error converting GPX to GeoJSON", http.StatusInternalServerError)
+			http.Error(w, "Error reading GPX files", http.StatusInternalServerError)
 			return
 		}
 
-		geoJSONString, err := json.Marshal(geoJSON)
+		trackPointsJSON, err := json.Marshal(trackPoints)
 		if err != nil {
-			http.Error(w, "Error marshaling GeoJSON", http.StatusInternalServerError)
+			http.Error(w, "Error marshaling track points", http.StatusInternalServerError)
 			return
 		}
 
-		templates.Map("Place fell", string(geoJSONString)).Render(r.Context(), w)
+		templates.Map("Place fell", string(trackPointsJSON)).Render(r.Context(), w)
 	})
 
 	http.ListenAndServe("localhost:3000", r)
 }
 
-func convertGPXToGeoJSON() (*geojson.FeatureCollection, error) {
+func readGPXFiles() ([]TrackPoint, error) {
 	gpxDir := "./static/gpx/"
 	files, err := ioutil.ReadDir(gpxDir)
 	if err != nil {
 		return nil, err
 	}
 
-	fc := geojson.NewFeatureCollection()
+	var allTrackPoints []TrackPoint
 
 	for _, file := range files {
 		if filepath.Ext(file.Name()) == ".gpx" {
-			gpxFile, err := gpx.ParseFile(filepath.Join(gpxDir, file.Name()))
+			data, err := ioutil.ReadFile(filepath.Join(gpxDir, file.Name()))
 			if err != nil {
 				return nil, err
 			}
 
-			for _, track := range gpxFile.Tracks {
-				for _, segment := range track.Segments {
-					var coordinates [][]float64
-					for _, point := range segment.Points {
-						var elevation float64 = 0
+			var gpx GPX
+			err = xml.Unmarshal(data, &gpx)
+			if err != nil {
+				return nil, err
+			}
 
-						if point.Elevation.NotNull() {
-							elevation = point.Elevation.Value()
-						}
+			trackPoints := processGPX(&gpx)
+			allTrackPoints = append(allTrackPoints, trackPoints...)
+		}
+	}
 
-						coordinates = append(coordinates, []float64{point.Longitude, point.Latitude, elevation})
-					}
+	return allTrackPoints, nil
+}
 
-					lineString := geojson.NewLineStringFeature(coordinates)
-					lineString.SetProperty("name", track.Name)
-					fc.AddFeature(lineString)
+func processGPX(gpx *GPX) []TrackPoint {
+	var trackPoints []TrackPoint
+	cumulativeDistance := 0.0
+
+	for _, track := range gpx.Tracks {
+		for _, segment := range track.Segments {
+			var prevPoint *Point
+			for _, point := range segment.Points {
+				if prevPoint != nil {
+					distance := haversine(prevPoint.Latitude, prevPoint.Longitude, point.Latitude, point.Longitude)
+					cumulativeDistance += distance
 				}
+
+				trackPoints = append(trackPoints, TrackPoint{
+					Latitude:           point.Latitude,
+					Longitude:          point.Longitude,
+					Elevation:          point.Elevation,
+					CumulativeDistance: cumulativeDistance,
+				})
+
+				prevPoint = &point
 			}
 		}
 	}
 
-	return fc, nil
+	return trackPoints
+}
+
+func haversine(lat1, lon1, lat2, lon2 float64) float64 {
+	const R = 6371 // Earth's radius in kilometers
+
+	dLat := (lat2 - lat1) * math.Pi / 180
+	dLon := (lon2 - lon1) * math.Pi / 180
+	a := math.Sin(dLat/2)*math.Sin(dLat/2) +
+		math.Cos(lat1*math.Pi/180)*math.Cos(lat2*math.Pi/180)*
+			math.Sin(dLon/2)*math.Sin(dLon/2)
+	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
+	return R * c
 }

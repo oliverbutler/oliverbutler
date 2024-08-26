@@ -1,7 +1,7 @@
 package templates
 
-templ Map(title string, geoJSONData string) {
-	@templ.JSONScript("jsonData", geoJSONData)
+templ Map(title string, trackPointsData string) {
+	@templ.JSONScript("jsonData", trackPointsData)
 	<html>
 		<head>
 			<meta charset="utf-8"/>
@@ -27,7 +27,7 @@ templ Map(title string, geoJSONData string) {
       position: absolute;
       top: 10px;
       left: 10px;
-      z-index: 1;
+
       background: white;
       padding: 10px;
       border-radius: 3px;
@@ -56,9 +56,7 @@ templ Map(title string, geoJSONData string) {
 				<canvas id="elevation-chart"></canvas>
 			</div>
 			<script>
-
-
-    const geoJSONData = JSON.parse(JSON.parse(document.getElementById('jsonData').textContent))
+    const trackPoints = JSON.parse(JSON.parse(document.getElementById('jsonData').textContent));
     mapboxgl.accessToken = 'pk.eyJ1Ijoib2xpdmVyYnV0bGVyIiwiYSI6ImNsZ3NpZmlvazAxb2Mzc281dXJvb20weGgifQ.yov1u2Efo_v7ImCH2o9pGg';
 
     const map = new mapboxgl.Map({
@@ -69,15 +67,24 @@ templ Map(title string, geoJSONData string) {
     });
 
     map.on('load', () => {
-      map.addSource('gpx-tracks', {
+      const geojson = {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: trackPoints.map(point => [point.lon, point.lat, point.ele])
+        }
+      };
+
+      map.addSource('gpx-track', {
         type: 'geojson',
-        data: geoJSONData
+        data: geojson
       });
 
       map.addLayer({
-        id: 'gpx-tracks',
+        id: 'gpx-track',
         type: 'line',
-        source: 'gpx-tracks',
+        source: 'gpx-track',
         layout: {
           'line-join': 'round',
           'line-cap': 'round'
@@ -89,26 +96,21 @@ templ Map(title string, geoJSONData string) {
       });
 
       // Add start and end markers
-      const coordinates = geoJSONData.features[0].geometry.coordinates;
-      const start = coordinates[0];
-      const end = coordinates[coordinates.length - 1];
+      const start = trackPoints[0];
+      const end = trackPoints[trackPoints.length - 1];
 
       new mapboxgl.Marker({color: '#008000'})
-        .setLngLat(start)
+        .setLngLat([start.lon, start.lat])
         .addTo(map);
 
       new mapboxgl.Marker({color: '#FF0000'})
-        .setLngLat(end)
+        .setLngLat([end.lon, end.lat])
         .addTo(map);
 
-      // Fit the map to the bounds of the GeoJSON data
+      // Fit the map to the bounds of the track
       const bounds = new mapboxgl.LngLatBounds();
-      geoJSONData.features.forEach((feature) => {
-        if (feature.geometry.type === 'LineString') {
-          feature.geometry.coordinates.forEach((coord) => {
-            bounds.extend(coord);
-          });
-        }
+      trackPoints.forEach((point) => {
+        bounds.extend([point.lon, point.lat]);
       });
       map.fitBounds(bounds, {padding: 50});
 
@@ -123,15 +125,15 @@ templ Map(title string, geoJSONData string) {
 
       map.on('style.load', () => {
         // Re-add the GPX track layer after style change
-        map.addSource('gpx-tracks', {
+        map.addSource('gpx-track', {
           type: 'geojson',
-          data: geoJSONData
+          data: geojson
         });
 
         map.addLayer({
-          id: 'gpx-tracks',
+          id: 'gpx-track',
           type: 'line',
-          source: 'gpx-tracks',
+          source: 'gpx-track',
           layout: {
             'line-join': 'round',
             'line-cap': 'round'
@@ -143,26 +145,19 @@ templ Map(title string, geoJSONData string) {
         });
       });
 
-      const elevationData = coordinates.map((coord, index) => {
-
-
-        return {
-          distance: index,
-          elevation: coord[2],
-
-        }
-      });
-
-
-      // Create elevation chart
       const ctx = document.getElementById('elevation-chart').getContext('2d');
+
+      const maxDistance = Math.ceil(trackPoints[trackPoints.length - 1].cumDistance);
+
+      const labels = Array.from({length: maxDistance + 1}, (_, i) => i);
+
       new Chart(ctx, {
         type: 'line',
         data: {
-          labels: elevationData.map(d => d.distance.toFixed(0)),
+          labels: labels,
           datasets: [{
             label: 'Elevation',
-            data: elevationData.map(d => d.elevation),
+            data: trackPoints.map(p => ({x: p.cumDistance, y: p.ele})),
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
           }]
@@ -172,15 +167,33 @@ templ Map(title string, geoJSONData string) {
           maintainAspectRatio: false,
           scales: {
             x: {
+              type: 'linear',
               title: {
                 display: true,
-                text: 'Distance (m)'
-              }
+                text: 'Distance (km)'
+              },
+              ticks: {
+                stepSize: 1,
+                callback: function (value, index, values) {
+                  return value.toFixed(0);
+                }
+              },
+              min: 0,
+              max: maxDistance
             },
             y: {
               title: {
                 display: true,
                 text: 'Elevation (m)'
+              }
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                title: function (context) {
+                  return `Distance: ${context[0].parsed.x.toFixed(2)} km`;
+                }
               }
             }
           }
