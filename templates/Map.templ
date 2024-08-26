@@ -1,10 +1,11 @@
 package templates
 
-templ Map(some string) {
+templ Map(title string, geoJSONData string) {
+	@templ.JSONScript("jsonData", geoJSONData)
 	<html>
 		<head>
 			<meta charset="utf-8"/>
-			<title>Mapbox GL JS</title>
+			<title>{ title }</title>
 			<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 			<script src="https://api.mapbox.com/mapbox-gl-js/v3.5.2/mapbox-gl.js"></script>
 			<link href="https://api.mapbox.com/mapbox-gl-js/v3.5.2/mapbox-gl.css" rel="stylesheet"/>
@@ -27,22 +28,47 @@ templ Map(some string) {
 			<script>
     mapboxgl.accessToken = 'pk.eyJ1Ijoib2xpdmVyYnV0bGVyIiwiYSI6ImNsZ3NpZmlvazAxb2Mzc281dXJvb20weGgifQ.yov1u2Efo_v7ImCH2o9pGg';
 
-    var map = new mapboxgl.Map({
+    const geoJSONData = JSON.parse(JSON.parse(document.getElementById('jsonData').textContent))
+
+    const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/oliverbutler/cllz4ea1c00n701pbbqah10qo',
       center: [-2.9263, 54.5441],
       zoom: 12
     });
 
+    map.on('load', () => {
+      map.addSource('gpx-tracks', {
+        type: 'geojson',
+        data: geoJSONData
+      });
 
-    const data = JSON.parse(document.getElementById('id').textContent);
+      map.addLayer({
+        id: 'gpx-tracks',
+        type: 'line',
+        source: 'gpx-tracks',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': '#ff0000',
+          'line-width': 3
+        }
+      });
 
 
-    var marker = new mapboxgl.Marker()
-      .setLngLat([-2.9263, 54.5441])
-      .setPopup(new mapboxgl.Popup().setText(templ.JSONString(some)))
-      .addTo(map);
-
+      // Fit the map to the bounds of the GeoJSON data
+      const bounds = new mapboxgl.LngLatBounds();
+      geoJSONData.features.forEach((feature) => {
+        if (feature.geometry.type === 'LineString') {
+          feature.geometry.coordinates.forEach((coord) => {
+            bounds.extend(coord);
+          });
+        }
+      });
+      map.fitBounds(bounds, {padding: 50});
+    });
   </script>
 		</body>
 	</html>

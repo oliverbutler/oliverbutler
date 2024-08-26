@@ -10,7 +10,7 @@ import "context"
 import "io"
 import "bytes"
 
-func Map(some string) templ.Component {
+func Map(title string, geoJSONData string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -23,7 +23,24 @@ func Map(some string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html><head><meta charset=\"utf-8\"><title>Mapbox GL JS</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\"><script src=\"https://api.mapbox.com/mapbox-gl-js/v3.5.2/mapbox-gl.js\"></script><link href=\"https://api.mapbox.com/mapbox-gl-js/v3.5.2/mapbox-gl.css\" rel=\"stylesheet\"><style>\n    body {\n      margin: 0;\n      padding: 0;\n    }\n\n    #map {\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      width: 100%;\n    }\n  </style></head><body><div id=\"map\"></div><script>\n    mapboxgl.accessToken = 'pk.eyJ1Ijoib2xpdmVyYnV0bGVyIiwiYSI6ImNsZ3NpZmlvazAxb2Mzc281dXJvb20weGgifQ.yov1u2Efo_v7ImCH2o9pGg';\n\n    var map = new mapboxgl.Map({\n      container: 'map',\n      style: 'mapbox://styles/oliverbutler/cllz4ea1c00n701pbbqah10qo',\n      center: [-2.9263, 54.5441],\n      zoom: 12\n    });\n\n\n    const data = JSON.parse(document.getElementById('id').textContent);\n\n\n    var marker = new mapboxgl.Marker()\n      .setLngLat([-2.9263, 54.5441])\n      .setPopup(new mapboxgl.Popup().setText(templ.JSONString(some)))\n      .addTo(map);\n\n  </script></body></html>")
+		templ_7745c5c3_Err = templ.JSONScript("jsonData", geoJSONData).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html><head><meta charset=\"utf-8\"><title>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(title)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/Map.templ`, Line: 8, Col: 17}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\"><script src=\"https://api.mapbox.com/mapbox-gl-js/v3.5.2/mapbox-gl.js\"></script><link href=\"https://api.mapbox.com/mapbox-gl-js/v3.5.2/mapbox-gl.css\" rel=\"stylesheet\"><style>\n    body {\n      margin: 0;\n      padding: 0;\n    }\n\n    #map {\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      width: 100%;\n    }\n  </style></head><body><div id=\"map\"></div><script>\n    mapboxgl.accessToken = 'pk.eyJ1Ijoib2xpdmVyYnV0bGVyIiwiYSI6ImNsZ3NpZmlvazAxb2Mzc281dXJvb20weGgifQ.yov1u2Efo_v7ImCH2o9pGg';\n\n    const geoJSONData = JSON.parse(JSON.parse(document.getElementById('jsonData').textContent))\n\n    const map = new mapboxgl.Map({\n      container: 'map',\n      style: 'mapbox://styles/oliverbutler/cllz4ea1c00n701pbbqah10qo',\n      center: [-2.9263, 54.5441],\n      zoom: 12\n    });\n\n    map.on('load', () => {\n      map.addSource('gpx-tracks', {\n        type: 'geojson',\n        data: geoJSONData\n      });\n\n      map.addLayer({\n        id: 'gpx-tracks',\n        type: 'line',\n        source: 'gpx-tracks',\n        layout: {\n          'line-join': 'round',\n          'line-cap': 'round'\n        },\n        paint: {\n          'line-color': '#ff0000',\n          'line-width': 3\n        }\n      });\n\n\n      // Fit the map to the bounds of the GeoJSON data\n      const bounds = new mapboxgl.LngLatBounds();\n      geoJSONData.features.forEach((feature) => {\n        if (feature.geometry.type === 'LineString') {\n          feature.geometry.coordinates.forEach((coord) => {\n            bounds.extend(coord);\n          });\n        }\n      });\n      map.fitBounds(bounds, {padding: 50});\n    });\n  </script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
