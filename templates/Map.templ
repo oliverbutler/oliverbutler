@@ -67,11 +67,26 @@ templ Map(title string, tripsData string) {
 			</div>
 			<script>
     const trips = JSON.parse(JSON.parse(document.getElementById('jsonData').textContent));
-    let currentTrip = trips[0];
-    console.log(currentTrip)
+    let currentTripIndex = 0;
+    let currentTrip = trips[currentTripIndex];
     let map, elevationChart;
 
     mapboxgl.accessToken = 'pk.eyJ1Ijoib2xpdmVyYnV0bGVyIiwiYSI6ImNsZ3NpZmlvazAxb2Mzc281dXJvb20weGgifQ.yov1u2Efo_v7ImCH2o9pGg';
+
+    let markers = [];
+
+    const trailColors = [
+      '#8B0000', // Dark red
+      '#B22222', // Firebrick
+      '#DC143C', // Crimson
+      '#FF0000', // Red
+      '#FF4500', // OrangeRed
+      '#FF6347', // Tomato
+      '#FFD700', // Gold
+      '#FFA500', // Orange
+      '#FF8C00', // DarkOrange
+      '#DAA520'  // GoldenRod
+    ];
 
     map = new mapboxgl.Map({
       container: 'map',
@@ -91,7 +106,8 @@ templ Map(title string, tripsData string) {
         select.appendChild(option);
       });
       select.addEventListener('change', (e) => {
-        currentTrip = trips[e.target.value];
+        currentTripIndex = parseInt(e.target.value);
+        currentTrip = trips[currentTripIndex];
         updateMap();
         updateElevationChart();
       });
@@ -99,66 +115,78 @@ templ Map(title string, tripsData string) {
 
     function updateMap() {
       // Clear existing layers and sources
-      if (map.getLayer('hike-tracks')) map.removeLayer('hike-tracks');
+      for (let i = 0; i < trips.length; i++) {
+        if (map.getLayer(`hike-tracks-${i}`)) map.removeLayer(`hike-tracks-${i}`);
+        if (map.getSource(`hike-tracks-${i}`)) map.removeSource(`hike-tracks-${i}`);
+      }
       if (map.getLayer('camp-locations')) map.removeLayer('camp-locations');
-      if (map.getSource('hike-tracks')) map.removeSource('hike-tracks');
       if (map.getSource('camp-locations')) map.removeSource('camp-locations');
 
-      // Clear markers
-      map._markers.forEach(marker => marker.remove());
+      // Remove existing markers
+      markers.forEach(marker => marker.remove());
+      markers = [];
 
-      // Add hike tracks
-      const hikeFeatures = currentTrip.events
-        .filter(event => event.type === "hike")
-        .map(hike => ({
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'LineString',
-            coordinates: hike.trackPoints.map(point => [point.lon, point.lat, point.ele])
+      // Add all hike tracks
+      trips.forEach((trip, tripIndex) => {
+        const hikeFeatures = trip.events
+          .filter(event => event.type === "hike")
+          .map(hike => {
+            const isCurrentTrip = tripIndex === currentTripIndex;
+            const trackPoints = isCurrentTrip ? hike.trackPoints : hike.trackPointsLowRes;
+
+            return {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'LineString',
+                coordinates: trackPoints.map(point => [point.lon, point.lat, point.ele])
+              }
+            }
+          });
+
+        map.addSource(`hike-tracks-${tripIndex}`, {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: hikeFeatures
           }
-        }));
+        });
 
-      map.addSource('hike-tracks', {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: hikeFeatures
-        }
+        map.addLayer({
+          id: `hike-tracks-${tripIndex}`,
+          type: 'line',
+          source: `hike-tracks-${tripIndex}`,
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': trailColors[tripIndex % trailColors.length],
+            'line-width': tripIndex === currentTripIndex ? 3 : 2,
+            'line-opacity': tripIndex === currentTripIndex ? 1 : 0.7
+          }
+        });
       });
 
-
-      map.addLayer({
-        id: 'hike-tracks',
-        type: 'line',
-        source: 'hike-tracks',
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        paint: {
-          'line-color': '#ff0000',
-          'line-width': 3
-        }
-      });
-
-      // Add camp locations
-      const campFeatures = currentTrip.events
-        .filter(event => event.type === "camp")
-        .map(camp => ({
-          type: 'Feature',
-          properties: {name: camp.name},
-          geometry: {
-            type: 'Point',
-            coordinates: [camp.lon, camp.lat]
-          }
-        }));
+      // Add all camp locations
+      const allCampFeatures = trips.flatMap((trip, tripIndex) =>
+        trip.events
+          .filter(event => event.type === "camp")
+          .map(camp => ({
+            type: 'Feature',
+            properties: {name: camp.name, tripIndex: tripIndex},
+            geometry: {
+              type: 'Point',
+              coordinates: [camp.lon, camp.lat]
+            }
+          }))
+      );
 
       map.addSource('camp-locations', {
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
-          features: campFeatures
+          features: allCampFeatures
         }
       });
 
@@ -172,11 +200,11 @@ templ Map(title string, tripsData string) {
         }
       });
 
-      // Fit map to bounds of all events
+      // Fit map to bounds of current trip
       const bounds = new mapboxgl.LngLatBounds();
       currentTrip.events.forEach(event => {
         if (event.type === "hike") {
-          event.trackPoints.forEach(point => {
+          event.trackPointsLowRes.forEach(point => {
             bounds.extend([point.lon, point.lat]);
           });
         } else if (event.type === "camp") {
@@ -191,28 +219,34 @@ templ Map(title string, tripsData string) {
         duration: 2000
       });
 
-
+      // Add markers for current trip
       const start = currentTrip.events.find(event => event.type === "hike").trackPoints[0];
-
-      new mapboxgl.Marker({color: '#008000'})
+      markers.push(new mapboxgl.Marker({color: '#008000'})
         .setLngLat([start.lon, start.lat])
-        .addTo(map);
+        .addTo(map));
 
       const lastHike = currentTrip.events.filter(event => event.type === "hike").pop();
-
       const end = lastHike.trackPoints[lastHike.trackPoints.length - 1];
-
-      new mapboxgl.Marker({color: '#FF0000'})
+      markers.push(new mapboxgl.Marker({color: '#FF0000'})
         .setLngLat([end.lon, end.lat])
-        .addTo(map);
+        .addTo(map));
 
-      const camps = currentTrip.events.filter(event => event.type === "camp");
-
-      camps.forEach(camp => {
-        new mapboxgl.Marker({color: '#0000FF'})
-          .setLngLat([camp.lon, camp.lat])
-          .setPopup(new mapboxgl.Popup().setHTML(`<h3>${camp.name}</h3>`))
+      // Add markers for all camps
+      allCampFeatures.forEach(camp => {
+        const marker = new mapboxgl.Marker({color: '#0000FF'})
+          .setLngLat(camp.geometry.coordinates)
+          .setPopup(new mapboxgl.Popup().setHTML(`<h3>${camp.properties.name}</h3>`))
           .addTo(map);
+
+        marker.getElement().addEventListener('click', () => {
+          currentTripIndex = camp.properties.tripIndex;
+          currentTrip = trips[currentTripIndex];
+          document.getElementById('trip-select').value = currentTripIndex;
+          updateMap();
+          updateElevationChart();
+        });
+
+        markers.push(marker);
       });
     }
 
@@ -224,12 +258,20 @@ templ Map(title string, tripsData string) {
 
       currentTrip.events.forEach((event, index) => {
         if (event.type === "hike") {
-          event.trackPoints.forEach(point => {
+          event.trackPointsLowRes.forEach((point, i) => {
+            const prevPoint = i > 0 ? event.trackPointsLowRes[i - 1] : null;
+            let grade = 0;
+            if (prevPoint) {
+              const elevationChange = point.ele - prevPoint.ele; // in meters
+              const distance = (point.cumDistance - prevPoint.cumDistance) * 1000; // convert km to meters
+              grade = distance > 0 ? elevationChange / distance : 0;
+            }
             allPoints.push({
               x: cumulativeDistance + point.cumDistance,
               y: point.ele,
               lon: point.lon,
-              lat: point.lat
+              lat: point.lat,
+              grade: grade
             });
           });
           cumulativeDistance += event.trackPoints[event.trackPoints.length - 1].cumDistance;
@@ -240,7 +282,8 @@ templ Map(title string, tripsData string) {
             lon: event.lon,
             lat: event.lat,
             isCamp: true,
-            name: event.name
+            name: event.name,
+            grade: 0
           });
         }
       });
@@ -252,18 +295,51 @@ templ Map(title string, tripsData string) {
         elevationChart.destroy();
       }
 
+      const GRADE_STEEP = 0.10;
+      const GRADE_MODERATE = 0.05;
+
       elevationChart = new Chart(ctx, {
         type: 'line',
         data: {
           labels: labels,
-          datasets: [{
-            label: 'Elevation',
-            data: allPoints,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1,
-            pointRadius: (context) => allPoints[context.dataIndex].isCamp ? 6 : 0,
-            pointBackgroundColor: (context) => allPoints[context.dataIndex].isCamp ? '#4CAF50' : 'rgb(75, 192, 192)'
-          }]
+          datasets: [
+            {
+              label: 'Grade - Steep',
+              data: allPoints.map(point => ({x: point.x, y: point.grade > GRADE_STEEP ? point.y : null})),
+              backgroundColor: 'rgba(255, 0, 0, 0.3)',
+              borderWidth: 0,
+              fill: true,
+              tension: 0,
+              pointRadius: 0
+            },
+            {
+              label: 'Grade - Moderate',
+              data: allPoints.map(point => ({x: point.x, y: point.grade > GRADE_MODERATE && point.grade <= GRADE_STEEP ? point.y : null})),
+              backgroundColor: 'rgba(255, 255, 0, 0.3)',
+              borderWidth: 0,
+              fill: true,
+              tension: 0,
+              pointRadius: 0
+            },
+            {
+              label: 'Elevation',
+              data: allPoints.map(point => ({x: point.x, y: point.y})),
+              borderColor: 'rgba(0, 0, 0, 0.5)',
+              borderWidth: 2,
+              fill: false,
+              tension: 0.1,
+              pointRadius: 0
+            },
+            {
+              label: 'Camps',
+              data: allPoints.filter(point => point.isCamp).map(point => ({x: point.x, y: point.y})),
+              backgroundColor: '#4CAF50',
+              borderColor: '#4CAF50',
+              borderWidth: 2,
+              pointRadius: 5,
+              type: 'scatter'
+            }
+          ]
         },
         options: {
           responsive: true,
@@ -302,9 +378,17 @@ templ Map(title string, tripsData string) {
                   return `Distance: ${point.x.toFixed(2)} km`;
                 },
                 label: function (context) {
-                  return `Elevation: ${context.parsed.y.toFixed(0)} m`;
+                  const point = allPoints[context.dataIndex];
+                  let label = `Elevation: ${point.y.toFixed(0)} m`;
+                  if (!point.isCamp) {
+                    label += `\nGrade: ${(point.grade * 100).toFixed(1)}%`;
+                  }
+                  return label;
                 }
               }
+            },
+            legend: {
+              display: false
             }
           },
           onClick: (event, elements) => {
@@ -341,6 +425,34 @@ templ Map(title string, tripsData string) {
       map.on('style.load', () => {
         updateMap();
       });
+    });
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'h') {
+        currentTripIndex = (currentTripIndex - 1 + trips.length) % trips.length;
+      } else if (e.key === 'l') {
+        currentTripIndex = (currentTripIndex + 1) % trips.length;
+      } else if (e.key === 'n') {
+        map.easeTo({bearing: 0});
+      } else if (e.key === 's') {
+        document.getElementById('satellite-button').click();
+      } else if (e.key === 'm') {
+        document.getElementById('map-button').click();
+      } else if (e.key === "c") {
+        // copy current lat/lon under cursor to clipboard, in the yaml format
+        const lat = map.getCenter().lat;
+        const lon = map.getCenter().lng;
+        const ele = map.queryRenderedFeatures({layers: ['hike-tracks-0']})[0].properties.ele;
+        const yaml = `  lat: ${lat}\n  lon: ${lon}\n  ele: ${ele}`;
+        navigator.clipboard.writeText(yaml);
+      } else {
+        return;
+      }
+      currentTrip = trips[currentTripIndex];
+      document.getElementById('trip-select').value = currentTripIndex;
+      updateMap();
+      updateElevationChart();
     });
   </script>
 		</body>

@@ -1,0 +1,11 @@
+name: Place Fell (solo)
+events:
+  - type: hike
+    gpx: "day_1.gpx"
+  - type: camp
+    name: "Camp 1"
+    lat: 54.54640487551484
+    lon: -2.925812907159923
+    alt: 0
+  - type: hike
+    gpx: "day_2.gpx"

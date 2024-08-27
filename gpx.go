@@ -33,7 +33,12 @@ type TrackPoint struct {
 	CumulativeDistance float64 `json:"cumDistance"`
 }
 
-func processGPXFile(filePath string) ([]TrackPoint, error) {
+type ProcessedGPX struct {
+	HighResolution []TrackPoint
+	LowResolution  []TrackPoint
+}
+
+func processGPXFile(filePath string) (*ProcessedGPX, error) {
 	data, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, err
@@ -48,8 +53,8 @@ func processGPXFile(filePath string) ([]TrackPoint, error) {
 	return processGPX(&gpx), nil
 }
 
-func processGPX(gpx *GPX) []TrackPoint {
-	var trackPoints []TrackPoint
+func processGPX(gpx *GPX) *ProcessedGPX {
+	var highResTrackPoints []TrackPoint
 	cumulativeDistance := 0.0
 
 	for _, track := range gpx.Tracks {
@@ -61,7 +66,7 @@ func processGPX(gpx *GPX) []TrackPoint {
 					cumulativeDistance += distance
 				}
 
-				trackPoints = append(trackPoints, TrackPoint{
+				highResTrackPoints = append(highResTrackPoints, TrackPoint{
 					Latitude:           point.Latitude,
 					Longitude:          point.Longitude,
 					Elevation:          point.Elevation,
@@ -73,7 +78,53 @@ func processGPX(gpx *GPX) []TrackPoint {
 		}
 	}
 
-	return trackPoints
+	lowResTrackPoints := simplifyTrack(highResTrackPoints, 0.00005) // Adjust the epsilon value as needed
+
+	return &ProcessedGPX{
+		HighResolution: highResTrackPoints,
+		LowResolution:  lowResTrackPoints,
+	}
+}
+
+func simplifyTrack(points []TrackPoint, epsilon float64) []TrackPoint {
+	if len(points) <= 2 {
+		return points
+	}
+
+	// Find the point with the maximum distance
+	dmax := 0.0
+	index := 0
+	for i := 1; i < len(points)-1; i++ {
+		d := pointLineDistance(points[i], points[0], points[len(points)-1])
+		if d > dmax {
+			index = i
+			dmax = d
+		}
+	}
+
+	// If max distance is greater than epsilon, recursively simplify
+	if dmax > epsilon {
+		// Recursive call
+		recResults1 := simplifyTrack(points[:index+1], epsilon)
+		recResults2 := simplifyTrack(points[index:], epsilon)
+
+		// Build the result list
+		result := append(recResults1[:len(recResults1)-1], recResults2...)
+		return result
+	} else {
+		return []TrackPoint{points[0], points[len(points)-1]}
+	}
+}
+
+func pointLineDistance(p, start, end TrackPoint) float64 {
+	if start == end {
+		return haversine(p.Latitude, p.Longitude, start.Latitude, start.Longitude)
+	}
+
+	n := math.Abs((end.Longitude-start.Longitude)*p.Latitude - (end.Latitude-start.Latitude)*p.Longitude + end.Latitude*start.Longitude - end.Longitude*start.Latitude)
+	d := math.Sqrt(math.Pow(end.Longitude-start.Longitude, 2) + math.Pow(end.Latitude-start.Latitude, 2))
+
+	return n / d
 }
 
 func haversine(lat1, lon1, lat2, lon2 float64) float64 {

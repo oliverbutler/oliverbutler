@@ -1,0 +1,9 @@
+name: Great Gable
+events:
+  - type: hike
+    gpx: "hike.gpx"
+  - type: camp
+    name: "Camp 1"
+    lat: 54.4967007485383
+    lon: -3.2152217015560893
+    alt: 0

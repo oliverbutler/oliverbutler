@@ -37,6 +37,7 @@ func (c CampEvent) EventType() string {
 type HikeEvent struct {
 	Type        string       `json:"type"`
 	TrackPoints []TrackPoint `json:"trackPoints"`
+	TrackPointsLowRes []TrackPoint `json:"trackPointsLowRes"`
 }
 
 func (h HikeEvent) EventType() string {
@@ -112,7 +113,7 @@ func readTripData() ([]Trip, error) {
 					slog.Info(fmt.Sprintf("Processing camp: %s at %f, %f", event.Name, event.Lat, event.Lon))
 				} else if event.Type == "hike" {
 					hikePath := filepath.Join(tripPath, event.GPX)
-					hike, err := processGPXFile(hikePath)
+					processed, err := processGPXFile(hikePath)
 					if err != nil {
 						return nil, err
 					}
@@ -121,7 +122,8 @@ func readTripData() ([]Trip, error) {
 
 					trip.Events[i] = HikeEvent{
 						Type:        event.Type,
-						TrackPoints: hike,
+						TrackPoints: processed.HighResolution,
+						TrackPointsLowRes: processed.LowResolution,
 					}
 				}
 			}
