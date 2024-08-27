@@ -104,6 +104,9 @@ templ Map(title string, tripsData string) {
       if (map.getSource('hike-tracks')) map.removeSource('hike-tracks');
       if (map.getSource('camp-locations')) map.removeSource('camp-locations');
 
+      // Clear markers
+      map._markers.forEach(marker => marker.remove());
+
       // Add hike tracks
       const hikeFeatures = currentTrip.events
         .filter(event => event.type === "hike")
@@ -123,6 +126,7 @@ templ Map(title string, tripsData string) {
           features: hikeFeatures
         }
       });
+
 
       map.addLayer({
         id: 'hike-tracks',
@@ -185,6 +189,30 @@ templ Map(title string, tripsData string) {
         pitch: 60,
         bearing: 30,
         duration: 2000
+      });
+
+
+      const start = currentTrip.events.find(event => event.type === "hike").trackPoints[0];
+
+      new mapboxgl.Marker({color: '#008000'})
+        .setLngLat([start.lon, start.lat])
+        .addTo(map);
+
+      const lastHike = currentTrip.events.filter(event => event.type === "hike").pop();
+
+      const end = lastHike.trackPoints[lastHike.trackPoints.length - 1];
+
+      new mapboxgl.Marker({color: '#FF0000'})
+        .setLngLat([end.lon, end.lat])
+        .addTo(map);
+
+      const camps = currentTrip.events.filter(event => event.type === "camp");
+
+      camps.forEach(camp => {
+        new mapboxgl.Marker({color: '#0000FF'})
+          .setLngLat([camp.lon, camp.lat])
+          .setPopup(new mapboxgl.Popup().setHTML(`<h3>${camp.name}</h3>`))
+          .addTo(map);
       });
     }
 
@@ -307,7 +335,7 @@ templ Map(title string, tripsData string) {
       });
 
       document.getElementById('satellite-button').addEventListener('click', () => {
-        map.setStyle('mapbox://styles/mapbox/satellite-streets-v12');
+        map.setStyle('mapbox://styles/oliverbutler/cm0cp3xo200tc01qt51wieggw');
       });
 
       map.on('style.load', () => {
