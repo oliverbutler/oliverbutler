@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"encoding/xml"
+	"fmt"
 	"io/ioutil"
-	"math"
+	"log/slog"
 	"net/http"
 	"oliverbutler/templates"
 	"path/filepath"
@@ -13,31 +13,34 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-type GPX struct {
-	XMLName xml.Name `xml:"gpx"`
-	Tracks  []Track  `xml:"trk"`
+type Trip struct {
+	Name   string      `json:"name"`
+	Events []TripEvent `json:"events"`
 }
 
-type Track struct {
-	Name     string    `xml:"name"`
-	Segments []Segment `xml:"trkseg"`
+type TripEvent interface {
+	EventType() string
 }
 
-type Segment struct {
-	Points []Point `xml:"trkpt"`
+type CampEvent struct {
+	Type string  `json:"type"`
+	Name string  `json:"name"`
+	Lat  float64 `json:"lat"`
+	Lon  float64 `json:"lon"`
+	Alt  int     `json:"alt"`
 }
 
-type Point struct {
-	Latitude  float64 `xml:"lat,attr"`
-	Longitude float64 `xml:"lon,attr"`
-	Elevation float64 `xml:"ele"`
+func (c CampEvent) EventType() string {
+	return "camp"
 }
 
-type TrackPoint struct {
-	Latitude           float64 `json:"lat"`
-	Longitude          float64 `json:"lon"`
-	Elevation          float64 `json:"ele"`
-	CumulativeDistance float64 `json:"cumDistance"`
+type HikeEvent struct {
+	Type        string       `json:"type"`
+	TrackPoints []TrackPoint `json:"trackPoints"`
+}
+
+func (h HikeEvent) EventType() string {
+	return "hike"
 }
 
 func main() {
@@ -52,90 +55,80 @@ func main() {
 	})
 
 	r.Get("/maps", func(w http.ResponseWriter, r *http.Request) {
-		trackPoints, err := readGPXFiles()
+		trips, err := readTripData()
 		if err != nil {
-			http.Error(w, "Error reading GPX files", http.StatusInternalServerError)
+			http.Error(w, "Error reading trip data", http.StatusInternalServerError)
 			return
 		}
 
-		trackPointsJSON, err := json.Marshal(trackPoints)
+		tripsJSON, err := json.Marshal(trips)
 		if err != nil {
-			http.Error(w, "Error marshaling track points", http.StatusInternalServerError)
+			http.Error(w, "Error marshaling trip data", http.StatusInternalServerError)
 			return
 		}
 
-		templates.Map("Place fell", string(trackPointsJSON)).Render(r.Context(), w)
+		templates.Map("All Trips", string(tripsJSON)).Render(r.Context(), w)
 	})
 
 	http.ListenAndServe("localhost:3000", r)
 }
 
-func readGPXFiles() ([]TrackPoint, error) {
-	gpxDir := "./static/gpx/"
-	files, err := ioutil.ReadDir(gpxDir)
+func readTripData() ([]Trip, error) {
+	tripsDir := "./static/gpx/"
+	tripFolders, err := ioutil.ReadDir(tripsDir)
 	if err != nil {
 		return nil, err
 	}
 
-	var allTrackPoints []TrackPoint
+	var trips []Trip
 
-	for _, file := range files {
-		if filepath.Ext(file.Name()) == ".gpx" {
-			data, err := ioutil.ReadFile(filepath.Join(gpxDir, file.Name()))
+	for _, folder := range tripFolders {
+		if folder.IsDir() {
+			tripPath := filepath.Join(tripsDir, folder.Name())
+			metaPath := filepath.Join(tripPath, "meta.yaml")
+
+			meta, err := parseMetaFile(metaPath)
 			if err != nil {
 				return nil, err
 			}
 
-			var gpx GPX
-			err = xml.Unmarshal(data, &gpx)
-			if err != nil {
-				return nil, err
+			trip := Trip{
+				Name:   meta.Name,
+				Events: make([]TripEvent, len(meta.Events)),
 			}
 
-			trackPoints := processGPX(&gpx)
-			allTrackPoints = append(allTrackPoints, trackPoints...)
-		}
-	}
+			slog.Info(fmt.Sprintf("Processing trip: %s", trip.Name))
 
-	return allTrackPoints, nil
-}
+			for i, event := range meta.Events {
+				if event.Type == "camp" {
+					trip.Events[i] = CampEvent{
+						Type: event.Type,
+						Name: event.Name,
+						Lat:  event.Lat,
+						Lon:  event.Lon,
+						Alt:  event.Alt,
+					}
 
-func processGPX(gpx *GPX) []TrackPoint {
-	var trackPoints []TrackPoint
-	cumulativeDistance := 0.0
+					slog.Info(fmt.Sprintf("Processing camp: %s at %f, %f", event.Name, event.Lat, event.Lon))
+				} else if event.Type == "hike" {
+					hikePath := filepath.Join(tripPath, event.GPX)
+					hike, err := processGPXFile(hikePath)
+					if err != nil {
+						return nil, err
+					}
 
-	for _, track := range gpx.Tracks {
-		for _, segment := range track.Segments {
-			var prevPoint *Point
-			for _, point := range segment.Points {
-				if prevPoint != nil {
-					distance := haversine(prevPoint.Latitude, prevPoint.Longitude, point.Latitude, point.Longitude)
-					cumulativeDistance += distance
+					slog.Info(fmt.Sprintf("Processing hike: %s", event.GPX))
+
+					trip.Events[i] = HikeEvent{
+						Type:        event.Type,
+						TrackPoints: hike,
+					}
 				}
-
-				trackPoints = append(trackPoints, TrackPoint{
-					Latitude:           point.Latitude,
-					Longitude:          point.Longitude,
-					Elevation:          point.Elevation,
-					CumulativeDistance: cumulativeDistance,
-				})
-
-				prevPoint = &point
 			}
+
+			trips = append(trips, trip)
 		}
 	}
 
-	return trackPoints
-}
-
-func haversine(lat1, lon1, lat2, lon2 float64) float64 {
-	const R = 6371 // Earth's radius in kilometers
-
-	dLat := (lat2 - lat1) * math.Pi / 180
-	dLon := (lon2 - lon1) * math.Pi / 180
-	a := math.Sin(dLat/2)*math.Sin(dLat/2) +
-		math.Cos(lat1*math.Pi/180)*math.Cos(lat2*math.Pi/180)*
-			math.Sin(dLon/2)*math.Sin(dLon/2)
-	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
-	return R * c
+	return trips, nil
 }

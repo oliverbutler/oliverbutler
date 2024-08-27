@@ -1,7 +1,7 @@
 package templates
 
-templ Map(title string, trackPointsData string) {
-	@templ.JSONScript("jsonData", trackPointsData)
+templ Map(title string, tripsData string) {
+	@templ.JSONScript("jsonData", tripsData)
 	<html>
 		<head>
 			<meta charset="utf-8"/>
@@ -27,7 +27,15 @@ templ Map(title string, trackPointsData string) {
       position: absolute;
       top: 10px;
       left: 10px;
+      background: white;
+      padding: 10px;
+      border-radius: 3px;
+    }
 
+    #trip-selector {
+      position: absolute;
+      top: 10px;
+      right: 10px;
       background: white;
       padding: 10px;
       border-radius: 3px;
@@ -38,7 +46,6 @@ templ Map(title string, trackPointsData string) {
       bottom: 10px;
       left: 10px;
       right: 10px;
-      z-index: 1;
       background: rgba(255, 255, 255, 0.8);
       padding: 10px;
       border-radius: 3px;
@@ -52,39 +59,75 @@ templ Map(title string, trackPointsData string) {
 				<button id="map-button">Map</button>
 				<button id="satellite-button">Satellite</button>
 			</div>
+			<div id="trip-selector">
+				<select id="trip-select"></select>
+			</div>
 			<div id="elevation-graph">
 				<canvas id="elevation-chart"></canvas>
 			</div>
 			<script>
-    const trackPoints = JSON.parse(JSON.parse(document.getElementById('jsonData').textContent));
+    const trips = JSON.parse(JSON.parse(document.getElementById('jsonData').textContent));
+    let currentTrip = trips[0];
+    console.log(currentTrip)
+    let map, elevationChart;
+
     mapboxgl.accessToken = 'pk.eyJ1Ijoib2xpdmVyYnV0bGVyIiwiYSI6ImNsZ3NpZmlvazAxb2Mzc281dXJvb20weGgifQ.yov1u2Efo_v7ImCH2o9pGg';
 
-    const map = new mapboxgl.Map({
+    map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/oliverbutler/cllz4ea1c00n701pbbqah10qo',
       center: [-2.9263, 54.5441],
-      zoom: 12
+      zoom: 12,
+      pitch: 60,
+      bearing: 30
     });
 
-    map.on('load', () => {
-      const geojson = {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: trackPoints.map(point => [point.lon, point.lat, point.ele])
-        }
-      };
+    function initializeTripSelector() {
+      const select = document.getElementById('trip-select');
+      trips.forEach((trip, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = trip.name;
+        select.appendChild(option);
+      });
+      select.addEventListener('change', (e) => {
+        currentTrip = trips[e.target.value];
+        updateMap();
+        updateElevationChart();
+      });
+    }
 
-      map.addSource('gpx-track', {
+    function updateMap() {
+      // Clear existing layers and sources
+      if (map.getLayer('hike-tracks')) map.removeLayer('hike-tracks');
+      if (map.getLayer('camp-locations')) map.removeLayer('camp-locations');
+      if (map.getSource('hike-tracks')) map.removeSource('hike-tracks');
+      if (map.getSource('camp-locations')) map.removeSource('camp-locations');
+
+      // Add hike tracks
+      const hikeFeatures = currentTrip.events
+        .filter(event => event.type === "hike")
+        .map(hike => ({
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: hike.trackPoints.map(point => [point.lon, point.lat, point.ele])
+          }
+        }));
+
+      map.addSource('hike-tracks', {
         type: 'geojson',
-        data: geojson
+        data: {
+          type: 'FeatureCollection',
+          features: hikeFeatures
+        }
       });
 
       map.addLayer({
-        id: 'gpx-track',
+        id: 'hike-tracks',
         type: 'line',
-        source: 'gpx-track',
+        source: 'hike-tracks',
         layout: {
           'line-join': 'round',
           'line-cap': 'round'
@@ -95,71 +138,103 @@ templ Map(title string, trackPointsData string) {
         }
       });
 
-      // Add start and end markers
-      const start = trackPoints[0];
-      const end = trackPoints[trackPoints.length - 1];
-
-      new mapboxgl.Marker({color: '#008000'})
-        .setLngLat([start.lon, start.lat])
-        .addTo(map);
-
-      new mapboxgl.Marker({color: '#FF0000'})
-        .setLngLat([end.lon, end.lat])
-        .addTo(map);
-
-      // Fit the map to the bounds of the track
-      const bounds = new mapboxgl.LngLatBounds();
-      trackPoints.forEach((point) => {
-        bounds.extend([point.lon, point.lat]);
-      });
-      map.fitBounds(bounds, {padding: 50});
-
-      // Layer switcher functionality
-      document.getElementById('map-button').addEventListener('click', () => {
-        map.setStyle('mapbox://styles/oliverbutler/cllz4ea1c00n701pbbqah10qo');
-      });
-
-      document.getElementById('satellite-button').addEventListener('click', () => {
-        map.setStyle('mapbox://styles/mapbox/satellite-v9');
-      });
-
-      map.on('style.load', () => {
-        // Re-add the GPX track layer after style change
-        map.addSource('gpx-track', {
-          type: 'geojson',
-          data: geojson
-        });
-
-        map.addLayer({
-          id: 'gpx-track',
-          type: 'line',
-          source: 'gpx-track',
-          layout: {
-            'line-join': 'round',
-            'line-cap': 'round'
-          },
-          paint: {
-            'line-color': '#ff0000',
-            'line-width': 3
+      // Add camp locations
+      const campFeatures = currentTrip.events
+        .filter(event => event.type === "camp")
+        .map(camp => ({
+          type: 'Feature',
+          properties: {name: camp.name},
+          geometry: {
+            type: 'Point',
+            coordinates: [camp.lon, camp.lat]
           }
-        });
+        }));
+
+      map.addSource('camp-locations', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: campFeatures
+        }
       });
 
+      map.addLayer({
+        id: 'camp-locations',
+        type: 'circle',
+        source: 'camp-locations',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': '#4CAF50'
+        }
+      });
+
+      // Fit map to bounds of all events
+      const bounds = new mapboxgl.LngLatBounds();
+      currentTrip.events.forEach(event => {
+        if (event.type === "hike") {
+          event.trackPoints.forEach(point => {
+            bounds.extend([point.lon, point.lat]);
+          });
+        } else if (event.type === "camp") {
+          bounds.extend([event.lon, event.lat]);
+        }
+      });
+
+      map.fitBounds(bounds, {
+        padding: 50,
+        pitch: 60,
+        bearing: 30,
+        duration: 2000
+      });
+    }
+
+    function updateElevationChart() {
       const ctx = document.getElementById('elevation-chart').getContext('2d');
 
-      const maxDistance = Math.ceil(trackPoints[trackPoints.length - 1].cumDistance);
+      let allPoints = [];
+      let cumulativeDistance = 0;
 
+      currentTrip.events.forEach((event, index) => {
+        if (event.type === "hike") {
+          event.trackPoints.forEach(point => {
+            allPoints.push({
+              x: cumulativeDistance + point.cumDistance,
+              y: point.ele,
+              lon: point.lon,
+              lat: point.lat
+            });
+          });
+          cumulativeDistance += event.trackPoints[event.trackPoints.length - 1].cumDistance;
+        } else if (event.type === "camp") {
+          allPoints.push({
+            x: cumulativeDistance,
+            y: event.alt,
+            lon: event.lon,
+            lat: event.lat,
+            isCamp: true,
+            name: event.name
+          });
+        }
+      });
+
+      const maxDistance = Math.ceil(cumulativeDistance);
       const labels = Array.from({length: maxDistance + 1}, (_, i) => i);
 
-      new Chart(ctx, {
+      if (elevationChart) {
+        elevationChart.destroy();
+      }
+
+      elevationChart = new Chart(ctx, {
         type: 'line',
         data: {
           labels: labels,
           datasets: [{
             label: 'Elevation',
-            data: trackPoints.map(p => ({x: p.cumDistance, y: p.ele})),
+            data: allPoints,
             borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
+            tension: 0.1,
+            pointRadius: (context) => allPoints[context.dataIndex].isCamp ? 6 : 0,
+            pointBackgroundColor: (context) => allPoints[context.dataIndex].isCamp ? '#4CAF50' : 'rgb(75, 192, 192)'
           }]
         },
         options: {
@@ -192,12 +267,51 @@ templ Map(title string, trackPointsData string) {
             tooltip: {
               callbacks: {
                 title: function (context) {
-                  return `Distance: ${context[0].parsed.x.toFixed(2)} km`;
+                  const point = allPoints[context[0].dataIndex];
+                  if (point.isCamp) {
+                    return `Camp: ${point.name}`;
+                  }
+                  return `Distance: ${point.x.toFixed(2)} km`;
+                },
+                label: function (context) {
+                  return `Elevation: ${context.parsed.y.toFixed(0)} m`;
                 }
               }
             }
+          },
+          onClick: (event, elements) => {
+            if (elements.length > 0) {
+              const index = elements[0].index;
+              const point = allPoints[index];
+              map.flyTo({
+                center: [point.lon, point.lat],
+                zoom: 14,
+                pitch: 60,
+                bearing: 30,
+                duration: 1000
+              });
+            }
           }
         }
+      });
+    }
+
+    map.on('load', () => {
+      initializeTripSelector();
+      updateMap();
+      updateElevationChart();
+
+      // Layer switcher functionality
+      document.getElementById('map-button').addEventListener('click', () => {
+        map.setStyle('mapbox://styles/oliverbutler/cllz4ea1c00n701pbbqah10qo');
+      });
+
+      document.getElementById('satellite-button').addEventListener('click', () => {
+        map.setStyle('mapbox://styles/mapbox/satellite-streets-v12');
+      });
+
+      map.on('style.load', () => {
+        updateMap();
       });
     });
   </script>

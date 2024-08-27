@@ -1,0 +1,11 @@
+name: Angle Tarn
+events:
+  - type: hike
+    gpx: 'day_1.gpx'
+  - type: camp
+    name: 'Camp 1'
+    lat: 54.521111
+    lon: -2.900278
+    alt: 476
+  - type: hike
+    gpx: 'day_2.gpx'
