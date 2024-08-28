@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"oliverbutler/templates"
 	"path/filepath"
+	"sync"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -44,7 +45,17 @@ func (h HikeEvent) EventType() string {
 	return "hike"
 }
 
+var (
+	tripCache      []Trip
+	tripCacheMutex sync.RWMutex
+)
+
 func main() {
+	// Load the cache on startup
+	if err := loadTripCache(); err != nil {
+		slog.Error("Failed to load trip cache", "error", err)
+	}
+
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
@@ -56,13 +67,10 @@ func main() {
 	})
 
 	r.Get("/maps", func(w http.ResponseWriter, r *http.Request) {
-		trips, err := readTripData()
-		if err != nil {
-			http.Error(w, "Error reading trip data", http.StatusInternalServerError)
-			return
-		}
+		tripCacheMutex.RLock()
+		tripsJSON, err := json.Marshal(tripCache)
+		tripCacheMutex.RUnlock()
 
-		tripsJSON, err := json.Marshal(trips)
 		if err != nil {
 			http.Error(w, "Error marshaling trip data", http.StatusInternalServerError)
 			return
@@ -72,6 +80,20 @@ func main() {
 	})
 
 	http.ListenAndServe(":3000", r)
+}
+
+func loadTripCache() error {
+	trips, err := readTripData()
+	if err != nil {
+		return err
+	}
+
+	tripCacheMutex.Lock()
+	tripCache = trips
+	tripCacheMutex.Unlock()
+
+	slog.Info("Trip cache loaded", "count", len(trips))
+	return nil
 }
 
 func readTripData() ([]Trip, error) {
