@@ -88,13 +88,17 @@ templ Map(title string, tripsData string) {
       '#DAA520'  // GoldenRod
     ];
 
+    mapboxgl.config.ENABLE_EVENT_LOGGING = false;
+
     map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/oliverbutler/cllz4ea1c00n701pbbqah10qo',
       center: [-2.9263, 54.5441],
       zoom: 12,
       pitch: 60,
-      bearing: 30
+      bearing: 30,
+      trackUserLocation: false,
+      collectResourceTiming: false
     });
 
     function initializeTripSelector() {
