@@ -66,6 +66,7 @@ templ Map(title string, tripsData string) {
 				<canvas id="elevation-chart"></canvas>
 			</div>
 			<script>
+
     const trips = JSON.parse(JSON.parse(document.getElementById('jsonData').textContent));
     let currentTripIndex = 0;
     let currentTrip = trips[currentTripIndex];
@@ -117,7 +118,40 @@ templ Map(title string, tripsData string) {
       });
     }
 
-    function updateMap() {
+
+    function getMostProminentTrip() {
+      const bounds = map.getBounds();
+      const visibleTrips = trips.map((trip, index) => {
+        let visiblePoints = 0;
+        trip.events.forEach(event => {
+          if (event.type === "hike") {
+            event.trackPointsLowRes.forEach(point => {
+              if (bounds.contains([point.lon, point.lat])) {
+                visiblePoints++;
+              }
+            });
+          }
+        });
+        return {index, visiblePoints};
+      });
+
+      visibleTrips.sort((a, b) => b.visiblePoints - a.visiblePoints);
+      return visibleTrips[0].index;
+    }
+
+
+    function updateCurrentTrip() {
+      const newTripIndex = getMostProminentTrip();
+      if (newTripIndex !== currentTripIndex) {
+        currentTripIndex = newTripIndex;
+        currentTrip = trips[currentTripIndex];
+        document.getElementById('trip-select').value = currentTripIndex;
+        updateMap(false);
+        updateElevationChart();
+      }
+    }
+
+    function updateMap(fitBounds = true) {
       // Clear existing layers and sources
       for (let i = 0; i < trips.length; i++) {
         if (map.getLayer(`hike-tracks-${i}`)) map.removeLayer(`hike-tracks-${i}`);
@@ -204,24 +238,26 @@ templ Map(title string, tripsData string) {
         }
       });
 
-      // Fit map to bounds of current trip
-      const bounds = new mapboxgl.LngLatBounds();
-      currentTrip.events.forEach(event => {
-        if (event.type === "hike") {
-          event.trackPointsLowRes.forEach(point => {
-            bounds.extend([point.lon, point.lat]);
-          });
-        } else if (event.type === "camp") {
-          bounds.extend([event.lon, event.lat]);
-        }
-      });
+      if (fitBounds) {
+        // Fit map to bounds of current trip
+        const bounds = new mapboxgl.LngLatBounds();
+        currentTrip.events.forEach(event => {
+          if (event.type === "hike") {
+            event.trackPointsLowRes.forEach(point => {
+              bounds.extend([point.lon, point.lat]);
+            });
+          } else if (event.type === "camp") {
+            bounds.extend([event.lon, event.lat]);
+          }
+        });
 
-      map.fitBounds(bounds, {
-        padding: 50,
-        pitch: 60,
-        bearing: 30,
-        duration: 2000
-      });
+        map.fitBounds(bounds, {
+          padding: 50,
+          pitch: 60,
+          bearing: 30,
+          duration: 2000
+        });
+      }
 
       // Add markers for current trip
       const start = currentTrip.events.find(event => event.type === "hike").trackPoints[0];
@@ -430,6 +466,9 @@ templ Map(title string, tripsData string) {
         updateMap();
       });
     });
+
+
+    map.on('moveend', updateCurrentTrip);
 
     // Add keyboard navigation
     document.addEventListener('keydown', (e) => {
