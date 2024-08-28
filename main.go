@@ -35,8 +35,8 @@ func (c CampEvent) EventType() string {
 }
 
 type HikeEvent struct {
-	Type        string       `json:"type"`
-	TrackPoints []TrackPoint `json:"trackPoints"`
+	Type              string       `json:"type"`
+	TrackPoints       []TrackPoint `json:"trackPoints"`
 	TrackPointsLowRes []TrackPoint `json:"trackPointsLowRes"`
 }
 
@@ -68,10 +68,10 @@ func main() {
 			return
 		}
 
-		templates.Map("All Trips", string(tripsJSON)).Render(r.Context(), w)
+		templates.Map("My Trips", string(tripsJSON)).Render(r.Context(), w)
 	})
 
-	http.ListenAndServe("localhost:3000", r)
+	http.ListenAndServe(":3000", r)
 }
 
 func readTripData() ([]Trip, error) {
@@ -121,8 +121,8 @@ func readTripData() ([]Trip, error) {
 					slog.Info(fmt.Sprintf("Processing hike: %s", event.GPX))
 
 					trip.Events[i] = HikeEvent{
-						Type:        event.Type,
-						TrackPoints: processed.HighResolution,
+						Type:              event.Type,
+						TrackPoints:       processed.HighResolution,
 						TrackPointsLowRes: processed.LowResolution,
 					}
 				}
