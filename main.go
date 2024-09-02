@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -12,7 +13,59 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+
+	_ "github.com/lib/pq"
 )
+
+var db *sql.DB
+
+func initDB() error {
+	connStr := "host=10.0.0.40 port=5432 user=dbuser password=password123 dbname=oliverbutler sslmode=disable"
+	var err error
+	db, err = sql.Open("postgres", connStr)
+	if err != nil {
+		return err
+	}
+
+	// Create the visits table if it doesn't exist
+	_, err = db.Exec(`
+        CREATE TABLE IF NOT EXISTS visits (
+            id SERIAL PRIMARY KEY,
+            page VARCHAR(255) NOT NULL,
+            count INT DEFAULT 0
+        )
+    `)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func incrementVisits(page string) (int, error) {
+	// Check if the page already exists
+	var count int
+	err := db.QueryRow("SELECT count FROM visits WHERE page = $1", page).Scan(&count)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// Page doesn't exist, insert it
+			_, err := db.Exec("INSERT INTO visits (page, count) VALUES ($1, 1)", page)
+			if err != nil {
+				return 0, err
+			}
+			return 1, nil
+		}
+		return 0, err
+	}
+
+	// Page exists, increment the count
+	_, err = db.Exec("UPDATE visits SET count = count + 1 WHERE page = $1", page)
+	if err != nil {
+		return 0, err
+	}
+
+	return count + 1, nil
+}
 
 type Trip struct {
 	Name   string      `json:"name"`
@@ -51,6 +104,12 @@ var (
 )
 
 func main() {
+	if err := initDB(); err != nil {
+		slog.Error("Failed to initialize database", "error", err)
+		return
+	}
+	defer db.Close()
+
 	// Load the cache on startup
 	if err := loadTripCache(); err != nil {
 		slog.Error("Failed to load trip cache", "error", err)
@@ -67,6 +126,13 @@ func main() {
 	})
 
 	r.Get("/maps", func(w http.ResponseWriter, r *http.Request) {
+		count, err := incrementVisits("/maps")
+		if err != nil {
+			slog.Error("Failed to increment visit count", "error", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
 		tripCacheMutex.RLock()
 		tripsJSON, err := json.Marshal(tripCache)
 		tripCacheMutex.RUnlock()
@@ -76,7 +142,9 @@ func main() {
 			return
 		}
 
-		templates.Map("My Trips", string(tripsJSON)).Render(r.Context(), w)
+		title := fmt.Sprintf("Maps (%d visits)", count)
+
+		templates.Map(title, string(tripsJSON)).Render(r.Context(), w)
 	})
 
 	http.ListenAndServe(":3000", r)
