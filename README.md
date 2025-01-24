@@ -1,22 +1,20 @@
 ## Hi, I'm Olly.
 
-I'm Olly! I'm currently working as a SWE @ Collective Benefits striving to help the lives of people though the way I best know how; delivering quality, stable and beautiful software.
+I'm Olly! I'm currently working as a Senior Eng @ Onsi - striving to help the lives of people though the way I best know how; delivering quality, stable and beautiful software.
 
 Founded [ts-rest](https://ts-rest.com) to help deliver type safe APIs to teams across the world, helping them focus on what matters most.
 
 ### My Principles
-- Keep it simple
+- Keep it simple stupid
 - Collaboration over being a individual contributor
-- Tailor your project to your **needs** not your **desires**
-- Actively seek out and destroy obstacles to productivity 
 - Avoid preemptive optimisations
-- In person (or video) chats > messaging 
+- In person (or video) chats > messaging
 
-### Spicy Takes 🌶️
-- Monoliths are underrated
-- Servers are great
-- Scrum is for estimation, not targets
+### Spicy Takes
+- Web dev became too complicated (HTMX 🫶)
+- Monoliths are underrated, servers are great
+- Trunk based development/Extreme practises aren't that extreme
 - Teams of engineers not programmers
 
 ### My Preferences 
-`techs.filter(tech => ['Typescript', 'Rust'].includes(tech))`
+Typescript if I'm feeling boring 🥱, Go if I'm starting something fresh ✨, or Rust if I'm feeling spicy and have too much free time.
