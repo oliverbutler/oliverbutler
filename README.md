@@ -2,8 +2,6 @@
 
 I'm Olly! I'm currently working as a Senior Eng @ Onsi - striving to help the lives of people though the way I best know how; delivering quality, stable and beautiful software.
 
-Founded [ts-rest](https://ts-rest.com) to help deliver type safe APIs to teams across the world, helping them focus on what matters most.
-
 ### My Principles
 - Keep it simple stupid
 - Collaboration over being a individual contributor
@@ -18,3 +16,6 @@ Founded [ts-rest](https://ts-rest.com) to help deliver type safe APIs to teams a
 
 ### My Preferences 
 Typescript if I'm feeling boring 🥱, Go if I'm starting something fresh ✨, or Rust if I'm feeling spicy and have too much free time.
+
+### Projects
+- Founding (former) maintainer of [ts-rest](https://ts-rest.com)
